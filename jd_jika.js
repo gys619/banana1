@@ -1,6 +1,6 @@
 /*
 活动入口：首页 -> 领券 -> 集卡赢大奖
-cron 10 7,18 * * * jd_jika.js
+cron=10 7,18 * * * jd_jika.js
  */
 const $ = new Env('集魔力卡召唤大奖');
 const notify = $.isNode() ? require('./sendNotify') : '';
