@@ -1,17 +1,17 @@
 /*
-大牌联合  狂欢抢先GO
-10-23 ~ 10~29
-https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=dz20211023wkcn14cn5cnd0sdbs5sbx&shareUuid=e4af9e2576f742518d31de9d38c34b14
+品质女装 年终狂欢
+
+https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=dzkbblntbt20211101A&shareUuid=0f38ece139354e3e9b849034d3c6b6fd
 
 默认执行脚本。如果需要不执行
 环境变量 NO_RUSH=false
 */
-const $ = new Env("大牌联合  狂欢抢先GO");
+const $ = new Env("品质女装 年终狂欢");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
 let ownCode = null;
-let isRush = true;false
+let isRush = true;
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -35,9 +35,10 @@ if (process.env.NO_RUSH && process.env.NO_RUSH != "") {
         return;
     }
     
-    authorCodeList = await getAuthorCodeList('https://gitee.com/fatelight/123/raw/master/123/lzdz1_go2.json')
+    authorCodeList = await getAuthorCodeList('https://gitee.com/fatelight/dongge/raw/master/dongge/lzdz1_women.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
+            '0f38ece139354e3e9b849034d3c6b6fd',
         ]
     }
 
@@ -66,10 +67,10 @@ if (process.env.NO_RUSH && process.env.NO_RUSH != "") {
             $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
             $.authorNum = `${random(1000000, 9999999)}`
             $.randomCode = random(1000000, 9999999)
-            $.activityId = 'dz20211023wkcn14cn5cnd0sdbs5sbx'
-            $.activityShopId = '1000387143'
+            $.activityId = 'dzkbblntbt20211101A'
+            $.activityShopId = '1000007653'
             $.activityUrl = `https://lzdz1-isv.isvjd.com/dingzhi/dz/openCard/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
-            if (isRush) {
+            if (isRush === true) {
                 console.log("未检测到不执行环境变量，执行任务")
                 await rush();
             } else {
