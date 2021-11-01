@@ -29,6 +29,9 @@ if (process.env.packetId) {
   packetId = process.env.packetId;
 }
 if ($.isNode()) {
+  console.log('export actId="" ##你要参加砍价的商品ID')
+  console.log('export packetId="" ##你要参加砍价的邀请码')
+  console.log('活动地址：https://mfn.jd.com/ 京东极速版')
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })

@@ -1,5 +1,5 @@
 /**
-惊喜牛牛
+惊喜牧场
 cron 23 0-23/3 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_jxmc.js
 */
 // prettier-ignore
@@ -60,12 +60,10 @@ let token ='';
     }
     token = await getJxToken();
     if(i < helpnum){
-      //
       await Gethelp();
-
     }
     
-    await $.wait(100);
+    await $.wait(1000);
   }
   console.log('\n##################开始账号内互助#################\n');
 
@@ -88,17 +86,23 @@ let token ='';
 
   for (let i = 0; i < cookiesArr.length; i++) {
     $.cookie = cookiesArr[i];
-    
+    $.canHelp = true;
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
     token = await getJxToken();
-    for (let k = 0; k < codeList.length; k++) {
+    for (let k = 0; k < codeList.length&&$.canHelp; k++) {
+      $.max = false;
       $.oneCodeInfo = codeList[k];
       if(codeList[k].name === $.UserName){
         continue;
       }else{
         console.log(`\n${$.UserName}去助力${codeList[k].name},助力码：${codeList[k].code}\n`);
         await takeGetRequest('Dohelp');
-        await $.wait(1000);
+        await $.wait(2000);
+	      if ($.max) {
+          codeList .splice(k, 1)
+          k--
+          continue
+        }
       }
     }
 
@@ -117,54 +121,8 @@ let token ='';
 
 
 
-  async function pasture() {
-    try {
-      $.homeInfo = {};
-      $.petidList = [];
-      $.crowInfo = {};
-      await takeGetRequest('GetHomePageInfo');
-      if (JSON.stringify($.homeInfo) === '{}') {
-        return;
-      } else {
-        if (!$.homeInfo.petinfo) {
-          console.log(`\n温馨提示：${$.UserName} 请先手动完成【新手指导任务】再运行脚本再运行脚本\n`);
-          return;
-        }
-        console.log('获取活动信息成功');
-        console.log(`互助码：${$.homeInfo.sharekey}`);
-        $.activeid = $.homeInfo.activeid;
-        $.helpCkList.push($.cookie);
-        $.inviteCodeList.push({'use':$.UserName,'code':$.homeInfo.sharekey,'max':false});
-        
-      }
-     
-    } catch (e) {
-      $.logErr(e)
-    }
-  }
 
 
-async function GetInviteStatus() {
-  try {
-    $.InviteInfo = {};
-    $.petidList = [];
-    $.crowInfo = {};
-    await takeGetRequest('GetInviteStatus');
-    if (JSON.stringify($.homeInfo) === '{}') {
-      return;
-    } else {
-      
-      console.log('获取活动信息成功');
-      console.log(`互助码：${$.InviteInfo.sharekey}`);
-      $.helpCkList.push($.cookie);
-      $.inviteCodeList1.push({'use':$.UserName,'code':$.InviteInfo.sharekey,'max':false});
-     
-    }
- 
-  } catch (e) {
-    $.logErr(e)
-  }
-}
 
 async function Gethelp() {
   try {
@@ -198,7 +156,7 @@ async function takeGetRequest(type) {
   switch (type) {
     
     case 'Gethelp':
-      url = `https://m.jingxi.com/pgcenter/sign/UserSignNew?sceneval=2&source=&_stk=sceneval%2Csource&_ste=1`;
+      url = `https://m.jingxi.com/pgcenter/sign/UserSignNew?sceneval=2&call_source=nnfls&_stk=sceneval%2Ccall_source&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       break;
     case 'Dohelp':
@@ -242,6 +200,8 @@ function dealReturn(type, data) {
         data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
       if (data.retCode === 0) {
         $.helpInfo = data.data;
+      } else if(data.retCode === 60009){
+        console.log(`获取邀请码失败,可能黑号：${data.errMsg}\n`);
         
       } else {
         console.log(`获取活动信息异常：${JSON.stringify(data)}\n`);
@@ -253,6 +213,16 @@ function dealReturn(type, data) {
       if (data.retCode === 0) {
         $.retInfo = data;
         console.log(`助力：${$.retInfo.errMsg}\n`);
+      } else if(data.retCode === 30011 || data.retCode === 60009|| data.retCode === 30003) {
+        $.retInfo = data;
+        console.log(`助力失败：${$.retInfo.errMsg}\n`);
+        $.canHelp=false
+
+      } else if(data.retCode === 30010) {
+        $.retInfo = data;
+        console.log(`助力失败：${$.retInfo.errMsg}\n`);
+        $.max = true;
+
       } else {
         console.log(`助力异常：${JSON.stringify(data)}\n`);
       }
