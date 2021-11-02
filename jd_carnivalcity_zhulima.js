@@ -79,7 +79,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
-      $.canHelp = true;//能否助力
+      $.canHelp = false;//能否助力
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       if (!isLoginInfo[$.UserName]) continue
       if ((cookiesArr && cookiesArr.length >= 1) && ($.temp && $.temp.length)) {

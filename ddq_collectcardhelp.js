@@ -1,7 +1,4 @@
-/**
-cron=10 7,18 * * * jd_collectcardhelp.js
-new Env('集卡助力');
- */
+
 const $ = new Env('集卡');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
