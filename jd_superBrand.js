@@ -105,7 +105,7 @@ function getShareCode(name) {
           console.log(`${JSON.stringify(err)}`);
           console.log(`${$.name} API请求失败，请检查网路重试`);
         } else {
-          console.log(`优先账号内部互助，有剩余助力次数再帮【zero205】助力`);
+          console.log(`优先账号内部互助`);
           $.shareCode = JSON.parse(data);
         }
       } catch (e) {
@@ -138,6 +138,18 @@ async function main(cookie) {
     let taskList = taskListInfo.result.taskList || [];
     console.log(`\n${userName},获取活动详情成功`);
     let encryptProjectId = activityBaseInfo.encryptProjectId;
+    let activityCardInfo = cardInfo.result.activityCardInfo;
+    if(activityCardInfo.divideTimeStatus === 1 && activityCardInfo.divideStatus === 0 && activityCardInfo.cardStatus === 1){
+        console.log(`${userName},去瓜分`);
+        let lotteryInfo = await takeRequest(cookie,'superBrandTaskLottery',`{"source":"card","activityId":${activityId},"encryptProjectId":"${encryptProjectId}","tag":"divide"}`);
+        console.log(`结果：${JSON.stringify(lotteryInfo)}`);
+        return ;
+    }else if(activityCardInfo.divideTimeStatus === 1 && activityCardInfo.divideStatus === 1 && activityCardInfo.cardStatus === 1){
+        console.log(`${userName},已瓜分`);
+        return ;
+    }else{
+        console.log(`${userName},未集齐或者未到瓜分时间`);
+    }
     await $.wait(2000);
     for (let i = 0; i < taskList.length; i++) {
         let oneTask = taskList[i];
