@@ -1,7 +1,7 @@
 /*
 双11特务
 APP首页下滑,任务，互助
-cron 10 9,13,16,19,20 2-8 11 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_superBrand.js
+cron 10 9,13,16,19,20 2-8 11 * https://raw.githubusercontent.com/123/jd/main/scripts/jd_superBrand.js
 * */
 const $ = new Env('双11特务');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -96,7 +96,7 @@ let shareList = [];
 function getShareCode(name) {
   return new Promise(resolve => {
     $.get({
-      url: "https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/"+name,
+      url: "https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/"+name,
       headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }

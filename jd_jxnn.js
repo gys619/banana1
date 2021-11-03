@@ -6,17 +6,17 @@
 ============Quantumultx===============
 [task_local]
 #惊喜牛牛
-35 2,18 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jxnn.js, tag=惊喜牛牛, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+35 2,18 * * * https://raw.githubusercontent.com/123/JDJB/main/jd_jxnn.js, tag=惊喜牛牛, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "35 2,18 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jxnn.js,tag=惊喜牛牛
+cron "35 2,18 * * *" script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_jxnn.js,tag=惊喜牛牛
 
 ===============Surge=================
-惊喜牛牛 = type=cron,cronexp="35 2,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jxnn.js
+惊喜牛牛 = type=cron,cronexp="35 2,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_jxnn.js
 
 ============小火箭=========
-惊喜牛牛 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jxnn.js, cronexpr="35 2,18 * * *", timeout=3600, enable=true
+惊喜牛牛 = type=cron,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_jxnn.js, cronexpr="35 2,18 * * *", timeout=3600, enable=true
 
     
  */

@@ -21,8 +21,8 @@ ql repo https://github.com/gys619/jd.git "jd_|jx_|jddj_|gua_|jddj_|getJDCookie|w
 * 加了hwkxk得欢太商城脚本，自己在config.ini填写ck
 ### 有以下库合成 （在faker2的基础上加上其他仓库脚本集成）互助码也是他们的，本人没有
 * [smiek2221](https://github.com/smiek2221/scripts.git)
-* [yuannian1112](https://github.com/yuannian1112/jd_scripts.git)
-*  [shufflewzc](https://github.com/shufflewzc/faker2.git)
+* [123](https://github.com/123/jd_scripts.git)
+*  [123](https://github.com/123/faker2.git)
 *  [passerby-b](https://github.com/passerby-b/JDDJ.git)
 *  [he1pu](https://github.com/he1pu/JDHelp.git)
 *  [airacg](https://github.com/airacg/jd_task.git)
@@ -55,13 +55,13 @@ ql raw <fileurl>
   ```
   ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "Coupon|update" "^jd[^_]|USER|^sign|^ZooFaker|utils"
   ```
-  3. `shufflewzc`
+  3. `123`
   ```
-  ql repo https://github.com/shufflewzc/faker2.git "jd_|jx_|gua_|jddj_|getJDCookie" "activity|backUp" "^jd[^_]|USER|utils|^JS|^TS|^JDJRValidator_Pure|^ZooFaker|^sign"
+  ql repo https://github.com/123/faker2.git "jd_|jx_|gua_|jddj_|getJDCookie" "activity|backUp" "^jd[^_]|USER|utils|^JS|^TS|^JDJRValidator_Pure|^ZooFaker|^sign"
   ```
-  4. `Aaron-lv`
+  4. `123`
   ```
-  ql repo https://github.com/Aaron-lv/sync.git "jd_|jx_|getJDCookie" "activity|backUp|Coupon" "^jd[^_]|USER|utils" "jd_scripts"
+  ql repo https://github.com/123/sync.git "jd_|jx_|getJDCookie" "activity|backUp|Coupon" "^jd[^_]|USER|utils" "jd_scripts"
   ```
   5. `panghu999`（无维护）
   ```
@@ -112,9 +112,9 @@ ql repo https://github.com/photonmang/quantumultX.git "JDscripts"
 ```
 ql repo https://github.com/jiulan/platypus.git "jd_|jx_" "" "overdue" "main"
 ```
-- `star261`
+- `123`
 ```
-ql repo https://github.com/star261/jd.git "jd_|star" "" "code" "main"
+ql repo https://github.com/123/jd.git "jd_|star" "" "code" "main"
 ```
 - `Wenmoux`
 ```
@@ -145,15 +145,15 @@ ql raw https://raw.githubusercontent.com/curtinlv/JD-Script/main/getFollowGifts/
 ql raw https://raw.githubusercontent.com/chiupam/JD_Diy/master/pys/activeId.py
 ```
 
-> `Aaron-lv`+
+> `123`+
 
 >> 财富岛
 ```
-ql raw https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_cfd.js
+ql raw https://raw.githubusercontent.com/123/sync/jd_scripts/jd_cfd.js
 ```
 or
 ```
-ql repo https://github.com/Aaron-lv/sync.git "jd_cfd" "" "" "jd_scripts"
+ql repo https://github.com/123/sync.git "jd_cfd" "" "" "jd_scripts"
 ```
 
 > `Wenmoux`+

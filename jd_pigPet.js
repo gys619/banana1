@@ -2,21 +2,21 @@
 *
 京东金融养猪猪
 活动入口：京东金融养猪猪，
-脚本更新地址：https://github.com/zero205/JD_tencent_scf
+脚本更新地址：https://github.com/123/JD_tencent_scf
 加了个邀新助力，不过应该没啥用。邀请码变量：PIGPETSHARECODES，变量仅支持单账号邀请码
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 京东金融养猪猪
-12 0-23/6 * * * https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js, tag=京东金融养猪猪, enabled=true
+12 0-23/6 * * * https://raw.githubusercontent.com/123/JD_tencent_scf/main/jd_pigPet.js, tag=京东金融养猪猪, enabled=true
 ================Loon==============
 [Script]
-cron "12 0-23/6 * * *" script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js,tag=摇钱树助力
+cron "12 0-23/6 * * *" script-path=https://raw.githubusercontent.com/123/JD_tencent_scf/main/jd_pigPet.js,tag=摇钱树助力
 ===============Surge=================
-京东金融养猪猪 = type=cron,cronexp="12 0-23/6 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js
+京东金融养猪猪 = type=cron,cronexp="12 0-23/6 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/123/JD_tencent_scf/main/jd_pigPet.js
 ============小火箭=========
-京东金融养猪猪 = type=cron,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_pigPet.js, cronexpr="12 0-23/6 * * *", timeout=3600, enable=true
+京东金融养猪猪 = type=cron,script-path=https://raw.githubusercontent.com/123/JD_tencent_scf/main/jd_pigPet.js, cronexpr="12 0-23/6 * * *", timeout=3600, enable=true
 *
 */
 const $ = new Env('金融养猪');

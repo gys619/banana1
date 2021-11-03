@@ -9,17 +9,17 @@
 ============Quantumultx===============
 [task_local]
 #发财大赢家
-1 1,18 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js, tag=发财大赢家, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+1 1,18 * * * https://raw.githubusercontent.com/123/JDJB/main/jd_fcdyj.js, tag=发财大赢家, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "1 1,18 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js tag=发财大赢家
+cron "1 1,18 * * *" script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_fcdyj.js tag=发财大赢家
 
 ===============Surge=================
-发财大赢家 = type=cron,cronexp="1 1,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js
+发财大赢家 = type=cron,cronexp="1 1,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_fcdyj.js
 
 ============小火箭=========
-发财大赢家 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js, cronexpr="1 1,18 * * *", timeout=3600, enable=true
+发财大赢家 = type=cron,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_fcdyj.js, cronexpr="1 1,18 * * *", timeout=3600, enable=true
  */
 const $ = new Env('发财大赢家助力');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -317,7 +317,7 @@ function help(rid, inviter, type) {
 function getAuthorShareCode() {
     return new Promise(resolve => {
         $.get({
-            url: "https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/fcdyj.json",
+            url: "https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/fcdyj.json",
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }

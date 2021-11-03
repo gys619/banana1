@@ -4,7 +4,7 @@
 备注：高速并发请求，专治偷助力。在kois环境变量中填入需要助力的pt_pin，有多个请用@符号连接
 
 ## export kois="" 环境变量填写
-0 0 * * * https://github.com/KingRan/JD-Scripts/blob/main/jd_angryKoi.js
+0 0 * * * https://github.com/123/JD-Scripts/blob/main/jd_angryKoi.js
 */
 const $ = new Env("愤怒的锦鲤")
 const JD_API_HOST = 'https://api.m.jd.com/client.action';

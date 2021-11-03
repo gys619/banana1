@@ -24,7 +24,7 @@ export CKNOWARNERROR="true"
 ## 屏蔽青龙登陆成功通知，登陆失败不屏蔽
 export NOTIFY_NOLOGINSUCCESS="true"
 ## 通知底部显示
-export NOTIFY_AUTHOR="来源于：https://github.com/KingRan/JD-Scripts"
+export NOTIFY_AUTHOR="来源于：https://github.com/123/JD-Scripts"
  */
 //详细说明参考 https://github.com/ccwav/QLScript2.
 const querystring = require('querystring');
