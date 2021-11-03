@@ -1,138 +1,230 @@
-/*
-愤怒的锦鲤
-更新时间：2021-7-11
-备注：高速并发请求，专治偷助力。在kois环境变量中填入需要助力的pt_pin，有多个请用@符号连接
-TG学习交流群：https://t.me/cdles
-0 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryKoi.js
-*/
-const $ = new Env("愤怒的锦鲤")
-const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
-var kois = process.env.kois ?? ""
-let cookiesArr = []
-var packets = [];
+// 自行确认是否有效
 
+const $ = new Env('极速免费签到');
+const notify = $.isNode() ? require('./sendNotify') : '';
+//Node.js用户请在jdCookie.js处填写京东ck;
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const UA = $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+//IOS等用户直接用NobyDa的jd cookie
+let cookiesArr = [],
+    cookie,
+    msg = ['不玩就把脚本停了']
+
+const activityId = 'PiuLvM8vamONsWzC0wqBGQ'
+
+if ($.isNode()) {
+    Object.keys(jdCookieNode).forEach((item) => {
+        cookiesArr.push(jdCookieNode[item])
+    })
+    if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
+} else {
+    cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
+}
+const JD_API_HOST = 'https://api.m.jd.com/';
 !(async () => {
-    if(!kois){
-        console.log("请在环境变量中填写需要助力的账号")
+    for (let i = 0; i < cookiesArr.length; i++) {
+        if (cookiesArr[i]) {
+            cookie = cookiesArr[i];
+            $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+            $.index = i + 1;
+            $.nickName = '';
+            message = '';
+            console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+            msg.push(($.nickName || $.UserName) + ':')
+            await sign_all()
+        }
     }
-    requireConfig()
-    len = cookiesArr.length
-    for (let i = 0; i < len; i++) {
-        cookie = cookiesArr[i]
-        if(!kois){
-            if(i != 0) {
-                break
-            }
-            console.log(`默认给账号${i+1}助力`)
-        }else if(kois.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])==-1)continue
-        data = await requestApi('h5launch',cookie);
-        switch (data?.data?.result.status) {
-            case 1://火爆
-                continue;
-            case 2://已经发起过
-                break;
-            default:
-                if(data?.data?.result?.redPacketId){
-                    packets.push(data.data.result.redPacketId)
-                }
-                continue;
-        }   
-        data = await requestApi('h5activityIndex',cookie);
-        // console.log(data)
-        switch (data?.data?.code) {
-            case 20002://已达拆红包数量限制
-                break;
-            case 10002://活动正在进行，火爆号
-                break;
-            case 20001://红包活动正在进行，可拆
-                packets.push(data.data.result.redpacketInfo.id)
-                break;
-            default:
-                break;
-        }   
+    if (msg.length) {
+        console.log('有消息,推送消息')
+        await notify.sendNotify($.name, msg.join('\n'))
+    } else {
+        console.error('无消息,推送错误')
+        await notify.sendNotify($.name + '错误!!', "无消息可推送!!")
     }
+})()
+.catch((e) => {
+        $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+        notify.sendNotify($.name + '异常!!', msg.join('\n') + '\n' + e)
+    })
+    .finally(() => {
+        $.msg($.name, '', `结束`);
+        $.done();
+    })
+async function sign_all() {
+    await query()
+    if (!$.signFreeOrderInfoList){
+        return
+    }
+    await $.wait(3000)
+    for (const order of $.signFreeOrderInfoList) {
+        // console.debug('now:', order)
+        $.productName = order.productName
+        await sign(order.orderId)
+        await $.wait(3000)
+    }
+    await $.wait(3000)
+    await query()
+    await $.wait(3000)
+    for (const order of $.signFreeOrderInfoList) {
+        // console.debug('2nd now:', order)
+        if (order.needSignDays == order.hasSignDays) {
+            console.log(order.productName, '可提现,执行提现')
+            $.productName = order.productName
+            await cash(order.orderId)
+            await $.wait(3000)
+        }
+    }
+}
 
-    tools = cookiesArr
-    while (tools.length && packets.length) {
-        var cookie = tools.pop()
-        requestApi('jinli_h5assist',cookie, {"redPacketId":packets[0]}).then(
-            function(data){
-                desc = data?.data?.result?.statusDesc
-                if(desc && desc.indexOf("助力已满")!=-1){
-                    packets.shift()
-                    tools.unshift(cookie)
-                }else if(!desc){
-                    tools.unshift(cookie)
-                }
-                console.log(desc)
-            }
-        )
-        await $.wait(50)        
-    }
-})()  .catch((e) => {
-    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-  })
-  .finally(() => {
-    $.done();
-  })
-
-function requestApi(functionId, cookie, body = {}) {
+function query() {
     return new Promise(resolve => {
-        $.post({
-            url: `${JD_API_HOST}/api?appid=jd_mp_h5&functionId=${functionId}&loginType=2&client=jd_mp_h5&clientVersion=10.0.5&osVersion=AndroidOS&d_brand=Xiaomi&d_model=Xiaomi`,
-            headers: {
-                "Cookie": cookie,
-                "origin": "https://h5.m.jd.com",
-                "referer": "https://h5.m.jd.com/babelDiy/Zeus/2NUvze9e1uWf4amBhe1AV6ynmSuH/index.html",
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "X-Requested-With": "com.jingdong.app.mall",
-                "User-Agent": ua,
-            },
-            body: `body=${escape(JSON.stringify(body))}`,
-        }, (_, resp, data) => {
+        $.get(taskGetUrl("signFreeHome", { "linkId": activityId }), async (err, resp, data) => {
             try {
-                data = JSON.parse(data)
+                if (err) {
+                    console.error(`${JSON.stringify(err)}`)
+                } else {
+                    // console.debug('query:', data)
+                    data = JSON.parse(data)
+                    $.signFreeOrderInfoList = data.data.signFreeOrderInfoList
+                    if (data.success == true) {
+                        if (data.data.risk == true) {
+                            console.log("风控用户,跳过");
+                            msg.push("风控用户,跳过")
+                        }else if (!data.data.signFreeOrderInfoList) {
+                            console.log("没有需要签到的商品,请到京东极速版[签到免单]购买商品");
+                            msg.push("没有需要签到的商品,请到京东极速版[签到免单]购买商品")
+                        } else {
+                            $.signFreeOrderInfoList = data.data.signFreeOrderInfoList
+                        }
+                    }else{
+                        console.error("失败");
+                    }
+                }
             } catch (e) {
-                $.logErr('Error: ', e, resp)
+                $.logErr(e, resp)
             } finally {
-                resolve(data)
+                resolve(data);
             }
         })
     })
 }
 
-function requireConfig() {
+function sign(orderId) {
     return new Promise(resolve => {
-        notify = $.isNode() ? require('./sendNotify') : '';
-        const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-        if ($.isNode()) {
-            Object.keys(jdCookieNode).forEach((item) => {
-                if (jdCookieNode[item]) {
-                    cookiesArr.push(jdCookieNode[item])
+        // console.debug('sign orderId:', orderId)
+        $.post(taskPostUrl("signFreeSignIn", { "linkId": activityId, "orderId": orderId }), async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.error(`${JSON.stringify(err)}`)
+                } else {
+                    // console.debug('sign:', data)
+                    data = JSON.parse(data)
+                    let msg_temp
+                    if (data.success) {
+                        msg_temp = $.productName + ' 签到成功'
+                    } else {
+                        msg_temp = $.productName + ' ' + (data.errMsg || '未知错误')
+                    }
+                    console.log(msg_temp)
+                    msg.push(msg_temp)
                 }
-            })
-            if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
-        } else {
-            cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
-        }
-        console.log(`共${cookiesArr.length}个京东账号\n`)
-        resolve()
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve(data);
+            }
+        })
     })
 }
 
-function randomString(e) {
-    e = e || 32;
-    let t = "abcdefhijkmnprstwxyz2345678",
-        a = t.length,
-        n = "";
-    for (i = 0; i < e; i++)
-        n += t.charAt(Math.floor(Math.random() * a));
-    return n
+function cash(orderId) {
+    return new Promise(resolve => {
+        // console.debug('cash orderId:', orderId)
+        $.post(taskPostUrl("signFreePrize", { "linkId": activityId, "orderId": orderId, "prizeType": 2 }), async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.error(`${JSON.stringify(err)}`)
+                } else {
+                    // console.debug('cash:', data)
+                    data = JSON.parse(data)
+                    let msg_temp
+                    if (data.success) {
+                        msg_temp = $.productName + ' 提现成功'
+                    } else {
+                        msg_temp = $.productName + ' ' + (data.errMsg || '未知错误')
+                    }
+                    console.log(msg_temp)
+                    msg.push(msg_temp)
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve(data);
+            }
+        })
+    })
 }
 
+function taskPostUrl(function_id, body) {
+    return {
+        url: `${JD_API_HOST}`,
+        body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&_t=${new Date()}&appid=activities_platform`,
+        headers: {
+            'Cookie': cookie,
+            'Host': 'api.m.jd.com',
+            // 'Connection': 'keep-alive',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "User-Agent": UA,
+            'accept-language': 'en-US,zh-CN;q=0.9',
+            'accept-encoding': 'gzip, deflate, br',
+            "referer": "https://signfree.jd.com/?activityId=" + activityId
+        }
+    }
+}
+
+function taskGetUrl(function_id, body) {
+    return {
+        url: `${JD_API_HOST}?functionId=${function_id}&body=${escape(JSON.stringify(body))}&_t=${new Date()}&appid=activities_platform`,
+        headers: {
+            'Cookie': cookie,
+            'Host': 'api.m.jd.com',
+            'Accept': 'application/json, text/plain, */*',
+            'origin': 'https://signfree.jd.com',
+            // 'Connection': 'keep-alive',
+            'user-agent': UA,
+            'accept-language': 'en-US,zh-CN;q=0.9',
+            'accept-encoding': 'gzip, deflate, br',
+            "referer": "https://signfree.jd.com/?activityId=" + activityId
+        }
+    }
+}
+
+function safeGet(data) {
+    try {
+        if (typeof JSON.parse(data) == "object") {
+            return true;
+        }
+    } catch (e) {
+        console.log(e);
+        console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
+        return false;
+    }
+}
+
+function jsonParse(str) {
+    if (typeof str == "string") {
+        try {
+            return JSON.parse(str);
+        } catch (e) {
+            console.log(e);
+            $.msg($.name, '', '请勿随意在BoxJs输入框修改内容\n建议通过脚本去获取cookie')
+            return [];
+        }
+    }
+}
+// prettier-ignore
 function Env(t, e) {
-    "undefined" != typeof process && JSON.stringify(process.env).indexOf("GIT_HUB") > -1 && process.exit(0);
+    "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
     class s {
         constructor(t) {
             this.env = t
@@ -174,14 +266,14 @@ function Env(t, e) {
         toObj(t, e = null) {
             try {
                 return JSON.parse(t)
-            } catch (e) {
+            } catch {
                 return e
             }
         }
         toStr(t, e = null) {
             try {
                 return JSON.stringify(t)
-            } catch (e) {
+            } catch {
                 return e
             }
         }
