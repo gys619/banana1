@@ -1,5 +1,5 @@
 /*
-cron 37 3,11 * * * https://raw.githubusercontent.com/123/jd_scripts/main/jd_lsj.js
+cron 37 3,11 * * * https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_lsj.js
 #京东零食街
 后续添加自动兑换功能 如入会失败 自行去入会
 入口 京东 频道 美食馆

@@ -206,7 +206,7 @@ async function cashout() {
               if (data.subCode === 0 && data.data.cashOutSuccess === true) {
                 console.log(`红包兑换成功，剩余${data.data.cashDrawAmount}元`)
                 if ($.isNode()) {
-                  await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】 ${$.nickName}\n兑换红包成功，请尽快使用\n更多脚本->"https://github.com/123/JD_tencent_scf"`);
+                  await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】 ${$.nickName}\n兑换红包成功，请尽快使用\n更多脚本->"https://github.com/zero205/JD_tencent_scf"`);
                 }
               } else {
                 console.log(`红包兑换失败，${data.msg}`)

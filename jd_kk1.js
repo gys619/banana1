@@ -3,7 +3,7 @@
 10-28 ~ 11~5
 https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=946hf38m5d4vqjgs5ctfuickj65s69l528&shareUuid=9a08f21e1ba748c5a2652e4f003fc56b
 
-cron 17 2,11,19 * * * https://raw.githubusercontent.com/123/JDJB/main/jd_opencard7.js
+cron 17 2,11,19 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencard7.js
 
 默认执行脚本。如果需要不执行
 环境变量 NO_RUSH=false
@@ -39,7 +39,7 @@ if (process.env.NO_RUSH && process.env.NO_RUSH != "") {
         return;
     }
     
-    authorCodeList = await getAuthorCodeList('https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/opencard7.json')
+    authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/opencard7.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             '9a08f21e1ba748c5a2652e4f003fc56b',

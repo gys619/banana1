@@ -8,15 +8,15 @@ Last Modified time: 2021-05-19 16:27:18
 ================QuantumultX==================
 [task_local]
 #京东全民开红包
-1 0,10 * * * https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+1 0,10 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
 ===================Loon==============
 [Script]
-cron "1 0,10 * * *" script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js, tag=京东全民开红包
+cron "1 0,10 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js, tag=京东全民开红包
 ===============Surge===============
 [Script]
-京东全民开红包 = type=cron,cronexp="1 0,10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js
+京东全民开红包 = type=cron,cronexp="1 0,10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js
 ====================================小火箭=============================
-京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js, cronexpr="1 0,10 * * *", timeout=3600, enable=true
+京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js, cronexpr="1 0,10 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东全民开红包内部助力');
 const notify = $.isNode() ? require('./sendNotify') : '';

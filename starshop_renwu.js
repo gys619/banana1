@@ -1,7 +1,7 @@
 /**
  明星小店
- cron 10 9,18 9-25 8 * https://raw.githubusercontent.com/123/jd/main/scripts/jd_star_shop.js
-hop.js cron "10 9,18 9-25 8 *" https://raw.githubusercontent.com/123/jd/main/scripts/jd_star_s
+ cron 10 9,18 9-25 8 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_star_shop.js
+hop.js cron "10 9,18 9-25 8 *" https://raw.githubusercontent.com/star261/jd/main/scripts/jd_star_s
  蚊子腿，欧皇可以中实物
  */
 const $ = new Env('明星小店');

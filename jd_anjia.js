@@ -27,7 +27,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    authorCodeList = await getAuthorCodeList('https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/anjia.json')
+    authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/anjia.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             '65fbfdde1b284fc0a697e1c7d4cca355',

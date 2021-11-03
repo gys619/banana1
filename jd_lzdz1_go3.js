@@ -35,7 +35,7 @@ if (process.env.NO_RUSH && process.env.NO_RUSH != "") {
         return;
     }
     
-    authorCodeList = await getAuthorCodeList('https://gitee.com/fatelight/123/raw/master/123/lzdz1_go3.json')
+    authorCodeList = await getAuthorCodeList('https://gitee.com/fatelight/dongge/raw/master/dongge/lzdz1_go3.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             'f0a85730507a4ebcbd28162be46fc8f6',

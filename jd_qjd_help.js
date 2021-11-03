@@ -6,17 +6,17 @@
 ============Quantumultx===============
 [task_local]
 #全民抢京豆
-20 1,16 * * * https://raw.githubusercontent.com/123/JDJB/main/jd_qjd_help.js, tag=全民抢京豆, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+20 1,16 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_qjd_help.js, tag=全民抢京豆, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "20 1,16 * * *" script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_qjd_help.js,tag=全民抢京豆
+cron "20 1,16 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_qjd_help.js,tag=全民抢京豆
 
 ===============Surge=================
-全民抢京豆 = type=cron,cronexp="20 1,16 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_qjd_help.js
+全民抢京豆 = type=cron,cronexp="20 1,16 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_qjd_help.js
 
 ============小火箭=========
-全民抢京豆 = type=cron,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_qjd_help.js, cronexpr="20 1,16 * * *", timeout=3600, enable=true
+全民抢京豆 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_qjd_help.js, cronexpr="20 1,16 * * *", timeout=3600, enable=true
 
  **/
 const $ = new Env('全民抢京豆-内部互助版');
@@ -240,7 +240,7 @@ function getShareCode() {
 function getAuthorShareCode() {
   return new Promise(resolve => {
     $.get({
-      url: "https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/jd_updateBeanHome.json",
+      url: "https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/jd_updateBeanHome.json",
       headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }
