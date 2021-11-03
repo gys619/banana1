@@ -7,17 +7,17 @@
 ==============Quantumult X==============
 [task_local]
 #京喜领88元红包
-4 2,10 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js, tag=京喜领88元红包, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+4 3,13,21 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_jxlhb.js, tag=京喜领88元红包, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ==============Loon==============
 [Script]
-cron "4 2,10 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js,tag=京喜领88元红包
+cron "4 3,13,21 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_jxlhb.js,tag=京喜领88元红包
 
 ================Surge===============
-京喜领88元红包 = type=cron,cronexp="4 2,10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js
+京喜领88元红包 = type=cron,cronexp="4 3,13,21 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_jxlhb.js
 
 ===============小火箭==========
-京喜领88元红包 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js, cronexpr="4 2,10 * * *", timeout=3600, enable=true
+京喜领88元红包 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_jxlhb.js, cronexpr="4 3,13,21 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京喜领88元红包');
 const notify = $.isNode() ? require('./sendNotify') : {};
@@ -44,14 +44,19 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
       '活动入口：京喜app-》我的-》京喜领88元红包\n' +
       '助力逻辑：先自己京东账号相互助力，如有剩余助力机会，则助力作者\n' +
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
-  let res = await getAuthorShareCode('')
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/123/updateTeam/master/shareCodes/jxhb.json')
   if (!res) {
-    $.http.get({url: ''}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/123/updateTeam@master/shareCodes/jxhb.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('')
+    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/123/updateTeam@master/shareCodes/jxhb.json')
   }
   if (res && res.activeId) $.activeId = res.activeId;
-  $.authorMyShareIds = [...((res && res.codes) || [])];
+  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/123/updateTeam/main/shareCodes/jxhb.json')
+  if (!res2) {
+    await $.wait(1000)
+    res2 = await getAuthorShareCode('https://raw.fastgit.org/123/updateTeam/main/shareCodes/jxhb.json')
+  }
+  $.authorMyShareIds = [...((res && res.codes) || []),...(res2 || [])];
   //开启红包,获取互助码
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];

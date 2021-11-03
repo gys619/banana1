@@ -10,10 +10,10 @@ https://lzdz-isv.isvjcloud.com/dingzhi/qqxing/pasture/activity?activityId=901210
 
 【原作者 @Wenmoux】
 
-【二次修改 @zero205】
+【二次修改 @123】
 
 添加：自动喂食；
-修改：默认不做加购物车任务，优化黑号处理。By:zero205
+修改：默认不做加购物车任务，优化黑号处理。By:123
 需要加购FS_LEVEL=car (或者card,仓库内很多脚本都是这个变量,card=开卡+加购,car=只加购)
 环境变量:
 CowKeep:保留食物的数量(低于这个才喂食物)
@@ -52,7 +52,7 @@ $.shareuuid = ["c0eb4cc9ce4b4674baa119dc73abde30"][Math.floor((Math.random() * 3
         });
         return;
     }
-    console.log(`\n【原作者 @Wenmoux】\nBy:zero205\n添加：自动喂食\n修改：跳过加购物车任务，优化黑号处理\n`);
+    console.log(`\n【原作者 @Wenmoux】\nBy:123\n添加：自动喂食\n修改：跳过加购物车任务，优化黑号处理\n`);
     console.log(`\n活动入口口令：29.0复制整段话 Https:/JXBGWf46qWgzLa 星系牧场养牛牛，可获得DHA专属奶！￥23d9a0N4FTyGv2%祛→【猄〤崬】\n\n【注意】Response code 493 (undefined)报错是正常情况，活动抽风而已，请勿反馈！！！\n`)
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];

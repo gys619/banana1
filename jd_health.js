@@ -7,26 +7,26 @@
 ===================quantumultx================
 [task_local]
 #东东健康社区
-13 1,6,22 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_health.js, tag=东东健康社区, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+13 1,6,22 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_health.js, tag=东东健康社区, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =====================Loon================
 [Script]
-cron "13 1,6,22 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_health.js, tag=东东健康社区
+cron "13 1,6,22 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_health.js, tag=东东健康社区
 
 ====================Surge================
-东东健康社区 = type=cron,cronexp="13 1,6,22 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_health.js
+东东健康社区 = type=cron,cronexp="13 1,6,22 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_health.js
 
 ============小火箭=========
-东东健康社区 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_health.js, cronexpr="13 1,6,22 * * *", timeout=3600, enable=true
+东东健康社区 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_health.js, cronexpr="13 1,6,22 * * *", timeout=3600, enable=true
  */
 const $ = new Env("东东健康社区");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const notify = $.isNode() ? require('./sendNotify') : "";
 let cookiesArr = [], cookie = "", allMessage = "", message;
 const inviteCodes = [
-  ``,
-  ``,
-  ``,
+  `T0225KkcRh9P9FbRKUygl_UJcgCjVfnoaW5kRrbA@T0159KUiH11Mq1bSKBoCjVfnoaW5kRrbA`,
+  `T0225KkcRh9P9FbRKUygl_UJcgCjVfnoaW5kRrbA@T0159KUiH11Mq1bSKBoCjVfnoaW5kRrbA`,
+  `T0225KkcRh9P9FbRKUygl_UJcgCjVfnoaW5kRrbA@T0159KUiH11Mq1bSKBoCjVfnoaW5kRrbA`,
 ]
 let reward = $.isNode() ? (process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : '') : ($.getdata('JD_HEALTH_REWARD_NAME') ? $.getdata('JD_HEALTH_REWARD_NAME') : '');
 const randomCount = $.isNode() ? 20 : 5;
@@ -137,25 +137,6 @@ function getTaskDetail(taskId = '') {
               if (data?.data?.result?.taskVos) {
                 console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data?.data?.result?.taskVos[0].assistTaskDetailVo.taskToken}\n`);
                 // console.log('好友助力码：' + data?.data?.result?.taskVos[0].assistTaskDetailVo.taskToken)
-
-                // ***************************
-                // 报告运行次数
-                if(data?.data?.result?.taskVos[0].assistTaskDetailVo.taskToken){
-                  $.get({
-                  url: `https://hz.zzf.red/api/runTimes?activityId=health&sharecode=${data?.data?.result?.taskVos[0].assistTaskDetailVo.taskToken}`,
-                  timeout: 10000
-                  }, (err, resp, data) => {
-                    if (err) {
-                      console.log('上报失败', err)
-                    } else {
-                      if (data === '1' || data === '0') {
-                        console.log('上报成功')
-                      }
-                    }
-                  })
-                }
-                // ***************************
-
               }
             } else if (taskId === 22) {
               console.log(`${data?.data?.result?.taskVos[0]?.taskName}任务，完成次数：${data?.data?.result?.taskVos[0]?.times}/${data?.data?.result?.taskVos[0]?.maxTimes}`)
@@ -343,13 +324,10 @@ function safeGet(data) {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({
-      url: `https://hz.zzf.red/api/health/${randomCount}`,
-      timeout: 10000
-    }, (err, resp, data) => {
+    $.get({url: `http://123/health`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
+          console.log(JSON.stringify(err))
           console.log(`${$.name} health/read API请求失败，请检查网路重试`)
         } else {
           if (data) {

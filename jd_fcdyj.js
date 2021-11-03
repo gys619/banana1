@@ -3,8 +3,8 @@
  * /
  * 基于温某人大佬的脚本修改
  * 助力逻辑：优先助力互助码环境变量，中午10点之后再给我助力
- * TG交流群：https://t.me/jd_zero205
- * TG通知频道：https://t.me/jd_zero205_tz
+ * TG交流群：https://t.me/jd_123
+ * TG通知频道：https://t.me/jd_123_tz
  * /
 https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_fcdyj.js
 已支持IOS双京东账号, Node.js支持N个京东账号

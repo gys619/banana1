@@ -13,17 +13,17 @@ d、 30000名之外，0京豆
 ===================quantumultx================
 [task_local]
 #京东手机狂欢城
-0 0-18/6 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js, tag=京东手机狂欢城, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 0-18/6 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_carnivalcity.js, tag=京东手机狂欢城, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =====================Loon================
 [Script]
-cron "0 0-18/6 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js, tag=京东手机狂欢城
+cron "0 0-18/6 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_carnivalcity.js, tag=京东手机狂欢城
 
 ====================Surge================
-京东手机狂欢城 = type=cron,cronexp=0 0-18/6 * * *,wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js
+京东手机狂欢城 = type=cron,cronexp=0 0-18/6 * * *,wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_carnivalcity.js
 
 ============小火箭=========
-京东手机狂欢城 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity.js, cronexpr="0 0-18/6 * * *", timeout=3600, enable=true
+京东手机狂欢城 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_carnivalcity.js, cronexpr="0 0-18/6 * * *", timeout=3600, enable=true
 */
 const $ = new Env('京东手机狂欢城');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -105,6 +105,12 @@ async function JD818() {
     await getHelp();//获取邀请码
     if ($.blockAccount) return
     await indexInfo(true);//获取任务
+    $.stop = false;
+    let num = 0;
+    do {
+      await headInfo()
+      num++
+    } while (!$.stop && num < 30)
     await doHotProducttask();//做热销产品任务
     await doBrandTask();//做品牌手机任务
     await doBrowseshopTask();//逛好货街，做任务
@@ -118,6 +124,114 @@ async function JD818() {
   } catch (e) {
     $.logErr(e)
   }
+}
+
+function headInfo() {
+  return new Promise(resolve => {
+    const body = {"apiMapping":"/khc/index/headInfo"}
+    $.post(taskUrl(body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} headInfo API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.code === 200) {
+              if (data.data.state === "0") {
+                if (data.data.taskType === "13" || data.data.taskType === "15") {
+                  console.log(`开始 【顶部】浏览任务,需等待6秒`)
+                  await doBrowseHead(data.data.taskIndex, data.data.taskId, data.data.taskType)
+                } else if (data.data.taskType === "14") {
+                  console.log(`开始 【顶部】加购任务`)
+                  await getHeadJoinPrize(data.data.taskId, data.data.taskIndex)
+                }
+              } else {
+                $.stop = true
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function doBrowseHead(taskIndex, taskId, taskType) {
+  return new Promise(resolve => {
+    const body = {"taskIndex":taskIndex,"taskId":taskId,"taskType":taskType,"apiMapping":"/khc/task/doBrowseHead"}
+    $.post(taskUrl(body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} doBrowseHead API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.code === 200) {
+              await $.wait(6000)
+              await getHeadBrowsePrize(data.data.browseId)
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function getHeadBrowsePrize(browseId) {
+  return new Promise(resolve => {
+    const body = {"browseId":browseId,"apiMapping":"/khc/task/getHeadBrowsePrize"}
+    $.post(taskUrl(body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} getHeadBrowsePrize API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.code === 200) {
+              console.log(`getHeadBrowsePrize 领取奖励结果`, JSON.stringify(data), '\n')
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function getHeadJoinPrize(taskId, taskIndex) {
+  return new Promise(resolve => {
+    const body = {"taskId":taskId,"taskIndex":taskIndex,"apiMapping":"/khc/task/getHeadJoinPrize"}
+    $.post(taskUrl(body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} getHeadJoinPrize API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data.code === 200) {
+              console.log(`getHeadJoinPrize 领取奖励结果`, JSON.stringify(data), '\n')
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
 }
 
 async function doHotProducttask() {

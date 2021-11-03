@@ -49,7 +49,7 @@ if ($.isNode()) {
         res = await UserSignNew();
         await drawUserTask();
     }
-    const author = Math.random() > 0.5 ? 'zero205' : 'ZXX2021'
+    const author = Math.random() > 0.5 ? '123' : 'ZXX2021'
     await getShareCode('nnfls.json',author,3,true)
     shareCodes = [...new Set([...shareCodes, ...($.shareCode || [])])];
     if (shareCodes.length > 0) {
@@ -78,7 +78,7 @@ if ($.isNode()) {
 
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
 
-function getShareCode(name,author = 'zero205',num = -1,shuffle=false) {
+function getShareCode(name,author = '123',num = -1,shuffle=false) {
   return new Promise(resolve => {
     $.get({
       url: `https:///${author}/updateTeam/main/shareCodes/${name}`,
