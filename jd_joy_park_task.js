@@ -35,12 +35,7 @@ if ($.isNode()) {
 }
 $.invitePinTaskList = []
 $.invitePin = [
-  "NZ42T3lD49qiTGpZsSucXRS8kD-wJ4K6FxwxUpNbb4I",
-  "zZkewfd3OKs-WtoJd8Jw6OIrD81WzO3SX56S2DGMlZ0",
-  "7zG4VHS99AUEoX1mQTkC9Q",
-  "BbsjCRrQudIL06kRvqmVln053h03GiApg7HN_Vhy_Og",
-  "sAxL-dc5T6lS6wtKqP6SlA",
-  "bcVxt4PbZdbX7tiT1Q_ubg"
+  "07LlgPAkAtm6gee0PcyJ57s_rDGU_Tq-fG1rlrVHEjQ"
 ]
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
@@ -63,7 +58,7 @@ message = ""
       // if ($.isNode()) {
       //   if (process.env.HELP_JOYPARK && process.env.HELP_JOYPARK == "false") {
       //   } else {
-      //     $.kgw_invitePin = ["7zG4VHS99AUEoX1mQTkC9Q"][Math.floor((Math.random() * 1))];
+      //     $.kgw_invitePin = [""][Math.floor((Math.random() * 1))];
       //     let resp = await getJoyBaseInfo(undefined, 2, $.kgw_invitePin);
       //     if (resp.data && resp.data.helpState && resp.data.helpState === 1) {
       //       $.log("帮【123】开工位成功，感谢！\n");
@@ -152,7 +147,7 @@ message = ""
           }
         } else if (task.taskType === 'SHARE_INVITE') {
           for (let j = 0; j < 5; j++) {
-            let resp = await apTaskDrawAward(167, 'SHARE_INVITE');
+            let resp = await apTaskDrawAward(261, 'SHARE_INVITE');
 
             if (!resp.success) {
               break
