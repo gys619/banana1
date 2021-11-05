@@ -8,23 +8,24 @@ Last Modified time: 2021-05-19 16:27:18
 ================QuantumultX==================
 [task_local]
 #京东全民开红包
-1 0,2,23 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+1 1,2,23 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
 ===================Loon==============
 [Script]
-cron "1 0,2,23 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包
+cron "1 1,2,23 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包
 ===============Surge===============
 [Script]
-京东全民开红包 = type=cron,cronexp="1 0,2,23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js
+京东全民开红包 = type=cron,cronexp="1 1,2,23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js
 ====================================小火箭=============================
-京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, cronexpr="1 0,2,23 * * *", timeout=3600, enable=true
+京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, cronexpr="1 1,2,23 * * *", timeout=3600, enable=true
  */
-const $ = new Env('京东全民开红包');
+const $ = new Env('京东全民开红包助力');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 let isLoginInfo = {}
+let helpnum=2
 $.redPacketId = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -41,14 +42,8 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  let res = await getAuthorShareCode('')
-  if (!res) {
-    $.http.get({url: ''}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('')
-  }
-  $.authorMyShareIds = [...(res || [])];
-  for (let i = 0; i < cookiesArr.length; i++) {
+
+  for (let i = 0; i < helpnum; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -77,7 +72,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     $.canHelp = true;
     $.redPacketId = [...new Set($.redPacketId)];
-    if (!isLoginInfo[$.UserName]) continue
     if (cookiesArr && cookiesArr.length >= 2) {
       console.log(`\n\n自己账号内部互助`);
       for (let j = 0; j < $.redPacketId.length && $.canHelp; j++) {
@@ -92,20 +86,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         }
       }
     }
-    if ($.canHelp && ($.authorMyShareIds && $.authorMyShareIds.length)) {
-      console.log(`\n\n有剩余助力机会则给作者进行助力`);
-      for (let j = 0; j < $.authorMyShareIds.length && $.canHelp; j++) {
-        console.log(`\n账号 ${$.index} ${$.UserName} 开始给作者 ${$.authorMyShareIds[j]} 进行助力`)
-        $.max = false;
-        await jinli_h5assist($.authorMyShareIds[j]);
-        await $.wait(2000)
-        if ($.max) {
-          $.authorMyShareIds.splice(j, 1)
-          j--
-          continue
-        }
-      }
-    }
+
   }
 })()
     .catch((e) => {
@@ -117,10 +98,10 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
 
 async function redPacket() {
   try {
-    await doLuckDrawFun();//券后9.9抽奖
-    await taskHomePage();//查询任务列表
-    await doTask();//领取任务，做任务，领取红包奖励
-    await h5activityIndex();//查询红包基础信息
+    // await doLuckDrawFun();//券后9.9抽奖
+    // await taskHomePage();//查询任务列表
+    // await doTask();//领取任务，做任务，领取红包奖励
+    // await h5activityIndex();//查询红包基础信息
     await red();//红包任务(发起助力红包,领取助力红包等)
     await h5activityIndex();
   } catch (e) {
@@ -405,7 +386,13 @@ function receiveTaskRedpacket(taskType) {
 //助力API
 function jinli_h5assist(redPacketId) {
   //一个人一天只能助力两次，助力码redPacketId 每天都变
-  const body = {"clientInfo":{},redPacketId,"followShop":0,"promUserState":""};
+  const body = {
+    "random":randomString(8),
+    redPacketId,
+    "followShop":0,
+    "sceneid":"JLHBhPageh5",
+    "log":"42588613~8,~0iuxyee"
+  };
   const options = taskUrl(arguments.callee.name.toString(), body)
   return new Promise((resolve) => {
     $.post(options, (err, resp, data) => {
@@ -681,6 +668,14 @@ function TotalBean() {
       }
     })
   })
+}
+
+function randomString(e) {
+	e = e || 32;
+	let t = "abcdef0123456789", a = t.length, n = "";
+	for (i = 0; i < e; i++)
+		n += t.charAt(Math.floor(Math.random() * a));
+	return n
 }
 
 function jsonParse(str) {

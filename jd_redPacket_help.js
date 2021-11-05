@@ -8,23 +8,24 @@ Last Modified time: 2021-05-19 16:27:18
 ================QuantumultX==================
 [task_local]
 #京东全民开红包
-1 0,10 * * * https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+1 1,2,23 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
 ===================Loon==============
 [Script]
-cron "1 0,10 * * *" script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js, tag=京东全民开红包
+cron "1 1,2,23 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包
 ===============Surge===============
 [Script]
-京东全民开红包 = type=cron,cronexp="1 0,10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js
+京东全民开红包 = type=cron,cronexp="1 1,2,23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js
 ====================================小火箭=============================
-京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/123/JDJB/main/jd_redPacket.js, cronexpr="1 0,10 * * *", timeout=3600, enable=true
+京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_redPacket.js, cronexpr="1 1,2,23 * * *", timeout=3600, enable=true
  */
-const $ = new Env('京东全民开红包内部助力');
+const $ = new Env('京东全民开红包助力');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 let isLoginInfo = {}
+let helpnum=2
 $.redPacketId = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -41,9 +42,8 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  let res = await getAuthorShareCode('')
-  $.authorMyShareIds = [...(res || [])];
-  for (let i = 0; i < cookiesArr.length; i++) {
+
+  for (let i = 0; i < helpnum; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -72,14 +72,13 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     $.canHelp = true;
     $.redPacketId = [...new Set($.redPacketId)];
-    if (!isLoginInfo[$.UserName]) continue
     if (cookiesArr && cookiesArr.length >= 2) {
       console.log(`\n\n自己账号内部互助`);
       for (let j = 0; j < $.redPacketId.length && $.canHelp; j++) {
         console.log(`账号 ${$.index} ${$.UserName} 开始给 ${$.redPacketId[j]} 进行助力`)
         $.max = false;
         await jinli_h5assist($.redPacketId[j]);
-        await $.wait(15000)
+        await $.wait(2000)
         if ($.max) {
           $.redPacketId.splice(j, 1)
           j--
@@ -87,20 +86,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         }
       }
     }
-    if ($.canHelp && ($.authorMyShareIds && $.authorMyShareIds.length)) {
-      console.log(`\n\n有剩余助力机会则给作者进行助力`);
-      for (let j = 0; j < $.authorMyShareIds.length && $.canHelp; j++) {
-        console.log(`\n账号 ${$.index} ${$.UserName} 开始给作者 ${$.authorMyShareIds[j]} 进行助力`)
-        $.max = false;
-        await jinli_h5assist($.authorMyShareIds[j]);
-        await $.wait(15000)
-        if ($.max) {
-          $.authorMyShareIds.splice(j, 1)
-          j--
-          continue
-        }
-      }
-    }
+
   }
 })()
     .catch((e) => {
@@ -112,9 +98,9 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
 
 async function redPacket() {
   try {
-    //await doLuckDrawFun();//券后9.9抽奖
-    //await taskHomePage();//查询任务列表
-    //await doTask();//领取任务，做任务，领取红包奖励
+    // await doLuckDrawFun();//券后9.9抽奖
+    // await taskHomePage();//查询任务列表
+    // await doTask();//领取任务，做任务，领取红包奖励
     await h5activityIndex();//查询红包基础信息
     await red();//红包任务(发起助力红包,领取助力红包等)
     await h5activityIndex();
@@ -257,150 +243,24 @@ async function red() {
     if ($.waitOpenTimes > 0) {
       for (let i = 0; i < $.waitOpenTimes; i++) {
         await h5receiveRedpacketAll();
-        await $.wait(2000);
+        await $.wait(500);
       }
     }
   } else if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data.biz_code === 20002) {
     console.log(`\n${$.h5activityIndex.data.biz_msg}\n`);
   }
 }
-//获取任务列表API
-function taskHomePage() {
-  return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), {"clientInfo":{}}), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
-          console.log(JSON.stringify(err));
-        } else {
-          $.taskHomePageData = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-//领取任务API,需token
-function startTask(taskType) {
-  // 从taskHomePage返回的数据里面拿taskType
-  let data = {taskType};
-  data['token'] = $.md5($.md5("j" + JSON.stringify(data) + "D"))
-  return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
-          console.log(JSON.stringify(err));
-        } else {
-          console.log(`领取任务：${data}`)
-          data = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
 
-//做任务fun
-async function active(taskType) {
-  const getTaskDetailForColorRes = await getTaskDetailForColor(taskType);
-  if (getTaskDetailForColorRes && getTaskDetailForColorRes.code === 0) {
-    if (getTaskDetailForColorRes.data && getTaskDetailForColorRes.data.result) {
-      const { advertDetails } = getTaskDetailForColorRes.data.result;
-      for (let item of advertDetails) {
-        await $.wait(1000);
-        if (item.id && item.status === 0) {
-          await taskReportForColor(taskType, item.id);
-        }
-      }
-    } else {
-      console.log(`任务列表为空,手动进入app内检查 是否存在[从京豆首页进领券中心逛30秒]的任务,如存在,请手动完成再运行脚本`)
-      $.msg(`${$.name}`, '', '手动进入app内检查\n是否存在[从京豆首页进领券中心逛30秒]的任务\n如存在,请手动完成再运行脚本');
-      if ($.isNode()) await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `执行脚本出现异常\n请手动进入app内检查\n是否存在[从京豆首页进领券中心逛30秒]的任务\n如存在,请手动完成再运行脚本`)
-    }
-  } else {
-    console.log(`---具体任务详情---${JSON.stringify(getTaskDetailForColorRes)}`);
-  }
-}
-
-//获取具体任务详情API
-function getTaskDetailForColor(taskType) {
-  const data = {"clientInfo":{}, taskType};
-  return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
-          console.log(JSON.stringify(err));
-        } else {
-          // console.log('getTaskDetailForColor', data);
-          data = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-//做成任务API
-function taskReportForColor(taskType, detailId) {
-  const data = {taskType, detailId};
-  data['token'] = $.md5($.md5("j" + JSON.stringify(data) + "D"))
-  //console.log(`活动id：：：${detailId}\n`)
-  return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
-          console.log(JSON.stringify(err));
-        } else {
-          // console.log(`taskReportForColor`, data);
-          data = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-//领取做完任务后的红包
-function receiveTaskRedpacket(taskType) {
-  const body = {"clientInfo":{}, taskType};
-  return new Promise((resolve) => {
-    $.post(taskUrl('h5receiveRedpacketAll', body), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
-          console.log(JSON.stringify(err));
-        } else {
-          data = JSON.parse(data);
-          if (data.data.success && data.data.biz_code === 0) {
-            console.log(`红包领取成功，获得${data.data.result.discount}元\n`)
-            $.discount += Number(data.data.result.discount);
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
 //助力API
 function jinli_h5assist(redPacketId) {
   //一个人一天只能助力两次，助力码redPacketId 每天都变
-  const body = {"clientInfo":{},redPacketId,"followShop":0,"promUserState":""};
+  const body = {
+    "random":randomString(8),
+    redPacketId,
+    "followShop":0,
+    "sceneid":"JLHBhPageh5",
+    "log":"42588613~8,~0iuxyee"
+  };
   const options = taskUrl(arguments.callee.name.toString(), body)
   return new Promise((resolve) => {
     $.post(options, (err, resp, data) => {
@@ -455,7 +315,12 @@ function h5receiveRedpacketAll() {
 }
 //发起助力红包API
 function h5launch() {
-  const body = {"clientInfo":{},"followShop":0,"promUserState":""};
+  const body = {
+    "random":randomString(8),
+    "followShop":1,
+    "sceneid":"JLHBhPageh5",
+    "log":"4817e3a2~8,~1wsv3ig"
+  };
   const options = taskUrl(arguments.callee.name.toString(), body)
   return new Promise((resolve) => {
     $.post(options, (err, resp, data) => {
@@ -676,6 +541,14 @@ function TotalBean() {
       }
     })
   })
+}
+
+function randomString(e) {
+	e = e || 32;
+	let t = "abcdef0123456789", a = t.length, n = "";
+	for (i = 0; i < e; i++)
+		n += t.charAt(Math.floor(Math.random() * a));
+	return n
 }
 
 function jsonParse(str) {
