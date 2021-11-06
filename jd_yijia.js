@@ -9,7 +9,7 @@ if (!["card","car"].includes(process.env.FS_LEVEL)) {
 * 说明：
 * 1、脚本加密，概率抽到豆子，蚊子腿，纯看脸，愿意跑的跑
 * 2、没有内助作者码，脚本内随机助力；
-cron 10 14 * * * https://raw.githubusercontent.com/123/jd/main/scripts/jd_yijia.js
+cron 10 14 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_yijia.js
 * * */
 const $ = new Env('一加');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';

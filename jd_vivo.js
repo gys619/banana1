@@ -1,6 +1,6 @@
 /*
 第一个号助力作者，其他号助力第一个CK
-cron 10 2,9,17 * * * https://raw.githubusercontent.com/123/jd/main/scripts/jd_vivo.js
+cron 10 2,9,17 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_vivo.js
 PS:无开卡，有加购，蚊子推豆子，活动结束可以瓜分
 * */
 const $ = new Env('热血心跳,狂解压');
@@ -22,9 +22,9 @@ $.shareUuid = '';
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
+        try{res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
         if(!res){res = [];}
     }
     if(res.length > 0){

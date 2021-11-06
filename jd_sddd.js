@@ -6,14 +6,14 @@
 ============Quantumultx===============
 [task_local]
 #送豆得豆
-45 1,12 * * * https://raw.githubusercontent.com/123/sync/jd_scripts/jd_sendBeans.js, tag=送豆得豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+45 1,12 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js, tag=送豆得豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 ================Loon==============
 [Script]
-cron "45 1,12 * * *" script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_sendBeans.js,tag=送豆得豆
+cron "45 1,12 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js,tag=送豆得豆
 ===============Surge=================
-送豆得豆 = type=cron,cronexp="45 1,12 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_sendBeans.js
+送豆得豆 = type=cron,cronexp="45 1,12 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js
 ============小火箭=========
-送豆得豆 = type=cron,script-path=https://raw.githubusercontent.com/123/sync/jd_scripts/jd_sendBeans.js, cronexpr="45 1,12 * * *", timeout=3600, enable=true
+送豆得豆 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js, cronexpr="45 1,12 * * *", timeout=3600, enable=true
  */
 const $ = new Env('送豆得豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -107,7 +107,7 @@ if ($.isNode()) {
   }
   await getAuthorShareCode()
   if ($.authorCode && $.authorCode.length) {
-    console.log(`\n开始帮【123】助力，感谢！\n`);
+    console.log(`\n开始帮【zero205】助力，感谢！\n`);
     for (let i = 0; i < cookiesArr.length && i < $.authorCode.length; i++) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
@@ -176,7 +176,7 @@ if ($.isNode()) {
 async function getAuthorShareCode() {
     return new Promise(resolve => {
         $.get({
-            url: "https://raw.fastgit.org/123/updateTeam/main/shareCodes/sd.json",
+            url: "https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/sd.json",
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }

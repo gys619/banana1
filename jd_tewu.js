@@ -2,7 +2,7 @@
 双11特务
 APP首页下滑,任务，互助
 cron 10 9,13,15,16,19,20 2-8 11 * jd_tewu.js
-https://raw.githubusercontent.com/123/jd/main/scripts/jd_superBrand.js
+https://raw.githubusercontent.com/star261/jd/main/scripts/jd_superBrand.js
 
 */
 const $ = new Env('双11特务');

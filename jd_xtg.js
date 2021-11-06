@@ -1,6 +1,6 @@
 /**
  星推官
- cron 22 3,4 * * * https://raw.githubusercontent.com/123/jd/main/scripts/jd_xtg.js
+ cron 22 3,4 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_xtg.js
  * */
 const $ = new Env('星推官');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';

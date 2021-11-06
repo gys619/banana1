@@ -448,7 +448,7 @@ function jdfactory_getTaskDetail() {
 				  // ***************************
 				  // 报告运行次数
 				  $.get({
-					url: `https://123/api/runTimes?activityId=ddfactory&sharecode=${item.assistTaskDetailVo.taskToken}`,
+					url: `https://hz.zzf.red/api/runTimes?activityId=ddfactory&sharecode=${item.assistTaskDetailVo.taskToken}`,
 					timeout: 10000
 				  }, (err, resp, data) => {
 					if (err) {
@@ -632,7 +632,7 @@ function jdfactory_getHomeData() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://123/api/ddfactory/${randomCount}`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `https://hz.zzf.red/api/ddfactory/${randomCount}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

@@ -3,7 +3,7 @@
 说明
     1、脚本只执行助力和做1个任务,需要手动进活动进行游戏
     2、第一个账号会助力作者，其他账号助力第一个CK
-cron 40 12,16 * * * https://raw.githubusercontent.com/123/jd/main/scripts/jd_fcwb.js
+cron 40 12,16 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fcwb.js
 
 * * */
 const $ = new Env('发财挖宝');
@@ -33,9 +33,9 @@ let fcwbinviteCode = "";
     }
     console.log(`\n注意：本脚本暂时只会执行助力，助力后，请手动进活动进行游戏（发财挖宝: 入口,极速版-》我的-》发财挖宝）\n`)
     let res = [];
-    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/123/share_code/main/fcwb.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/lsh26/share_code/main/fcwb.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/123/share_code@main/fcwb.json');}catch (e) {}
+        try{res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/lsh26/share_code@main/fcwb.json');}catch (e) {}
         if(!res){res = [];}
     }
     if(res.length > 0){

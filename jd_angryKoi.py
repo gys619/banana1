@@ -117,7 +117,7 @@ cookie_list=Judge_env().main_run()
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://gitee.com/123521/JD-Scripts/raw/master/sendNotify.js'
+            url = 'https://gitee.com/KingRan521/JD-Scripts/raw/master/sendNotify.js'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
