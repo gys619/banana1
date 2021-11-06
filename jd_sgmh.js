@@ -26,6 +26,7 @@ cron "20 8 * * *" script-path=jd_sgmh.js, tag=闪购盲盒
 const $ = new Env('闪购盲盒');
 //Node.js用户请在jdCookie.js处填写京东ck;
  
+let lotteryResultFunPrefix = homeDataFunPrefix, browseTime = 6
 const inviteCodes = [
   '',
   '',

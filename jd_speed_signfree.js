@@ -93,6 +93,7 @@ function query() {
                     data = JSON.parse(data)
                     $.signFreeOrderInfoList = data.data.signFreeOrderInfoList
                     if (data.success == true) {
+                        if (data.data.risk == true) {
                             console.log("风控用户,可能有异常");
                             msg.push("风控用户,可能有异常")
                         }
