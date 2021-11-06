@@ -44,6 +44,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
     }
     await getToken();
     cookiesArr = cookiesArr.map(ck => ck  + `joyytoken=50084${joyToken};`)
+    $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
         if (cookie) {
@@ -75,7 +76,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
             if ($.shareCoseList.length >=2) {
                 for (let y = 0; y < $.shareCoseList.length; y++){
                     console.log(`京东账号${$.index} ${$.nickName || $.UserName}去助力${$.shareCoseList[y]}`)
-                    await helpShare({"taskId":$.helpId,"linkId":"DQFdr1ttvWWzn0wsQ7JDZQ","encryptPin":$.shareCoseList[y]});
+                    await helpShare({"taskId":$.helpId,"linkId":"DQFdr1ttvWWzn0wsQ7JDZQ","encryptPin":$.shareCoseList[y]});
                     await $.wait(1000);
                 }
             }
@@ -84,7 +85,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
             console.log(`京东账号${$.index}去开箱`)
             for (let y = 0; y < $.lotteryNumber; y++){
                 console.log(`可以开箱${$.lotteryNumber}次 ==>>第${y+1}次开箱`)
-                await openBox({"linkId":"DQFdr1ttvWWzn0wsQ7JDZQ","encryptPin":""});
+                await openBox({"linkId":"DQFdr1ttvWWzn0wsQ7JDZQ","encryptPin":""});
                 await $.wait(1000);
             }
         }
