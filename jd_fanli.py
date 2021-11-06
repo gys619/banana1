@@ -8,7 +8,7 @@ cron:
 46 9 * * * jd_fanli.py
 """
 
-
+import sys
 import os
 import time
 import re
@@ -16,6 +16,11 @@ import requests
 import random
 
 proxies = {"http": None, "https": None}
+
+
+def printf(text):
+    print(text)
+    sys.stdout.flush()
 
 
 def randomstr(num):
@@ -57,7 +62,7 @@ def getTaskList(ck):
     url = "https://ifanli.m.jd.com/rebateapi/task/getTaskList"
     headers = getheader(ck)
     r = requests.get(url, headers=headers, proxies=proxies)
-    # print(r.text)
+    # printf(r.text)
     return r.json()["content"]
 
 
@@ -65,7 +70,8 @@ def getTaskFinishCount(ck):
     url = "https://ifanli.m.jd.com/rebateapi/task/getTaskFinishCount"
     headers = getheader(ck)
     r = requests.get(url, headers=headers, proxies=proxies)
-    print('已完成任务次数：', r.json()["content"]["finishCount"], '总任务次数：', r.json()["content"]["maxTaskCount"])
+    printf(
+        '已完成任务次数：' + str(r.json()["content"]["finishCount"]) + '   总任务次数：' + str(r.json()["content"]["maxTaskCount"]))
     return r.json()["content"]
 
 
@@ -74,7 +80,7 @@ def saveTaskRecord(ck, taskId):
     headers = getheader(ck)
     data = '{"taskId":%s,"taskType":4}' % taskId
     r = requests.post(url, headers=headers, data=data, proxies=proxies)
-    # print(r.text)
+    # printf(r.text)
     return r.json()["content"]["uid"], r.json()["content"]["tt"]
 
 
@@ -83,16 +89,21 @@ def saveTaskRecord1(ck, taskId, uid, tt):
     url = "https://ifanli.m.jd.com/rebateapi/task/saveTaskRecord"
     headers = getheader(ck)
     data = '{"taskId":%s,"taskType":4,"uid":"%s","tt":%s}' % (taskId, uid, tt)
-    # print(data)
+    # printf(data)
     r = requests.post(url, headers=headers, data=data, proxies=proxies)
-    print(r.json()["content"]["msg"])
+    printf(r.json()["content"]["msg"])
 
 
 if __name__ == '__main__':
-    cks = os.environ["JD_COOKIE"].split("&")
+    try:
+        cks = os.environ["JD_COOKIE"].split("&")
+    except:
+        f = open("/jd/config/config.sh", "r", encoding='utf-8')
+        cks = re.findall(r'Cookie[0-9]*="(pt_key=.*?;pt_pin=.*?;)"', f.read())
+        f.close()
     for ck in cks:
         ptpin = re.findall(r"pt_pin=(.*?);", ck)[0]
-        print("--------开始京东账号", ptpin, "--------")
+        printf("--------开始京东账号" + ptpin + "--------")
         try:
             count = getTaskFinishCount(ck)
             if count["finishCount"] < count["maxTaskCount"]:
@@ -104,4 +115,4 @@ if __name__ == '__main__':
                             time.sleep(10)
                             saveTaskRecord1(ck, i["taskId"], uid, tt)
         except:
-            print("发生异常错误")
+            printf("发生异常错误")
