@@ -6,14 +6,14 @@
 ============Quantumultx===============
 [task_local]
 #送豆得豆
-45 1,12 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js, tag=送豆得豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+45 1,12 * * * https://raw.githubusercontent.com/111111/sync/jd_scripts/jd_sendBeans.js, tag=送豆得豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 ================Loon==============
 [Script]
-cron "45 1,12 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js,tag=送豆得豆
+cron "45 1,12 * * *" script-path=https://raw.githubusercontent.com/111111/sync/jd_scripts/jd_sendBeans.js,tag=送豆得豆
 ===============Surge=================
-送豆得豆 = type=cron,cronexp="45 1,12 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js
+送豆得豆 = type=cron,cronexp="45 1,12 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/111111/sync/jd_scripts/jd_sendBeans.js
 ============小火箭=========
-送豆得豆 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_sendBeans.js, cronexpr="45 1,12 * * *", timeout=3600, enable=true
+送豆得豆 = type=cron,script-path=https://raw.githubusercontent.com/111111/sync/jd_scripts/jd_sendBeans.js, cronexpr="45 1,12 * * *", timeout=3600, enable=true
  */
 const $ = new Env('送豆得豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
