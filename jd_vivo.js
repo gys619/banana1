@@ -22,9 +22,9 @@ $.shareUuid = '';
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('');}catch (e) {}
+    try{res = await getAuthorShareCode('https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('');}catch (e) {}
+        try{res = await getAuthorShareCode('https://gitee.com/123521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
         if(!res){res = [];}
     }
     if(res.length > 0){
