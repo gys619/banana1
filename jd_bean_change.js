@@ -117,9 +117,9 @@ if ($.isNode() && process.env.BEANCHANGE_DISABLECASH) {
 
 
 //取消月结查询
-//if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
-	//EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
-//}
+if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
+	EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
+}
 
 if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {
 	

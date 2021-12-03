@@ -1,8 +1,8 @@
 /**
- 农场集勋章
- cron 16 7,16 * * * jd_medal.js
- TG频道：https://t.me/sheeplost
- */
+农场集勋章
+cron 16 10,17 * * * jd_medal.js
+TG频道：https://t.me/sheeplost
+*/
 const $ = new Env('农场集勋章');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -89,7 +89,12 @@ async function main() {
             }
         } else if (mainInfo.result.activityStatus === 3) {
             console.log("您已经集齐所有勋章了，快去领取奖品吧！")
-            message += `\n【京东账号${$.index}】${$.nickName || $.UserName}\n您已经集齐所有勋章了，快去领取奖品吧！`
+			exchangeAward = await task('collect_exchangeAward', { "type": 1 });
+			console.log(exchangeAward)
+			if (exchangeAward.code === "0") {
+                            console.log(`兑换${exchangeAward.result.awardValue}水滴成功！`)
+                            message += `\n【京东账号${$.index}】${$.nickName || $.UserName}\n兑换2500水滴成功！`
+                        }
         } else if (mainInfo.result.activityStatus === 4) {
             console.log("您已经集齐所有勋章并领取奖品了,等待下一次活动开启!")
         }

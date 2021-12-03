@@ -58,9 +58,8 @@ let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 
         continue
       }
 
-        await vvipscdp_raffle_auto_send_bean('lingjingdoupindao_system_id'); //京东端
-      // await vvipscdp_raffle_auto_send_bean('scdp_system_id'); //京东端
-      // await vvipscdp_raffle_auto_send_bean('swat_system_id'); //微信端
+      await vvipscdp_raffle_auto_send_bean('scdp_system_id'); //京东端
+      await vvipscdp_raffle_auto_send_bean('swat_system_id'); //微信端
     }
   }
   if (allMessage) {

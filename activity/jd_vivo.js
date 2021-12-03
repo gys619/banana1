@@ -4,8 +4,8 @@ cron 10 2,9,17 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/j
 PS:无开卡，有加购，蚊子推豆子，活动结束可以瓜分
 * */
 const $ = new Env('热血心跳,狂解压');
-const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
-const notify = $.isNode() ? require('../sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
 Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -22,9 +22,9 @@ $.shareUuid = '';
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/lsh26/share_code/main/vivo.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/lsh26/share_code@main/vivo.json');}catch (e) {}
+        try{res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/vivo.json');}catch (e) {}
         if(!res){res = [];}
     }
     if(res.length > 0){
@@ -203,7 +203,7 @@ function takePostRequest(type) {
             break;
         case 'insxintiao':
             url= 'https://lzdz1-isv.isvjd.com/dingzhi/vivo/iqoojieyapa/insxintiao';
-            body = `pin=${encodeURIComponent(pin)}&activityId=${activityID}&playerId=37`;
+            body = `pin=${encodeURIComponent(pin)}&activityId=${activityID}&playerId=39`;
             break;
         case 'draw':
             url= 'https://lzdz1-isv.isvjd.com/dingzhi/vivo/iqoojieyapa/draw';

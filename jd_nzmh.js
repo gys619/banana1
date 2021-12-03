@@ -20,6 +20,7 @@ cron "35 1,23 * * *" script-path=https://raw.githubusercontent.com/222222/sync/j
 ============小火箭=========
 女装盲盒 = type=cron,script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_nzmh.js, cronexpr="35 1,23 * * *", timeout=3600, enable=true
  */
+
 const $ = new Env('女装盲盒抽京豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -211,7 +212,7 @@ function taskUrl(function_id, body = '') {
       'Content-Type': 'application/json;charset=utf-8',
       'Origin': 'wq.jd.com',
       'User-Agent': 'JD4iPhone/167490 (iPhone; iOS 14.2; Scale/3.00)',
-      'Referer': `https://anmp.jd.com/babelDiy/Zeus/xKACpgVjVJM7zPKbd5AGCij5yV9/index.html?wxAppName=jd`,
+      'Referer': `https://anmp.jd.com/babelDiy/Zeus/2x36jyruNVDWxUiAiGAgHRrkqVX2/index.html?wxAppName=jd`,
       'Cookie': cookie
     }
   }
