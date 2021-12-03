@@ -1,6 +1,6 @@
 /*
 * 活动：APP-美妆馆-右侧浮窗
-cron 23 8,19 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_selectionOfficer.js
+cron 23 8,19 * * * https://raw.githubusercontent.com/333333/jd/main/scripts/jd_selectionOfficer.js
 * 说明：脚本内互助，无开卡，有加购
 * */
 const $ = new Env('选品官');
