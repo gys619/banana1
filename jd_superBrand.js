@@ -1,10 +1,24 @@
-/**
- 特务Z
- 脚本没有自动开卡，会尝试领取开卡奖励
- cron 13 15,19 * * * https://raw.githubusercontent.com/333333/jd/main/scripts/jd_superBrand.js
- 一天要跑2次
+/*
+特物Z
+活动地址:
+活动时间：
+更新时间：2021-11-4
+脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
+更新地址： https://raw.githubusercontent.com/Wenmoux/scripts/master/jd/jd_superBrand.js
+=================================Quantumultx=========================
+[task_local]
+#特物Z
+10 9,13,16,19,20 2-8 11 * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_superBrand.js, tag=特物Z, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+=================================Loon===================================
+[Script]
+cron "10 9,13,16,19,20 2-8 11 *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_superBrand.js,tag=特物Z
+===================================Surge================================
+特物Z = type=cron,cronexp="10 9,13,16,19,20 2-8 11 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_superBrand.js
+====================================小火箭=============================
+特物Z = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_superBrand.js, cronexpr="10 9,13,16,19,20 2-8 11 *", timeout=3600, enable=true
  */
-const $ = new Env('特务Z');
+const $ = new Env('特物Z');
+//Node.js用户请在jdCookie.js处填写京东ck;
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [];
@@ -145,7 +159,7 @@ async function doTask(){
             if (signList.length === 0) {
                 console.log(`任务：${$.oneTask.assignmentName},信息异常`);
             }
-            if ($.oneTask.assignmentName.indexOf('首页下拉') !== -1 || $.oneTask.assignmentDesc.includes('首页下拉')) {
+            if ($.oneTask.assignmentName.indexOf('首页下拉') !== -1) {
                 for (let j = 0; j < signList.length; j++) {
                     if (signList[j].status === 1) {
                         console.log(`任务：${$.oneTask.assignmentName},去执行,请稍稍`);

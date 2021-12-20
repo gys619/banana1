@@ -1,16 +1,20 @@
 /*
-京东生鲜每日抽奖，可抽奖获得京豆，
+京东生鲜每日抽奖
 活动入口：京东生鲜每日抽奖
-by:小手冰凉 tg:@chianPLA
-交流群：https://t.me/jdPLA2
-脚本更新时间：2021-12-6 14:20
-脚本兼容: Node.js
-新手写脚本，难免有bug，能用且用。
-============Quantumultx===============
+更新时间：2021-11-27
+脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
+by  https://github.com/888888/JD_tencent_scf/blob/main/jd_sxLottery.js
+=================================Quantumultx=========================
 [task_local]
 #京东生鲜每日抽奖
-10 7 * * * jd jd_sxLottery.js, tag=京东生鲜每日抽奖, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_sxLottery.png, enabled=true
-
+10 7 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_sxLottery.js, tag=京东生鲜每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+=================================Loon===================================
+[Script]
+cron "10 7 * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_sxLottery.js,tag=京东生鲜每日抽奖
+===================================Surge================================
+京东生鲜每日抽奖 = type=cron,cronexp="10 7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_sxLottery.js
+====================================小火箭=============================
+京东生鲜每日抽奖 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_sxLottery.js, cronexpr="10 7 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东生鲜每日抽奖');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -57,12 +61,12 @@ if ($.isNode()) {
         }
     }
 })()
-.catch((e) => {
-    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-})
-.finally(() => {
-    $.done();
-})
+    .catch((e) => {
+        $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+    })
+    .finally(() => {
+        $.done();
+    })
 
 function showMsg() {
     return new Promise(resolve => {
@@ -116,7 +120,7 @@ async function run() {
 // 获取任务
 function getCode() {
     return new Promise(resolve => {
-            $.get({
+        $.get({
             url: `https://prodev.m.jd.com/mall/active/2Rkjx8aT5eKaQnUzn8dwcR6jNanj/index.html`,
             headers:{
                 "Connection": "keep-alive",
@@ -148,7 +152,7 @@ function getCode() {
 // 获取任务
 function getinfo() {
     return new Promise(resolve => {
-            $.get({
+        $.get({
             url: `https://jdjoy.jd.com/module/task/draw/get?configCode=${configCode}&unionCardCode=`,
             headers: {
                 'Host': 'jdjoy.jd.com',
