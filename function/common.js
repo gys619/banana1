@@ -14,8 +14,8 @@ try {
 } catch (e) {}
 class env {
     constructor(name) {
-        this.config = { ...process.env,
-            ...config,
+        this.config = { ...config,
+            ...process.env,
             ...user,
         };
         this.name = name;

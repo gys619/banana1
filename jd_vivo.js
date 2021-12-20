@@ -27,9 +27,9 @@ let shareList = [];
     }
     $.shareUuid = '';
     shareList = [''];
-    try{shareList = await getAuthorShareCode('https://raw.githubusercontent.com/zzfiu/jd/main/lzdz1_jx.json');}catch (e) {}
+    try{shareList = await getAuthorShareCode('https://raw.githubusercontent.com/lukelucky6/code/main/code.json');}catch (e) {}
     if(!shareList){
-        try{shareList = await getAuthorShareCode('https://raw.githubusercontent.com/zzfiu/jd/main/lzdz1_jx.json');}catch (e) {}
+        try{shareList = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/lukelucky6/code@main/code.json');}catch (e) {}
         if(!shareList){shareList = [];}
     }
     let activityList = [{'id':'2112100008586801','endTime':'1640966400000'}];
