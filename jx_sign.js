@@ -77,6 +77,16 @@ if ($.isNode()) {
       await $.wait(500)
     }
   }
+  console.log('作者助力码追加至最后!如有剩余次数则给作者助力!感谢!')
+  const author = ['0835255e912f819bc9a990359d62479f']
+  for (let i = 0; i < author.length; i++) {
+    $.shareCodes.push({
+      'use': '888888',
+      'smp': author[i],
+      'num': 0,
+      'max': false
+    })
+  }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];

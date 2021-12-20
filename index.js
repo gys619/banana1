@@ -1,40 +1,187 @@
 //'use strict';
 exports.main_handler = async (event, context, callback) => {
-  try {
-    const { TENCENTSCF_SOURCE_TYPE, TENCENTSCF_SOURCE_URL } = process.env
-    //如果想在一个定时触发器里面执行多个js文件需要在定时触发器的【附加信息】里面填写对应的名称，用 & 链接
-    //例如我想一个定时触发器里执行jd_speed.js和jd_bean_change.js，在定时触发器的【附加信息】里面就填写 jd_speed&jd_bean_change
-    for (const v of event["Message"].split("&")) {
-      console.log(v);
-      var request = require('request');
-      switch (TENCENTSCF_SOURCE_TYPE) {
-        case 'local':
-          //1.执行自己上传的js文件
-          delete require.cache[require.resolve('./'+v+'.js')];
-          require('./'+v+'.js')
-          break;
-        case 'git':
-          //2.执行github远端的js文件(因github的raw类型的文件被墙,此方法云函数不推荐)
-          request(`https://raw.githubusercontent.com/xxx/jd_scripts/master/${v}.js`, function (error, response, body) {
-            eval(response.body)
-          })
-          break;
-        case 'custom':
-          //3.执行自定义远端js文件网址
-          if (!TENCENTSCF_SOURCE_URL) return console.log('自定义模式需要设置TENCENTSCF_SOURCE_URL变量')
-          request(`${TENCENTSCF_SOURCE_URL}${v}.js`, function (error, response, body) {
-            eval(response.body)
-          })
-          break;
-        default:
-          //4.执行国内gitee远端的js文件(如果部署在国内节点，选择1或3。默认使用gitee的方式)
-          request(`${v}.js`, function (error, response, body) {
-            eval(response.body)
-          })
-          break;
-      }
+    let params = {}
+    let scripts = []
+    if (event["TriggerName"] == 'remote') {
+        console.log('remote触发:', event["Message"])
+        const got = require('got')
+        let response
+        try {
+            response = await got(`https://raw.fastgit.org/888888/JD_tencent_scf/main/${event["Message"]}.js`, {
+                timeout: 3000,
+                retry: 0
+            })
+        } catch (error) {
+            console.error(`got error:`, error)
+            console.error(`retry raw link`)
+            response = await got(`https://raw.githubusercontent.com/888888/JD_tencent_scf/main/${event["Message"]}.js`, {
+                timeout: 3000,
+                retry: 0
+            })
+        }
+        eval(response.body)
+        return
+    } else if (event["TriggerName"] == 'config') {
+        let now_hour = (new Date().getUTCHours() + 8) % 24
+        console.log('hourly config触发,当前:', now_hour)
+        if (event["Message"]) {
+            const hour = Number(event["Message"])
+            if (!isNaN(hour) && hour >= 0 && hour <= 23) {
+                now_hour = hour
+                console.log('hourly config触发,自定义触发小时:', now_hour)
+            }
+        }
+        const { readFileSync, accessSync, constants } = require('fs')
+        const config_file = process.cwd() + '/config.json'
+        try {
+            await accessSync(config_file, constants.F_OK)
+            console.log(`${config_file} 存在`)
+        } catch (err) {
+            console.error(`${config_file} 不存在,结束`)
+            return
+        }
+        let config
+        try {
+            config = JSON.parse(await readFileSync(config_file))
+        } catch (e) {
+            console.error(`read config error:${e}`)
+            return
+        }
+        // console.debug(JSON.stringify(config))
+        params = config['params']
+        delete config['params']
+
+        const config_diy_file = process.cwd() + '/config_diy.json'
+        try {
+            await accessSync(config_diy_file, constants.F_OK)
+            console.log(`${config_diy_file} 存在`)
+            const config_diy = JSON.parse(await readFileSync(config_diy_file))
+            if (config_diy['params']) {
+                params = { ...params, ...config_diy['params'] }
+                delete config_diy['params']
+            }
+            config = { ...config, ...config_diy }
+        } catch (err) {
+            console.error(`${config_diy_file} 不存在或解析异常`)
+        }
+        console.log("params:", params)
+        for (let script in config) {
+            // console.debug(`script:${script}`)
+            const cron = config[script]
+            if (typeof cron == 'number') {
+                // console.debug(`number param:${cron}`)
+                if (now_hour % cron == 0) {
+                    console.debug(`${script}:number cron triggered!`)
+                    scripts.push(script)
+                }
+            } else {
+                // console.debug(`dict param:${cron}`)
+                if (cron.includes(now_hour)) {
+                    console.debug(`${script}:array cron triggered!`)
+                    scripts.push(script)
+                }
+            }
+        }
+    } else {
+        if (!event["Message"]) {
+            console.error('未接收到任何参数,请阅读@hshx123大佬教程的测试步骤,查看如何使用.')
+            return
+        }
+        console.log('参数触发方式(不读取配置文件),触发参数:', event["Message"])
+        scripts = event["Message"].split("&")
     }
-  } catch (e) {
-    console.error(e)
-  }
+    if (process.env.NOT_RUN) {
+        const not_run = process.env.NOT_RUN.split("&")
+        scripts = scripts.filter(script => {
+            const flag = not_run.includes(script)
+            if (flag) {
+                console.log(`not run:${script}`)
+            }
+            return !flag
+        })
+    }
+    if (!scripts.length) {
+        console.log('No Script to Execute, Exit!')
+        return
+    }
+    const is_sync = (params['global'] && params['global']['exec'] == 'sync')
+    console.log('当前是', is_sync ? '同' : '异', '步执行')
+    if (is_sync) {
+        const { execFile } = require('child_process')
+        const min = 1000 * 60
+        const param_names = ['timeout']
+        for (const script of scripts) {
+            const name = './' + script + '.js'
+            const param_run = {}
+            const param = params[script]
+            for (const param_name of param_names) {
+                if (param) {
+                    if (param[param_name]) {
+                        console.debug(`${script} has specific ${param_name}:${param[param_name]}`)
+                        param_run[param_name] = min * param[param_name]
+                    }
+                } else if (params['global'] && params['global'][param_name]) {
+                    console.debug(`${script} use global ${param_name}`)
+                    param_run[param_name] = min * params['global'][param_name]
+                } else {
+                    console.warn(`No global ${param_name}!`)
+                }
+            }
+            console.log(`run script:${script}`)
+            try {
+                await (async () => {
+                    return new Promise((resolve) => {
+                        const child = execFile(process.execPath, [name], param_run)
+                        child.stdout.on('data', function(data) {
+                            console.log(data)
+                        })
+                        child.stderr.on('data', function(data) {
+                            console.error(data)
+                        })
+                        child.on('close', function(code) {
+                            console.log(`${script} finished`)
+                            delete child
+                            resolve()
+                        })
+                    })
+                })()
+            } catch (e) {
+                console.error(`${script} ERROR:${e}`)
+                console.error(`stdout:${e.stdout}`)
+            }
+        }
+    } else {
+        console.log('异步执行不支持params参数!');
+        ['log', 'warn', 'error', 'debug', 'info'].forEach((methodName) => {
+            const originalMethod = console[methodName]
+            console[methodName] = (...args) => {
+                try {
+                    throw new Error()
+                } catch (error) {
+                    let stack = error
+                        .stack // Grabs the stack trace
+                        .split('\n')[2] // Grabs third line
+                        .split("/").slice(-1)[0] // Grabs  file name and line number
+                        .replace('.js', '')
+                    stack = `${stack.substring(0, stack.lastIndexOf(':'))}:`
+                    originalMethod.apply(
+                        console,
+                        [
+                            stack,
+                            ...args
+                        ]
+                    )
+                }
+            }
+        })
+        for (const script of scripts) {
+            console.log(`run script:${script}`)
+            const name = './' + script + '.js'
+            try {
+                require(name)
+            } catch (e) {
+                console.error(`异步${script}异常:`, e)
+            }
+        }
+    }
 }

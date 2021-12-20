@@ -24,8 +24,8 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message, allMessage = '';
-let shareId = ["", ""][Math.floor((Math.random() * 2))];
-if ($.isNode()) {
+// let shareId = ["e506cfec2cff4704b63077066f224038", "58dec205098349d2a4c58f4de53c5266", "8071b0c771ea432fb8ec41d0e175b996","93c3b46781c440e8b1c31f1cabf0e4e4"][Math.floor((Math.random() * 4))];
+if ($.isNode()) { 
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item]);
     });
@@ -69,15 +69,15 @@ if ($.isNode()) {
 
 async function main() {
     try {
-        await channelUserSignInfo_xh(shareId);
+        await channelUserSignInfo_xh();
         await queryMission_xh();
-        await channelUserSubsidyInfo_xh(shareId);
+        await channelUserSubsidyInfo_xh();
     } catch (e) {
         $.logErr(e)
     }
 }
 
-function channelUserSignInfo_xh(shareId) {
+function channelUserSignInfo_xh() {
     return new Promise((resolve) => {
         const body = JSON.stringify({
             "source": "JD_JR_APP",
@@ -85,7 +85,7 @@ function channelUserSignInfo_xh(shareId) {
             "channelLv": "",
             "apiVersion": "4.0.0",
             "riskDeviceParam": "{}",
-            "others": { "shareId": shareId }
+            "others": { "shareId": "" }
         })
         const options = taskUrl_xh('channelUserSignInfo', body, 'jrm');
         $.get(options, async (err, resp, data) => {
@@ -99,8 +99,7 @@ function channelUserSignInfo_xh(shareId) {
                         if (data.resultData.code === '000') {
                             $.keepSigned = 0;
                             let state = false;
-                            console.log(`【京东账号${$.index}(${$.nickName || $.UserName})的邀请码】` + data.resultData.data.shareId)
-                            shareId = data.resultData.data.shareId
+                            // console.log(`【京东账号${$.index}(${$.nickName || $.UserName})的邀请码】` + data.resultData.data.shareId)
                             for (let i in data.resultData.data.signDetail) {
                                 if (data.resultData.data.signDetail[i].signed) $.keepSigned += 1
                                 if (data.resultData.data.dayId === data.resultData.data.signDetail[i].id) {
@@ -109,6 +108,7 @@ function channelUserSignInfo_xh(shareId) {
                                 }
                             }
                             if (!state) await channelSignInSubsidy_xh()
+                            // if ($.index === 1) shareId = data.resultData.data.shareId
                         } else {
                             console.log('获取签到状态失败', data.resultData.msg)
                         }
@@ -125,7 +125,7 @@ function channelUserSignInfo_xh(shareId) {
     })
 }
 
-function channelSignInSubsidy_xh(shareId) {
+function channelSignInSubsidy_xh() {
     return new Promise((resolve) => {
         const body = JSON.stringify({
             "source": "JD_JR_APP",
@@ -133,10 +133,11 @@ function channelSignInSubsidy_xh(shareId) {
             "channelLv": "",
             "apiVersion": "4.0.0",
             "riskDeviceParam": "{}",
-            "others": { "shareId": shareId }
+            "others": { "shareId": "", "token": "" }
         })
+        console.log(body)
         const options = taskUrl_xh('channelSignInSubsidy', body, 'jrm');
-        $.get(options, async (err, resp, data) => {
+        $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -447,7 +448,7 @@ function awardMission_xh(missionId) {
     })
 }
 
-function channelUserSubsidyInfo_xh(shareId) {
+function channelUserSubsidyInfo_xh() {
     return new Promise((resolve) => {
         const body = JSON.stringify({
             "source": "JD_JR_APP",
@@ -455,7 +456,7 @@ function channelUserSubsidyInfo_xh(shareId) {
             "channelLv": "",
             "apiVersion": "4.0.0",
             "riskDeviceParam": "{}",
-            "others": { "shareId": shareId }
+            "others": { "shareId": "" }
         })
         const options = taskUrl_xh('channelUserSubsidyInfo', body, 'jrm');
         $.get(options, async (err, resp, data) => {
@@ -496,7 +497,7 @@ function taskUrl_xh(function_id, body, type = 'mission') {
             'Host': `ms.jr.jd.com`,
             'Connection': `keep-alive`,
             "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-            'Referer': `https://u.jr.jd.com/`,
+            'Referer': `https://u.jr.jd.com`,
             'Accept-Language': `zh-cn`
         }
     }

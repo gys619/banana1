@@ -24,7 +24,7 @@ cron "15 0-23/2 * * *" script-path=https://raw.githubusercontent.com/222222/sync
 京东宠汪汪 = type=cron,script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_joy.js, cronexpr="15 0-23/2 * * *", timeout=3600, enable=true
 */
 const $ = new Env('宠汪汪');
-const zooFaker = require('./utils/JDJRValidator_Pure');
+const zooFaker = require('./JDJRValidator_Aaron');
 $.get = zooFaker.injectToRequest2($.get.bind($));
 $.post = zooFaker.injectToRequest2($.post.bind($));
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -74,7 +74,7 @@ let joyRunNotify = true;//宠汪汪赛跑获胜后是否推送通知，true推�
       message = '';
       subTitle = '';
       $.validate = '';
-      // const zooFaker = require('./utils/JDJRValidator_Pure');
+      // const zooFaker = require('./JDJRValidator_Aaron');
       // $.validate = await zooFaker.injectToRequest()
       await jdJoy();
       await showMsg();

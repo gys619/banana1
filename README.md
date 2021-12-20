@@ -1,66 +1,87 @@
-## 重要通知
-### 落霞与孤鹜齐飞,秋水共长天一色。
+## 禁止Star/Fork!!
+## 请勿使用Action运行脚本!
+## 有条（科学）件（上网）的可以 [点此加入组织](https://t.me/jd_zero_205)  
 
-Faker自用仓库，脚本收集者。每天更新全网可用脚本
+## 本仓库部分脚本已加入JDHelloWorld大佬助力池，默认加入助力池互助
+## 由于限制TG群内成员提交助力码，请需要互助的 [加入组织](https://t.me/jd_zero_205)，获取使用[教程](https://t.me/jd_zero205_tz/53)
+## 不需要助力池请添加环境变量，变量名：`JD_JOIN_ZLC`，变量值：`false`  
 
-#### [交流频道](https://t.me/pandaqx)
+## 请勿直接fork！！云函数用户先按照下方教程建立私库！！！
+## 已经创建公开仓库的请点击仓库右上角`Setting`，拉到页面最下方，点击`Change visibility`，选择`Make private`，填入黑体仓库名称进行确认!
 
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=shufflewzc&bg_color=30,e96443,904e95&title_color=fff&text_color=fff)](https://github.com/anuraghazra/github-readme-stats)
+### 方式一(如果有一定github基础，十分建议直接方式二)
+**建议阅读@hshx123大佬的[教程](https://杏铃.top/teach/jd.html)**
+### 方式二
+* 有能力用户可以进行尝试,通过任何方法都可以,在空仓库内(保证分支名称为`main`),按需运行一次 https://github.com/Ca11back/doge-template 的action即可
+* 第二种:直接clone一个`scf2`分支(名字需要为`main`,clone哪个取决于你要用的部署方式)
 
+## 自动同步本仓库脚本教程：[点此查看](https://github.com/zero205/JD_tencent_scf/blob/main/backUp/reposync.md)  
 
+# 使用教程
 
+* > 【青龙】拉取仓库命令：`ql repo https://github.com/zero205/JD_tencent_scf.git "jd_|jx_|getJDCookie"  "backUp|icon" "^jd[^_]|USER|sendNotify|sign_graphics_validate|JDJR|JDSign" "main"`
+  * > 上面命令拉取错误的使用这个：`ql repo https://ghproxy.com/https://github.com/zero205/JD_tencent_scf.git "jd_|jx_|getJDCookie"  "backUp|icon" "^jd[^_]|USER|sendNotify|sign_graphics_validate|JDJR|JDSign" "main"`
 
+* > 腾讯云函数部署建议阅读@hshx123大佬的[教程](https://66ccff.work/teach/jd.html)【推荐】.[旧教程](./backUp/tencentscf.md)【备用】
 
-【青龙】
-ql repo https://ghproxy.com/https://github.com/shufflewzc/faker2.git "jd_|jx_|gua_|jddj_|getJDCookie" "activity|backUp" "^jd[^_]|USER|function|utils|sendnotify|ZooFaker_Necklace.js|JDJRValidator_|sign_graphics_validate|ql"
+* > [elecV2P](https://github.com/elecV2/elecV2P) 部署【随缘维护，建议转战➟[Docker](https://www.runoob.com/docker/windows-docker-install.html) [青龙](https://github.com/whyour/qinglong)】
+    * 安装教程：[点此查看](https://github.com/elecV2/elecV2P-dei/blob/master/docs/01-overview.md)  
+    * 订阅任务：`https://ghproxy.com/https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_task.json`
+    * elecV2P京东CK、通知填写格式等相关补充说明：[点此查看](./backUp/elecV2P.md)  
 
-【圈x】
+- 获取京东cookie教程可参考：
+  
+  + [浏览器获取京东cookie教程](./backUp/GetJdCookie.md)
+    
+  + [插件获取京东cookie教程](./backUp/GetJdCookie2.md)
+   
+  + [浏览器扩展程序获取京东cookie教程](./backUp/GetJdCookie3.md)
 
-https://ghproxy.com/https://raw.githubusercontent.com/shufflewzc/faker/main/qx.json
+## 特别声明: 
 
-【QX教程】
-https://www.notion.so/Quantumult-X-cd78c6ab616e4ebf947519b2dd690a0c
+* 本仓库发布的Script项目中涉及的任何解锁和解密分析脚本，仅用于测试和学习研究，禁止用于商业用途，不能保证其合法性，准确性，完整性和有效性，请根据情况自行判断.
 
-【青龙教程】
-https://www.notion.so/Cent-OS-7-6-1c598629675145988b43a37998a1604a
+* 本项目内所有资源文件，禁止任何公众号、自媒体进行任何形式的转载、发布。
 
+* lxk0301对任何脚本问题概不负责，包括但不限于由任何脚本错误导致的任何损失或损害.
 
-觉得项目好的话，各位看官高兴可打赏下~
+* 间接使用脚本的任何用户，包括但不限于建立VPS或在某些行为违反国家/地区法律或相关法规的情况下进行传播, lxk0301 对于由此引起的任何隐私泄漏或其他后果概不负责.
 
-![image](https://user-images.githubusercontent.com/15306294/140888333-901cbcdd-e599-44c4-b834-8ea4d1ebc7b0.png)
+* 请勿将Script项目的任何内容用于商业或非法目的，否则后果自负.
 
+* 如果任何单位或个人认为该项目的脚本可能涉嫌侵犯其权利，则应及时通知并提供身份证明，所有权证明，我们将在收到认证文件后删除相关脚本.
 
-## Special statement:
+* 任何以任何方式查看此项目的人或直接或间接使用该Script项目的任何脚本的使用者都应仔细阅读此声明。lxk0301 保留随时更改或补充此免责声明的权利。一旦使用并复制了任何相关脚本或Script项目的规则，则视为您已接受此免责声明.
 
-* Any unlocking and decryption analysis scripts involved in the Script project released by this warehouse are only used for testing, learning and research, and are forbidden to be used for commercial purposes. Their legality, accuracy, completeness and effectiveness cannot be guaranteed. Please make your own judgment based on the situation. .
+ **您必须在下载后的24小时内从计算机或手机中完全删除以上内容.**  </br>
+> ***您使用或者复制了本仓库且本人制作的任何脚本，则视为`已接受`此声明，请仔细阅读***   
 
-* All resource files in this project are forbidden to be reproduced or published in any form by any official account or self-media.
+## 环境变量
+- [环境变量集合](./githubAction.md)
 
-* This warehouse is not responsible for any script problems, including but not limited to any loss or damage caused by any script errors.
-
-* Any user who indirectly uses the script, including but not limited to establishing a VPS or disseminating it when certain actions violate national/regional laws or related regulations, this warehouse is not responsible for any privacy leakage or other consequences caused by this.
-
-* Do not use any content of the Script project for commercial or illegal purposes, otherwise you will be responsible for the consequences.
-
-* If any unit or individual believes that the script of the project may be suspected of infringing on their rights, they should promptly notify and provide proof of identity and ownership. We will delete the relevant script after receiving the certification document.
-
-* Anyone who views this item in any way or directly or indirectly uses any script of the Script item should read this statement carefully. This warehouse reserves the right to change or supplement this disclaimer at any time. Once you have used and copied any relevant scripts or rules of the Script project, you are deemed to have accepted this disclaimer.
-
- **You must completely delete the above content from your computer or mobile phone within 24 hours after downloading.**  </br>
-> ***You have used or copied any script made by yourself in this warehouse, it is deemed to have accepted this statement, please read it carefully*** 
-
-
-## Special thanks to: new scripts actor
+## 特别感谢(排名不分先后)：
 
 
 * [@NobyDa](https://github.com/NobyDa)
-* [@Andy Woo](https://t.me/update_help_group)
-* [@Oreo](https://github.com/Oreomeow) 「青龙Faker仓库一键安装配置」
-* [@Aaron-lv](https://github.com/Aaron-lv/sync) 「小小」
-* [@ccwav](https://github.com/ccwav/QLScript2) 「白嫖榜」
-* [@cdle](https://github.com/cdle/carry) 「老年人」
-* [@FKPYW](https://github.com/FKPYW/dongge) 「小埋」
-* [@Smiek2121](https://github.com/smiek2121/scripts) 「呱呱」
-* [@star261](https://github.com/star261/jd) 
 
-# 欢迎Pull Request！
+* [@chavyleung](https://github.com/chavyleung)
+
+* [@liuxiaoyucc](https://github.com/liuxiaoyucc)
+
+* [@Zero-S1](https://github.com/Zero-S1)
+
+* [@uniqueque](https://github.com/uniqueque)
+
+* [@nzw9314](https://github.com/nzw9314)
+
+* [@JDHelloWorld](https://github.com/JDHelloWorld)
+
+* [@smiek2221](https://github.com/smiek2221)
+
+* [@star261](https://github.com/star261)
+
+* [@Wenmoux](https://github.com/Wenmoux)
+
+* [@Tsukasa007](https://github.com/Tsukasa007)
+
+* [@Aaron](https://github.com/Aaron)
