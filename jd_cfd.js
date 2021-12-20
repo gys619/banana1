@@ -1145,7 +1145,6 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的当天有效`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}`);
             $.shareCodes.push(strMyShareId)
-            await submitCode(strMyShareId, $.UserName)
             await uploadShareCode(strMyShareId)
           }
           $.info = {
@@ -1280,7 +1279,7 @@ function browserTask(taskType) {
             await $.wait(2000);
           }
           //领取奖励
-          await awardTask(0, taskinfo,  "jxbfd");
+          await awardTask(0, taskinfo, bizCode);
         }
         break;
       case 1://成就任务
@@ -1544,7 +1543,7 @@ function showMsg() {
 
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: ``, timeout: 30 * 1000}, (err, resp, data) => {
+    $.get({url: `http://`+process.env.JDSHAREURL+`/api/cfd/20`, timeout: 30 * 1000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
@@ -1567,7 +1566,7 @@ function readShareCode() {
 }
 function uploadShareCode(code) {
   return new Promise(async resolve => {
-    $.post({url: `https://111111/upload/cfd?code=${code}&ptpin=${encodeURIComponent(encodeURIComponent($.UserName))}`, timeout: 30 * 1000}, (err, resp, data) => {
+    $.get({url: `http://`+process.env.JDSHAREURL+`/api/cfd/20`, timeout: 30 * 1000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
@@ -1599,37 +1598,6 @@ function uploadShareCode(code) {
     resolve()
   })
 }
-//提交互助码
-function submitCode(myInviteCode, user) {
-    return new Promise(async resolve => {
-    $.get({url: `http://www.11111114/jdcodes/submit.php?code=${myInviteCode}&type=jxcfd&user=${user}`, timeout: 10000}, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} 提交助力码 API请求失败，请检查网路重试`)
-        } else {
-          if (data) {
-            //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
-            data = JSON.parse(data);
-            if (data.code === 300) {
-              console.log("🏝互助码已提交🏝");
-            }else if (data.code === 200) {
-              console.log("🏝互助码提交成功🏝");
-            }
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data || {"code":500});
-      }
-    })
-    await $.wait(10000);
-    resolve({"code":500})
-  })
-}
-
-
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {

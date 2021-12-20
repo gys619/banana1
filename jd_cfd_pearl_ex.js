@@ -86,6 +86,7 @@ async function perl_auto() {
       }
       return flag
     })
+	await wait()
     if (!prizes.length) {
       console.log('无红包满足条件,结束')
       return
@@ -104,7 +105,6 @@ async function perl_auto() {
       })
     }
     // console.debug('prizes:',prizes)
-    await wait()
     for (let i = 0; i < prizes.length; i++) {
       const prize = prizes[i]
       console.log('兑换面额:', prize.strPrizeName || '随机红包')
@@ -260,7 +260,7 @@ async function requestAlgo() {
       "expandParams": ""
     })
   }
-  new Promise(async resolve => {
+  return new Promise(async resolve => {
     $.post(options, (err, resp, data) => {
       try {
         if (err) {

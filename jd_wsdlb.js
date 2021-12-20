@@ -2,16 +2,16 @@
 
 [task_local]
 入口 极速版 赚金币 种水果
-#极速版我是大老板农场
+#柠檬我是大老板农场
 export dlbtz="true" //通知打开
 
 export dlbtz="false" //通知关闭
 
-5 0-23/6 * * * jd_wsdlb.js, tag=极速版我是大老板农场, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+5 0-23/6 * * * http://nm66.top/jd_wsdlb.js, tag=柠檬我是大老板农场, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
 
 
-const $ = new Env('极速版我是大老板农场');
+const $ = new Env('柠檬我是大老板农场');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -20,14 +20,14 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '', message;
 let allMessage = '';
 let dlbtz = false; //通知开关
-if (process.env.dlbtz) {
+if ($.isNode() && process.env.dlbtz) {
   dlbtz = process.env.dlbtz;
 }
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })
-  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
+  if ($.isNode() && process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
@@ -92,7 +92,7 @@ if(dlbtz == true){
        if($.info.data.plantInfo[0].nowStep == 4){
        allMessage += `京东账号${$.index}-${$.nickName || $.UserName}\n当前种植水果可以收取了${$.index !== cookiesArr.length ? '\n\n' : '\n\n'}`;
        }
-  await help($.info.data.encPin)
+//   await help("7057MkYN_M4C3K_QNqU2YQ")
         if(dlbtz == true){
         allMessage += `京东账号${$.index}-${$.nickName || $.UserName}\n当前种植水果：${$.info.data.plantInfo[0].cropName}\n当前阶段: ${$.info.data.plantInfo[0].nowStep}\n当前下一阶段还需要浇水：${$.info.data.plantInfo[0].upgradeWateringNum}次${$.index !== cookiesArr.length ? '\n\n' : '\n\n'}`;}
                 if (getwat.code === 0 ){
@@ -361,34 +361,34 @@ headers: {
 
 
 
-function help(userpin) {
-    return new Promise(async (resolve) => {
+// function help(userpin) {
+//     return new Promise(async (resolve) => {
 
-                let options = {
-    url: `https://thebigboss.jd.com/?id=fzf6tK4xMfE2ICK4-T_iUw&enter=share&userpin=${userpin}&task=92&ad_od=share&utm_source=androidapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=Wxfriends`,
+//                 let options = {
+//     url: `https://thebigboss.jd.com/?id=fzf6tK4xMfE2ICK4-T_iUw&enter=share&userpin=${userpin}&task=92&ad_od=share&utm_source=androidapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=Wxfriends`,
 
-headers: {
-"Origin": "https://thebigboss.jd.com",
-"Host": "thebigboss.jd.com",
-      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.5(0x18000528) NetType/WIFI Language/zh_CN",
-      "Cookie": cookie,
-      }
-                }
+// headers: {
+// "Origin": "https://thebigboss.jd.com",
+// "Host": "thebigboss.jd.com",
+//       "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.5(0x18000528) NetType/WIFI Language/zh_CN",
+//       "Cookie": cookie,
+//       }
+//                 }
       
-        $.get(options, async (err, resp, data) => {
-            try {
+//         $.get(options, async (err, resp, data) => {
+//             try {
 
-                  //$.helpinfo = JSON.parse(data);
+//                   //$.helpinfo = JSON.parse(data);
 
                   
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve();
-            }
-        });
-    });
-}
+//             } catch (e) {
+//                 $.logErr(e, resp);
+//             } finally {
+//                 resolve();
+//             }
+//         });
+//     });
+// }
 
 
 

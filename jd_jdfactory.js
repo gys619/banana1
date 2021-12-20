@@ -1,10 +1,5 @@
 /*
- * @Author: LXK9301 https://github.com/LXK9301
- * @Date: 2020-12-06 18:19:21
- * @Last Modified by: LXK9301
- * @Last Modified time: 2020-12-26 22:58:02
- */
-/*
+Last Modified time: 2020-12-26 22:58:02
 东东工厂，不是京喜工厂
 活动入口：京东APP首页-数码电器-东东工厂
 免费产生的电量(10秒1个电量，500个电量满，5000秒到上限不生产，算起来是84分钟达到上限)
@@ -17,17 +12,17 @@
 ============Quantumultx===============
 [task_local]
 #东东工厂
-10 * * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
+10 * * * * jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 * * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js,tag=东东工厂
+cron "10 * * * *" script-path=jd_jdfactory.js,tag=东东工厂
 
 ===============Surge=================
-东东工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js
+东东工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=3600,script-path=jd_jdfactory.js
 
 ============小火箭=========
-东东工厂 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, cronexpr="10 * * * *", timeout=3600, enable=true
+东东工厂 = type=cron,script-path=jd_jdfactory.js, cronexpr="10 * * * *", timeout=3600, enable=true
  */
 const $ = new Env('东东工厂');
 
@@ -49,7 +44,7 @@ if ($.isNode()) {
 }
 let wantProduct = ``;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const inviteCodes = [``, ``];
+const inviteCodes = [];
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -59,7 +54,7 @@ const inviteCodes = [``, ``];
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
@@ -86,23 +81,27 @@ const inviteCodes = [``, ``];
       $.done();
     })
 async function jdFactory() {
-  await jdfactory_getHomeData();
-  await helpFriends();
-  // $.newUser !==1 && $.haveProduct === 2，老用户但未选购商品
-  // $.newUser === 1新用户
-  if ($.newUser === 1) return
-  await jdfactory_collectElectricity();//收集产生的电量
-  await jdfactory_getTaskDetail();
-  await doTask();
-  await algorithm();//投入电力逻辑
-  await showMsg();
+  try {
+    await jdfactory_getHomeData();
+    await helpFriends();
+    // $.newUser !==1 && $.haveProduct === 2，老用户但未选购商品
+    // $.newUser === 1新用户
+    if ($.newUser === 1) return
+    await jdfactory_collectElectricity();//收集产生的电量
+    await jdfactory_getTaskDetail();
+    await doTask();
+    await algorithm();//投入电力逻辑
+    await showMsg();
+  } catch (e) {
+    $.logErr(e)
+  }
 }
 function showMsg() {
   return new Promise(resolve => {
     if (!jdNotify) {
       $.msg($.name, '', `${message}`);
     } else {
-      $.log(`京东账号${$.index}${$.nickName}\n${message}`);
+      $.log(`${message}`);
     }
     if (new Date().getHours() === 12) {
       $.msg($.name, '', `${message}`);
@@ -244,11 +243,8 @@ async function helpFriends() {
   for (let code of $.newShareCodes) {
     if (!code) continue
     const helpRes = await jdfactory_collectScore(code);
-    if (helpRes.code === 0 && (helpRes.data.bizCode === -7 || helpRes.data.bizCode === -9)) {
+    if (helpRes.code === 0 && helpRes.data.bizCode === -7) {
       console.log(`助力机会已耗尽，跳出`);
-      break
-    }else if(helpRes.code === 0 && helpRes.data.bizCode === -4001){
-      console.log(`助力异常，跳出`);
       break
     }
   }
@@ -356,7 +352,7 @@ async function doTask() {
 //领取做完任务的奖励
 function jdfactory_collectScore(taskToken) {
   return new Promise(async resolve => {
-    await $.wait(3000);
+    await $.wait(1000);
     $.post(taskPostUrl("jdfactory_collectScore", { taskToken }, "jdfactory_collectScore"), async (err, resp, data) => {
       try {
         if (err) {
@@ -448,7 +444,22 @@ function jdfactory_getTaskDetail() {
               $.taskVos = data.data.result.taskVos;//任务列表
               $.taskVos.map(item => {
                 if (item.taskType === 14) {
-                  console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${item.assistTaskDetailVo.taskToken}\n`)
+                  console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${item.assistTaskDetailVo.taskToken}\n`)
+				  // ***************************
+				  // 报告运行次数
+				  $.get({
+					url: `http://`+process.env.JDSHAREURL+`/api/runTimes?activityId=ddfactory&sharecode=${item.assistTaskDetailVo.taskToken}`,
+					timeout: 10000
+				  }, (err, resp, data) => {
+					if (err) {
+					  console.log('上报失败', err)
+					} else {
+					  if (data === '1' || data === '0') {
+						console.log('上报成功')
+					  }
+					}
+				  })
+				  // ***************************
                 }
               })
             }
@@ -621,14 +632,14 @@ function jdfactory_getHomeData() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `http:///api/v2/jd/ddfactory/read/0/`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://`+process.env.JDSHAREURL+`/api/ddfactory/${randomCount}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取0个码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -654,10 +665,10 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
-  //  const readShareCodeRes = await readShareCode();
-  //  if (readShareCodeRes && readShareCodeRes.code === 200) {
-  //    $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
-  //  }
+    const readShareCodeRes = await readShareCode();
+    if (readShareCodeRes && readShareCodeRes.code === 200) {
+      $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
+    }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
@@ -716,7 +727,7 @@ function TotalBean() {
         "Connection": "keep-alive",
         "Cookie": cookie,
         "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       },
       "timeout": 10000,
     }
@@ -733,7 +744,7 @@ function TotalBean() {
               return
             }
             if (data['retcode'] === 0) {
-              $.nickName = data['base'].nickname;
+              $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
             } else {
               $.nickName = $.UserName
             }

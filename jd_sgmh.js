@@ -28,10 +28,7 @@ const $ = new Env('闪购盲盒');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let appId = '1EFRXxg' , homeDataFunPrefix = 'interact_template', collectScoreFunPrefix = 'harmony', message = ''
 let lotteryResultFunPrefix = homeDataFunPrefix, browseTime = 6
-const inviteCodes = [
-  '',
-  '',
-];
+const inviteCodes = [];
 const randomCount = $.isNode() ? 20 : 5;
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
@@ -117,7 +114,7 @@ function interact_template_getHomeData(timeout = 0) {
 			  // ***************************
 			  // 报告运行次数
 			  $.get({
-				url: `http://192.168.31.101:5702/api/runTimes?activityId=sgmh&sharecode=${data.data.result.taskVos[i].assistTaskDetailVo.taskToken}`,
+				url: `http://`+process.env.JDSHAREURL+`/api/runTimes?activityId=sgmh&sharecode=${data.data.result.taskVos[i].assistTaskDetailVo.taskToken}`,
 				timeout: 10000
 			  }, (err, resp, data) => {
 				if (err) {
@@ -327,7 +324,7 @@ function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
     $.get({
-      url: `http://192.168.31.101:5702/api/sgmh/${randomCount}`,
+      url: `http://`+process.env.JDSHAREURL+`/api/sgmh/${randomCount}`,
       timeout: 10000
     }, (err, resp, data) => {
       try {

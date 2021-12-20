@@ -1,8 +1,6 @@
 /*
 一分钱抽奖
-可以做随机互助
-活动入口：一分钱抽奖小程序
-长期活动，每日收益2毛左右，多号互助会较多
+长期活动
 by:小手冰凉 tg:@chianPLA
 脚本更新时间：2021-11-18 14:20
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
@@ -58,8 +56,9 @@ let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 
         continue
       }
 
-      await vvipscdp_raffle_auto_send_bean('scdp_system_id'); //京东端
-      await vvipscdp_raffle_auto_send_bean('swat_system_id'); //微信端
+        await vvipscdp_raffle_auto_send_bean('lingjingdoupindao_system_id'); //京东端
+      // await vvipscdp_raffle_auto_send_bean('scdp_system_id'); //京东端
+      // await vvipscdp_raffle_auto_send_bean('swat_system_id'); //微信端
     }
   }
   if (allMessage) {
