@@ -1,24 +1,11 @@
 /*
-如需运行请自行添加环境变量：JD_TRY，值填 true 即可运行
-脚本兼容: Node.js
-@Modified from: https://github.com/X1a0He/jd_scripts_fixed/blob/main/jd_try_xh.js
-30 8 * * * jd_try_MyTrials.js
- 
- ============Quantumultx===============
-[task_local]
-#京东试用待领取通知
-1 8 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_try_MyTrials.js, tag=京东试用待领取通知, enabled=true
-
-================Loon==============
-[Script]
-cron "1 8 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_try_MyTrials.js,tag=京东试用待领取通知
-
-===============Surge=================
-京东试用待领取通知 = type=cron,cronexp="1 8 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_try_MyTrials.js
-
-============小火箭=========
-京东试用待领取通知 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_try_MyTrials.js, cronexpr="1 8 * * *", timeout=3600, enable=true
-
+ * 如需运行请自行添加环境变量：JD_TRY，值填 true 即可运行
+ * 脚本兼容: Node.js
+ *
+ * @Modified from: https://github.com/X1a0He/jd_scripts_fixed/blob/main/jd_try_xh.js
+ * 
+ * 30 8 * * * jd_try_MyTrials.js
+ * 
  */ 
 const $ = new Env('京东试用待领取通知')
 const URL = 'https://api.m.jd.com/client.action'
@@ -29,10 +16,10 @@ $.sentNum = 0;
 $.cookiesArr = []
 let args_xh = {
     /*
-     * 每多少个账号发送一次通知，默认为7
+     * 每多少个账号发送一次通知，默认为4
      * 可通过环境变量控制 JD_TRY_SENDNUM
      * */
-    sendNum: process.env.JD_TRY_SENDNUM * 1 || 7,
+    sendNum: process.env.JD_TRY_SENDNUM * 1 || 4,
 }
 
 !(async() => {

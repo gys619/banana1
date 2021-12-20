@@ -44,7 +44,7 @@ if ($.isNode()) {
 }
 let wantProduct = ``;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const inviteCodes = [];
+const inviteCodes = ['', '', '', '', '', '', ''];
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -445,21 +445,6 @@ function jdfactory_getTaskDetail() {
               $.taskVos.map(item => {
                 if (item.taskType === 14) {
                   console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${item.assistTaskDetailVo.taskToken}\n`)
-				  // ***************************
-				  // 报告运行次数
-				  $.get({
-					url: `http://`+process.env.JDSHAREURL+`/api/runTimes?activityId=ddfactory&sharecode=${item.assistTaskDetailVo.taskToken}`,
-					timeout: 10000
-				  }, (err, resp, data) => {
-					if (err) {
-					  console.log('上报失败', err)
-					} else {
-					  if (data === '1' || data === '0') {
-						console.log('上报成功')
-					  }
-					}
-				  })
-				  // ***************************
                 }
               })
             }
@@ -632,10 +617,10 @@ function jdfactory_getHomeData() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `http://`+process.env.JDSHAREURL+`/api/ddfactory/${randomCount}`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://111111/ddfactory`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
+          console.log(JSON.stringify(err))
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {

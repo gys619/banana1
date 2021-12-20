@@ -1,7 +1,7 @@
 /**
 京车会签到
 入口：京东京车会APP,我的-右上角
-cron 19 7 * * * jd_jchsign.js
+cron 19 5 * * * jd_jchsign.js
 TG频道：https://t.me/sheeplost
 */
 const $ = new Env('京车会签到');
