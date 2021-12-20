@@ -7,11 +7,16 @@
 // 同一个京东账号的好友互助码用@符号隔开,不同京东账号之间用&符号或者换行隔开,下面给一个示例
 // 如: 京东账号1的shareCode1@京东账号1的shareCode2&京东账号2的shareCode1@京东账号2的shareCode2
 let PetShareCodes = [
-  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTAxODc2NTEzMDAwMDAwMDAxMzgwNTcyNw==@MTAxODc2NTEzMzAwMDAwMDAxMzgwNDg3OQ==@MTE1NDAxNzcwMDAwMDAwMzUxNDMwMDc=@MTE1NDQ5MzYwMDAwMDAwMzUxNDMwMTE=@MTE1NDUwMTI0MDAwMDAwMDM2OTQ2Mjk1',
-  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTAxODc2NTEzMDAwMDAwMDAxMzgwNTcyNw==@MTAxODc2NTEzMzAwMDAwMDAxMzgwNDg3OQ==@MTE1NDAxNzcwMDAwMDAwMzUxNDMwMDc=@MTE1NDQ5MzYwMDAwMDAwMzUxNDMwMTE=@MTE1NDUwMTI0MDAwMDAwMDM2OTQ2Mjk1',
+  '',//账号一的好友shareCode,不同好友中间用@符号隔开
+  '',//账号二的好友shareCode，不同好友中间用@符号隔开
 ]
+
+// 从日志获取互助码
+// const logShareCodes = require('./utils/jdShareCodes');
+// if (logShareCodes.PETSHARECODES.length > 0 && !process.env.PETSHARECODES) {
+//   process.env.PETSHARECODES = logShareCodes.PETSHARECODES.join('&');
+// }
+
 // 判断github action里面是否有东东萌宠互助码
 if (process.env.PETSHARECODES) {
   if (process.env.PETSHARECODES.indexOf('&') > -1) {
@@ -23,8 +28,8 @@ if (process.env.PETSHARECODES) {
   } else {
     PetShareCodes = process.env.PETSHARECODES.split();
   }
-} else if (process.env.JD_COOKIE) {
-  console.log(`您secret里面未提供助力码，优先进行自己账号内互助，然后再给脚本内置的码进行助力，请知晓！`)
+} else {
+  console.log(`由于您环境变量(PETSHARECODES)里面未提供助力码，故此处运行将会给脚本内置的码进行助力，请知晓！`)
 }
 for (let i = 0; i < PetShareCodes.length; i++) {
   const index = (i + 1 === 1) ? '' : (i + 1);

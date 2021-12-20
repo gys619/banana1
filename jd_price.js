@@ -6,17 +6,17 @@
 ============Quantumultx===============
 [task_local]
 #京东保价
-41 23 * * * https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js, tag=京东保价, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+41 0,12,23 * * * https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js, tag=京东保价, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "41 23 * * *" script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js,tag=京东保价
+cron "41 0,12,23 * * *" script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js,tag=京东保价
 
 ===============Surge=================
-京东保价 = type=cron,cronexp="41 23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js
+京东保价 = type=cron,cronexp="41 0,12,23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js
 
 ============小火箭=========
-京东保价 = type=cron,script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js, cronexpr="41 23 * * *", timeout=3600, enable=true
+京东保价 = type=cron,script-path=https://raw.githubusercontent.com/222222/sync/jd_scripts/jd_price.js, cronexpr="41 0,12,23 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东保价');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -60,10 +60,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
         continue
       }
       await price()
-      if (i != cookiesArr.length - 1) {
-        await $.wait(2000)
-        await jstoken();
-      }
+      await $.wait(2000)
     }
   }
   if (allMessage) {
@@ -174,16 +171,14 @@ async function jstoken() {
     pretendToBeVisual: true,
     virtualConsole
   };
-  // const { window } = new JSDOM(``, options);
-  // const jdPriceJs = await downloadUrl("https://js-nocaptcha.jd.com/statics/js/main.min.js")
-  const dom = new JSDOM(`<body><script src="https://js-nocaptcha.jd.com/statics/js/main.min.js"></script></body>`, options);
-  await $.wait(1000)
+  const { window } = new JSDOM(``, options);
+  const jdPriceJs = await downloadUrl("https://js-nocaptcha.jd.com/statics/js/main.min.js")
   try {
-    // window.eval(jdPriceJs)
-    // window.HTMLCanvasElement.prototype.getContext = () => {
-    //   return {};
-    // };
-    $.jab = new dom.window.JAB({
+    window.eval(jdPriceJs)
+    window.HTMLCanvasElement.prototype.getContext = () => {
+      return {};
+    };
+    $.jab = new window.JAB({
       bizId: 'jdjiabao',
       initCaptcha: false
     })
