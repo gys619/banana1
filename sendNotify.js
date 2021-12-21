@@ -1390,11 +1390,6 @@ async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n') {
     try {
         var Uid = "";
         var UserRemark = [];
-        var llShowRemark = "false";
-
-        if (process.env.WP_APP_ONE_TEXTSHOWREMARK) {
-            llShowRemark = process.env.WP_APP_ONE_TEXTSHOWREMARK;
-        }
         if (WP_APP_TOKEN_ONE) {
             if (TempCKUid) {
                 for (let j = 0; j < TempCKUid.length; j++) {
@@ -1409,7 +1404,6 @@ async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n') {
                 console.log("正在发送一对一通知,请稍后...");
                 desp = buildLastDesp(desp, author);
 
-                    if (llShowRemark == "true") {
                         //开始读取青龙变量列表
                         const envs = await getEnvs();
                         if (envs[0]) {
@@ -1479,9 +1473,8 @@ async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n') {
 
                         }
 
-                    }
-					desp = desp.replace(/[\n\r]/g, '<br>'); // 默认为html, 不支持plaintext
-                    await wxpusherNotifyByOne(text, desp);
+                desp = desp.replace(/[\n\r]/g, '<br>');
+                await wxpusherNotifyByOne(text, desp);
             } else {
                 console.log("未查询到用户的Uid,取消一对一通知发送...");
             }
@@ -1900,7 +1893,6 @@ function buildLastDesp(desp, author = '') {
         if (!author.match(/本通知 By/)) {
             author = `\n\n本通知 By ${author}`
         }
-        if (!author) author = ''
         return desp.trim() + author + "\n通知时间: " + GetDateTime(new Date());
     }
 }
