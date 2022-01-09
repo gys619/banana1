@@ -6,17 +6,17 @@
 ============Quantumultx===============
 [task_local]
 #京东小魔方
-31 1,7 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xmf.js, tag=京东小魔方, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+31 1,7 * * * https://raw.githubusercontent.com/11111115/JDHelp/main/jd_xmf.js, tag=京东小魔方, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "31 1,7 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xmf.js,tag=京东小魔方
+cron "31 1,7 * * *" script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_xmf.js,tag=京东小魔方
 
 ===============Surge=================
-京东小魔方 = type=cron,cronexp="31 1,7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xmf.js
+京东小魔方 = type=cron,cronexp="31 1,7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_xmf.js
 
 ============小火箭=========
-京东小魔方 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xmf.js, cronexpr="31 1,7 * * *", timeout=3600, enable=true
+京东小魔方 = type=cron,script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_xmf.js, cronexpr="31 1,7 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东小魔方');
 const notify = $.isNode() ? require('./sendNotify') : '';

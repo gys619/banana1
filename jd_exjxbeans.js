@@ -10,7 +10,7 @@ cron 33 9 * * * jd_exjxbeans.js
 ============Quantumultx===============
 [task_local]
 #过期京豆换喜豆
-33 9 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_exjxbeans.js, tag=过期京豆换喜豆, enabled=true
+33 9 * * * https://raw.githubusercontent.com/11111115/JDHelp/main/jd_exjxbeans.js, tag=过期京豆换喜豆, enabled=true
 */
 
 const $ = new Env('过期京豆换喜豆');
@@ -63,7 +63,7 @@ if ($.isNode()) {
     }
     if (message !== "") {
         if ($.isNode()) {
-            await notify.sendNotify($.name, message, 'by: https://github.com/he1pu/JDHelp')
+            await notify.sendNotify($.name, message, 'by: https://github.com/11111115/JDHelp')
         } else {
             $.msg($.name, '', message)
         }

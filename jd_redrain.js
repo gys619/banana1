@@ -2,7 +2,6 @@
 整点京豆雨
 更新时间：2021-12-8
 脚本兼容: Quantumult X, Surge, Loon, JSBox, Node.js
-by：msechen
 ==============Quantumult X==============
 [task_local]
 #整点京豆雨
@@ -43,12 +42,12 @@ if ($.isNode()) {
   }
   if (!jd_redrain_activityId) {
     $.log(`\n本地红包雨配置获取错误，尝试从远程读取配置\n`);
-    await $.wait(1000);
-    if (!jd_redrain_url) {
-      $.log(`\n今日龙王🐲出差，天气晴朗☀️，改日再来～\n`);
-      return;
-    }    
+    await $.wait(1000);   
     let RedRainIds = await getRedRainIds(jd_redrain_url);
+	if (!RedRainIds) {
+    await $.wait(1000)
+    RedRainIds = await getRedRainIds('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/redrain.json')
+	}
     for (let i = 0; i < 1; i++) {
       jd_redrain_activityId = RedRainIds[0];
     }

@@ -8,17 +8,17 @@
 ============Quantumultx===============
 [task_local]
 #金榜年终奖
-0 0,2,12 6-12 12 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_split.js, tag=年终奖, enabled=true
+0 0,2,12 6-12 12 * https://raw.githubusercontent.com/11111115/JDHelp/main/jd_split.js, tag=年终奖, enabled=true
 
 ================Loon==============
 [Script]
-cron "0 0,2,12 6-12 12 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_split.js,tag=年终奖
+cron "0 0,2,12 6-12 12 *" script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_split.js,tag=年终奖
 
 ===============Surge=================
-金榜年终奖 = type=cron,cronexp="0 0,2,12 6-12 12 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_split.js
+金榜年终奖 = type=cron,cronexp="0 0,2,12 6-12 12 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_split.js
 
 ============小火箭=========
-金榜年终奖 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_split.js, cronexpr="0 0,2,12 6-12 12 *", timeout=3600, enable=true
+金榜年终奖 = type=cron,script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_split.js, cronexpr="0 0,2,12 6-12 12 *", timeout=3600, enable=true
  */
 const $ = new Env('金榜年终奖');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -292,7 +292,7 @@ function taskPostUrl(function_id, body = {}) {
   }
 }
 
-function getAuthorShareCode(url='https://raw.githubusercontent.com/he1pu/params/main/codes.json') {
+function getAuthorShareCode(url='https://raw.githubusercontent.com/11111115/params/main/codes.json') {
   return new Promise(async resolve => {
     const options = {
       url: `${url}?${new Date()}`, "timeout": 10000, headers: {

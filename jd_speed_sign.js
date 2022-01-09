@@ -1,5 +1,4 @@
 /*
-0 7 * * * jd_speed_sign.js
 京东极速版签到+赚现金任务
 每日9毛左右，满3，10，50可兑换无门槛红包
 ⚠️⚠️⚠️一个号需要运行40分钟左右
@@ -11,17 +10,17 @@
 ============Quantumultx===============
 [task_local]
 #京东极速版
-0 7 * * * jd_speed_sign.js, tag=京东极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
+21 3,8 * * * jd_speed_sign.js, tag=京东极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "0 7 * * *" script-path=jd_speed_sign.js,tag=京东极速版
+cron "21 3,8 * * *" script-path=jd_speed_sign.js,tag=京东极速版
 
 ===============Surge=================
-京东极速版 = type=cron,cronexp="0 7 * * *",wake-system=1,timeout=33600,script-path=jd_speed_sign.js
+京东极速版 = type=cron,cronexp="21 3,8 * * *",wake-system=1,timeout=33600,script-path=jd_speed_sign.js
 
 ============小火箭=========
-京东极速版 = type=cron,script-path=jd_speed_sign.js, cronexpr="0 7 * * *", timeout=33600, enable=true
+京东极速版 = type=cron,script-path=jd_speed_sign.js, cronexpr="21 3,8 * * *", timeout=33600, enable=true
 */
 
 const $ = new Env('京东极速版');
@@ -42,7 +41,7 @@ if ($.isNode()) {
 }
 
 const JD_API_HOST = 'https://api.m.jd.com/', actCode = 'visa-card-001';
-
+let llAPIError = false
 
 !(async () => {
   if (!cookiesArr[0]) {
@@ -75,7 +74,11 @@ const JD_API_HOST = 'https://api.m.jd.com/', actCode = 'visa-card-001';
         continue
       }
       await jdGlobal()
-      await $.wait(2 * 1000)
+      await $.wait(10 * 1000)
+	  if (llAPIError){
+		console.log(`黑IP了，赶紧重新拨号换个IP吧`);
+		break;
+	  }
     }
   }
 })()
@@ -89,17 +92,17 @@ const JD_API_HOST = 'https://api.m.jd.com/', actCode = 'visa-card-001';
 async function jdGlobal() {
   try {
     //await richManIndex()
-    //await wheelsHome()
-    //await apTaskList()
-    //await wheelsHome()
+    await wheelsHome()
+    await apTaskList()
+    await wheelsHome()
     if ($.canhelp) {
-      console.log(`\n京东账号${$.index}\n`);    
-      //await invite()
-      //await invite2()
+      //console.log(`\n京东账号${$.index}开始助力作者邀请有礼，感谢！\n`);
+      await invite()
+      await invite2()
     }
     $.score = 0
     $.total = 0
-    //await taskList()
+    await taskList()
     await queryJoy()
     await cash()
     if ($.last_day) {
@@ -123,70 +126,70 @@ function showMsg() {
   })
 }
 
-async function signInit() {
-  return new Promise(resolve => {
-    $.get(taskUrl('speedSignInit', {
-      "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
-      "kernelPlatform": "RN",
-    }),
-      async (err, resp, data) => {
-        try {
-          if (err) {
-            console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
-          } else {
-            if (safeGet(data)) {
-              data = JSON.parse(data);
-              if (data.data && data.data.cashDrawAmount >= 8) {
-                console.log(`京东账号${$.index} ${$.nickName || $.UserName}已满足兑换条件\n`)
-                if (process.env.JS_EXCHANGE && process.env.JS_EXCHANGE === 'true') {
-                  console.log(`【注意】您已设置自动兑换红包，请尽快使用\n`)
-                  await cashout()
-                } else {
-                  console.log(`【注意】京东极速版签到领红包活动将于9月7日下线\n活动下线后余额会清零，请尽快兑换使用\n如需自动兑换，请添加变量名称：JS_EXCHANGE，变量值填true`)
-                }
-              }
-            }
-          }
-        } catch (e) {
-          $.logErr(e, resp)
-        } finally {
-          resolve(data);
-        }
-      })
-  })
-}
+// async function signInit() {
+//   return new Promise(resolve => {
+//     $.get(taskUrl('speedSignInit', {
+//       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
+//       "kernelPlatform": "RN",
+//     }),
+//       async (err, resp, data) => {
+//         try {
+//           if (err) {
+//             console.log(`${JSON.stringify(err)}`)
+//             console.log(`${$.name} API请求失败，请检查网路重试`)
+//           } else {
+//             if (safeGet(data)) {
+//               data = JSON.parse(data);
+//               if (data.data && data.data.cashDrawAmount >= 8) {
+//                 console.log(`京东账号${$.index} ${$.nickName || $.UserName}已满足兑换条件\n`)
+//                 if (process.env.JS_EXCHANGE && process.env.JS_EXCHANGE === 'true') {
+//                   console.log(`【注意】您已设置自动兑换红包，请尽快使用\n`)
+//                   await cashout()
+//                 } else {
+//                   console.log(`【注意】京东极速版签到领红包活动将于9月7日下线\n活动下线后余额会清零，请尽快兑换使用\n如需自动兑换，请添加变量名称：JS_EXCHANGE，变量值填true`)
+//                 }
+//               }
+//             }
+//           }
+//         } catch (e) {
+//           $.logErr(e, resp)
+//         } finally {
+//           resolve(data);
+//         }
+//       })
+//   })
+// }
 
-async function sign() {
-  return new Promise(resolve => {
-    $.get(taskUrl('speedSign', {
-      "kernelPlatform": "RN",
-      "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
-      "noWaitPrize": "false"
-    }),
-      async (err, resp, data) => {
-        try {
-          if (err) {
-            console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
-          } else {
-            if (safeGet(data)) {
-              data = JSON.parse(data);
-              if (data.subCode === 0) {
-                console.log(`签到获得${data.data.signAmount}现金，共计获得${data.data.cashDrawAmount}`)
-              } else {
-                console.log(`签到失败，${data.msg}`)
-              }
-            }
-          }
-        } catch (e) {
-          $.logErr(e, resp)
-        } finally {
-          resolve(data);
-        }
-      })
-  })
-}
+// async function sign() {
+//   return new Promise(resolve => {
+//     $.get(taskUrl('speedSign', {
+//       "kernelPlatform": "RN",
+//       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
+//       "noWaitPrize": "false"
+//     }),
+//       async (err, resp, data) => {
+//         try {
+//           if (err) {
+//             console.log(`${JSON.stringify(err)}`)
+//             console.log(`${$.name} API请求失败，请检查网路重试`)
+//           } else {
+//             if (safeGet(data)) {
+//               data = JSON.parse(data);
+//               if (data.subCode === 0) {
+//                 console.log(`签到获得${data.data.signAmount}现金，共计获得${data.data.cashDrawAmount}`)
+//               } else {
+//                 console.log(`签到失败，${data.msg}`)
+//               }
+//             }
+//           }
+//         } catch (e) {
+//           $.logErr(e, resp)
+//         } finally {
+//           resolve(data);
+//         }
+//       })
+//   })
+// }
 
 async function cashout() {
   return new Promise(resolve => {
@@ -199,14 +202,14 @@ async function cashout() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`cashout API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
               if (data.subCode === 0 && data.data.cashOutSuccess === true) {
                 console.log(`红包兑换成功，剩余${data.data.cashDrawAmount}元`)
                 if ($.isNode()) {
-                  await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】 ${$.nickName}\n兑换红包成功，请尽快使用\n更多脚本->"https://github.com/888888/JD_tencent_scf"`);
+                  await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】 ${$.nickName}\n兑换红包成功，请尽快使用"`);
                 }
               } else {
                 console.log(`红包兑换失败，${data.msg}`)
@@ -248,7 +251,7 @@ async function orderReward(type) {
     try {
       if (err) {
         console.log(`${JSON.stringify(err)}`)
-        console.log(`${$.name} orderReward API请求失败，请检查网路重试`)
+        console.log(`orderReward API请求失败，请检查网路重试`)
       } else {
         if (safeGet(data)) {
           data = JSON.parse(data);
@@ -294,7 +297,7 @@ async function taskList() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`taskList API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -317,6 +320,10 @@ async function taskList() {
                 } else {
                   console.log(`${task.taskInfo.mainTitle}已完成`)
                 }
+                if (llAPIError){
+                  console.error('API请求失败，停止执行')
+                  break
+                }
               }
             }
           }
@@ -338,7 +345,8 @@ async function doTask(taskId) {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`doTask API请求失败，请检查网路重试`)
+          llAPIError = true
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -365,7 +373,7 @@ async function queryJoy() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`queryJoy API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -394,7 +402,7 @@ async function rewardTask(id, taskId) {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`rewardTask API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -425,7 +433,7 @@ async function queryItem(activeType = 1) {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`queryItem API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -434,6 +442,7 @@ async function queryItem(activeType = 1) {
             } else {
               console.log(`商品任务开启失败，${data.message}`)
               $.canStartNewItem = false
+              llAPIError = true
             }
           }
         }
@@ -461,7 +470,9 @@ async function startItem(activeId, activeType) {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`startItem API请求失败，请检查网路重试`)
+          llAPIError = true
+          $.canStartNewItem = false
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -472,7 +483,9 @@ async function startItem(activeId, activeType) {
                   videoBrowsing = activeType === 1 ? 5 : 10
                 console.log(`【${taskCompletionProgress + 1}/${taskCompletionLimit}】浏览商品任务记录成功，等待${videoBrowsing}秒`)
                 await $.wait(videoBrowsing * 1000)
+                await $.wait(3000)
                 await endItem(data.data.uuid, activeType, activeId, activeType === 3 ? videoBrowsing : "")
+				await $.wait(4000);
               } else {
                 console.log(`${$.taskName}任务已达上限`)
                 $.canStartNewItem = false
@@ -510,7 +523,7 @@ async function endItem(uuid, activeType, activeId = "", videoTimeLength = "") {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`endItem API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -548,7 +561,7 @@ async function rewardItem(uuid, activeType, activeId = "", videoTimeLength = "")
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`rewardItem API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -577,7 +590,7 @@ async function cash() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`cash API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -602,7 +615,7 @@ function wheelsHome() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`wheelsHome API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -632,7 +645,7 @@ function wheelsLottery() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`wheelsLottery API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -661,7 +674,7 @@ function apTaskList() {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`apTaskList API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -694,7 +707,7 @@ function apDoTask(taskType, taskId, channel, itemId) {
         try {
           if (err) {
             console.log(`${JSON.stringify(err)}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
+            console.log(`apDoTask API请求失败，请检查网路重试`)
           } else {
             if (safeGet(data)) {
               data = JSON.parse(data);
@@ -720,7 +733,7 @@ function richManIndex() {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`richManIndex API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -747,7 +760,7 @@ function shootRichManDice() {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`shootRichManDice API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -787,30 +800,29 @@ function taskGetUrl(function_id, body) {
 }
 
 function invite2() {
-  let t = +new Date()
-  let inviterId = [
-    "",
-    "",
-    "",
-    ""
-  ][Math.floor((Math.random() * 4))]
-  let headers = {
-    'Host': 'api.m.jd.com',
-    'accept': 'application/json, text/plain, */*',
-    'content-type': 'application/x-www-form-urlencoded',
-    'origin': 'https://assignment.jd.com',
-    'accept-language': 'zh-cn',
-    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-    'referer': `https://assignment.jd.com/?inviterId=${encodeURIComponent(inviterId)}`,
-    'Cookie': cookie
-  }
+  let inviterIdArr = [
+    "9vOskAagcMJ4EOWXPQSS9A==",
+    "9irilvenEupYF488TUrl19DLuKQ9zWnXYHf9anC0ujw=",
+    "0Iut/X6Fx833sGPARnxK0TEJAHhGl+YhaIQMI1735mE=",
+    "EX5edGJ14b70ZUglRq7IMmT3GewOP9IL/BN3k2dfrjw=",
+    "ty6iFSNMeLZfu/F1QvwzAnifpKIunqsG7am3vAp9rkc="
+  ]
+  let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
+  let options = {
+    url: "https://api.m.jd.com/",
+    body: `functionId=TaskInviteService&body=${JSON.stringify({"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":encodeURIComponent(inviterId),"type":1}})}&appid=market-task-h5&uuid=&_t=${Date.now()}`,
+    headers: {
+      "Host": "api.m.jd.com",
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Origin": "https://assignment.jd.com",
+      "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+      "User-Agent": $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "Referer": "https://assignment.jd.com/",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Cookie": cookie
+    }
 
-  let dataString = `functionId=TaskInviteService&body={"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":"${encodeURIComponent(inviterId)}","type":1}}&appid=market-task-h5&uuid=&_t=${t}`;
-
-  var options = {
-    url: 'https://api.m.jd.com/',
-    headers: headers,
-    body: dataString
   }
   $.post(options, (err, resp, data) => {
     // console.log(data)
@@ -819,31 +831,29 @@ function invite2() {
 
 function invite() {
   let t = +new Date()
-  let inviterId = [
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
-  ][Math.floor((Math.random() * 6))]
-  var headers = {
-    'Host': 'api.m.jd.com',
-    'accept': 'application/json, text/plain, */*',
-    'content-type': 'application/x-www-form-urlencoded',
-    'origin': 'https://invite-reward.jd.com',
-    'accept-language': 'zh-cn',
-    'user-agent': $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-    'referer': 'https://invite-reward.jd.com/',
-    'Cookie': cookie
-  };
-
-  var dataString = `functionId=InviteFriendChangeAssertsService&body={"method":"attendInviteActivity","data":{"inviterPin":"${encodeURIComponent(inviterId)}","channel":1,"token":"","frontendInitStatus":""}}&referer=-1&eid=eidIf3dd8121b7sdmiBLGdxRR46OlWyh62kFAZogTJFnYqqRkwgr63%2BdGmMlcv7EQJ5v0HBic81xHXzXLwKM6fh3i963zIa7Ym2v5ehnwo2B7uDN92Q0&aid=&client=ios&clientVersion=14.4&networkType=wifi&fp=-1&appid=market-task-h5&_t=${t}`;
-  var options = {
-    url: `https://api.m.jd.com/?t=${+new Date()}`,
-    headers: headers,
-    body: dataString
-  };
+  let inviterIdArr = [
+    "9vOskAagcMJ4EOWXPQSS9A==",
+    "9irilvenEupYF488TUrl19DLuKQ9zWnXYHf9anC0ujw=",
+    "0Iut/X6Fx833sGPARnxK0TEJAHhGl+YhaIQMI1735mE=",
+    "EX5edGJ14b70ZUglRq7IMmT3GewOP9IL/BN3k2dfrjw=",
+    "ty6iFSNMeLZfu/F1QvwzAnifpKIunqsG7am3vAp9rkc="
+  ]
+  let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
+  let options = {
+    url: `https://api.m.jd.com/?t=${t}`,
+    body: `functionId=InviteFriendChangeAssertsService&body=${JSON.stringify({"method":"attendInviteActivity","data":{"inviterPin":encodeURIComponent(inviterId),"channel":1,"token":"","frontendInitStatus":""}})}&referer=-1&eid=eidI9b2981202fsec83iRW1nTsOVzCocWda3YHPN471AY78%2FQBhYbXeWtdg%2F3TCtVTMrE1JjM8Sqt8f2TqF1Z5P%2FRPGlzA1dERP0Z5bLWdq5N5B2VbBO&aid=&client=ios&clientVersion=14.4.2&networkType=wifi&fp=-1&uuid=ab048084b47df24880613326feffdf7eee471488&osVersion=14.4.2&d_brand=iPhone&d_model=iPhone10,2&agent=-1&pageClickKey=-1&platform=3&lang=zh_CN&appid=market-task-h5&_t=${t}`,
+    headers: {
+      "Host": "api.m.jd.com",
+      "Accept": "application/json, text/plain, */*",
+      "Content-type": "application/x-www-form-urlencoded",
+      "Origin": "https://invite-reward.jd.com",
+      "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+      "User-Agent": $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "Referer": 'https://invite-reward.jd.com/',
+      "Accept-Encoding": "gzip, deflate, br",
+      "Cookie": cookie
+    }
+  }
   $.post(options, (err, resp, data) => {
     // console.log(data)
   })
@@ -868,7 +878,7 @@ function TotalBean() {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`TotalBean API请求失败，请检查网路重试`)
         } else {
           if (data) {
             data = JSON.parse(data);

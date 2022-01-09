@@ -72,7 +72,7 @@ let llhelp=true;
       subTitle = '';
       option = {};
       await jdPlantBean();
-      await showMsg();
+      //await showMsg();
     }
   }
   if(llhelp){
@@ -83,6 +83,7 @@ let llhelp=true;
 		  $.index = j + 1;
 		  //await shareCodesFormat();
 		  await doHelp()
+		  await $.wait(3 * 1000)
 		}
 	  }
 	}

@@ -1,25 +1,47 @@
-/**
- * */
-const $ = new Env('任务脚本');
+/*
+JoyJd任务脚本
+已支持IOS双京东账号,Node.js支持N个京东账号
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+jd_joyjd_open通用ID任务，多个活动用@连接，任务连接https://jdjoy.jd.com/module/task/v2/doTask
+export comm_activityIDList="af2b3d56e22d43afa0c50622c45ca2a3"  
+export comm_endTimeList="1639756800000"
+export comm_tasknameList="京东工业品抽奖"
+
+即时任务，无需cron,短期或者长期请参考活动规则设置cron
+============Quantumultx===============
+[task_local]
+#JoyJd任务脚本
+5 2,18 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_joyjd_open.js, tag=JoyJd任务脚本, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
+================Loon==============
+[Script]
+cron "5 2,18 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_joyjd_open.js,tag=JoyJd任务脚本
+
+===============Surge=================
+JoyJd任务脚本 = type=cron,cronexp="5 2,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_joyjd_open.js
+
+============小火箭=========
+JoyJd任务脚本 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_joyjd_open.js, cronexpr="5 2,18 * * *", timeout=3600, enable=true
+*/
+const $ = new Env('JoyJd任务脚本');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
-const activityList = [
-   //{'activityId':'6a5cfe9c54944295a489ea06b649a4ed','endTime':1636732800000},
-      {'activityId':'9fdb6cdb7e974b22994ea774ea566470','endTime':1636819199000},
-   // {'activityId':'1d43119d79ba4fc3a254c449c6aea1d2','endTime':1636732799000},
-    //{'activityId':'40c2d87a71ec40cf96badb810818bb92','endTime':1636732799000},
-   // {'activityId':'c884f4e473884217ad8fabcc160ecda0','endTime':1636819200000},
-    // {'activityId':'85201aaf1895431e874132d9c2669afe','endTime':1632067200000},
-    // {'activityId':'862d6fa5caf54e36bd810714e889e457','endTime':1632067200000},
-    // {'activityId':'30ed2348398c4f4796e585b9b5240a28','endTime':1632067200000},
-    // {'activityId':'60e2aaf168a24831886f73bc97b725a9','endTime':1632067200000},
-];
+let activityIDList = '';     
+let endTimeList = '';
+let tasknameList = '';
+let activityIDArr = [];     
+let endTimeArr = [];
+let tasknameArr = [];
+let activityID = '', endTime = '', taskname = '';
 $.UA = '';
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
     })
+    if (process.env.comm_activityIDList) activityIDList = process.env.comm_activityIDList
+    if (process.env.comm_endTimeList) endTimeList = process.env.comm_endTimeList
+    if (process.env.comm_tasknameList) tasknameList = process.env.comm_tasknameList
     if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
     cookiesArr = [
@@ -32,7 +54,22 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
+    if (!activityIDList) {
+        $.log(`没有通用ID任务，尝试获取远程`);
+        let data = await getData("https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/joyjd_open.json")
+        if (data.activityIDList && data.activityIDList.length) {
+            $.log(`获取到远程且有数据`);
+            activityIDList = data.activityIDList.join('@')
+            endTimeList = data.endTimeList.join('@')
+            tasknameList = data.tasknameList.join('@')
+        }else{
+            $.log(`获取失败或当前无远程数据`);
+            return
+        }
+    }
+    console.log(`通用ID任务就位，准备开始薅豆`);
     for (let i = 0; i < cookiesArr.length; i++) {
+       if (cookiesArr[i]) {
         await getUA();
         $.index = i + 1;
         $.cookie = cookiesArr[i];
@@ -49,22 +86,51 @@ if ($.isNode()) {
             }
             continue
         }
+        let activityIDArr = activityIDList.split("@");
+        let endTimeArr = endTimeList.split("@");
+        let tasknameArr = tasknameList.split("@");
+        for (let j = 0; j < activityIDArr.length; j++) {
+        activityID = activityIDArr[j]
+        endTime = endTimeArr[j]
+        taskname = tasknameArr[j]
         $.fp =  randomString();
         $.eid =  randomString(90).toUpperCase();
-        for (let j = 0; j < activityList.length ; j++) {
-            $.activityInfo = activityList[j];
-            $.activityID = $.activityInfo.activityId;
-            console.log(`ID：${JSON.stringify($.activityInfo)}`);
-            if($.activityInfo.endTime && Date.now() > $.activityInfo.endTime){
-                console.log(`活动已结束\n`);
-                continue;
-            }
-            await main();
-            await $.wait(2000);
-            console.log('\n')
+        console.log(`通用活动任务ID：${activityID}，结束时间：${endTime}，活动名称：${taskname}`);
+        if($.endTime && Date.now() > $.endTime){
+            console.log(`活动已结束\n`);
+             continue;
         }
-    }
+        await main();
+        await $.wait(2000);
+        console.log('\n')
+        }
+     }
+   }
 })().catch((e) => {$.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')}).finally(() => {$.done();});
+
+function getData(url) {
+  return new Promise(async resolve => {
+    const options = {
+      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      }
+    };
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+        } else {
+          if (data) data = JSON.parse(data)
+        }
+      } catch (e) {
+        // $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+    await $.wait(10000)
+    resolve();
+  })
+}
 
 async function main() {
     $.mainTime = 0;
@@ -77,12 +143,12 @@ async function main() {
             await getActivity();
             await $.wait(2000);
             if(JSON.stringify($.activity) === '{}'){
-                console.log(`获取列表失败：${$.activityID},重新获取`);
+                console.log(`获取列表失败：${activityID},重新获取`);
             }
             $.runTime++;
             await $.wait(2000);
         }while (JSON.stringify($.activity) === '{}' && $.runTime < 10);
-        console.log(`任务列表：${$.activityID},获取成功`);
+        console.log(`任务列表：${activityID},获取成功`);
         $.moduleBaseInfo = $.activity.moduleBaseInfo;
         $.dailyTaskList = $.activity.dailyTask.taskList;
         if($.moduleBaseInfo.rewardStatus === 1){
@@ -176,7 +242,7 @@ async function doTask(){
 }
 
 async function getActivity(){
-    const url = `https://jdjoy.jd.com/module/task/v2/getActivity?configCode=${$.activityID}&eid=${$.eid}&fp=${$.fp}`;
+    const url = `https://jdjoy.jd.com/module/task/v2/getActivity?configCode=${activityID}&eid=${$.eid}&fp=${$.fp}`;
     const headers = {
         'Accept' : `application/json, text/plain, */*`,
         'content-type':'application/json;charset=utf-8',

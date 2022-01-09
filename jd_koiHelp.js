@@ -6,14 +6,14 @@
 ============Quantumultx===============
 [task_local]
 #锦鲤红包互助
-1 0,8,20 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_koiHelp.js, tag=锦鲤红包互助, enabled=true
+1 0,8,20 * * * https://raw.githubusercontent.com/11111115/JDHelp/main/jd_koiHelp.js, tag=锦鲤红包互助, enabled=true
 ================Loon==============
 [Script]
-cron "1 0,8,20 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_koiHelp.js, tag=锦鲤红包互助
+cron "1 0,8,20 * * *" script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_koiHelp.js, tag=锦鲤红包互助
 ===============Surge=================
-锦鲤红包互助 = type=cron,cronexp="1 0,8,20 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_koiHelp.js
+锦鲤红包互助 = type=cron,cronexp="1 0,8,20 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_koiHelp.js
 ============小火箭=========
-锦鲤红包互助 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_koiHelp.js, cronexpr="1 0,8,20 * * *", timeout=3600, enable=true
+锦鲤红包互助 = type=cron,script-path=https://raw.githubusercontent.com/11111115/JDHelp/main/jd_koiHelp.js, cronexpr="1 0,8,20 * * *", timeout=3600, enable=true
 */
 
 const $ = new Env("锦鲤红包互助")
@@ -132,7 +132,7 @@ function random(min, max) {
 function submitCode(shareCode) {
     if (!shareCode || shareCode == undefined || shareCode.length<=0 ) {return;}
     return new Promise(async resolve => {
-    $.get({url: `http://www.11111114/jdcodes/submit.php?code=${shareCode}&type=koi&user=${$.UserName}`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${shareCode}&type=koi&user=${$.UserName}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -162,7 +162,7 @@ function submitCode(shareCode) {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `http://www.11111114/jdcodes/getcode.php?type=koi&num=20`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/getcode.php?type=koi&num=20`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

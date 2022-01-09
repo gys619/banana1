@@ -1,5 +1,5 @@
 /*
-东东水果:脚本更新地址 jd_fruit.js
+东东水果:脚本更新地址 jd_fruit_task.js
 更新时间：2021-5-18
 活动入口：京东APP我的-更多工具-东东农场
 东东农场活动链接：https://h5.m.jd.com/babelDiy/Zeus/3KSjXqQabiTuD1cJ28QskrpWoBKT/index.html
@@ -10,16 +10,16 @@
 ==========================Quantumultx=========================
 [task_local]
 #jd免费水果
-5 6-18/6 * * * jd_fruit.js, tag=东东农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
+5 6-18/6 * * * jd_fruit_task.js, tag=东东农场日常任务, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
 =========================Loon=============================
 [Script]
-cron "5 6-18/6 * * *" script-path=jd_fruit.js,tag=东东农场
+cron "5 6-18/6 * * *" script-path=jd_fruit_task.js,tag=东东农场日常任务
 
 =========================Surge============================
-东东农场 = type=cron,cronexp="5 6-18/6 * * *",wake-system=1,timeout=3600,script-path=jd_fruit.js
+东东农场日常任务 = type=cron,cronexp="5 6-18/6 * * *",wake-system=1,timeout=3600,script-path=jd_fruit_task.js
 
 =========================小火箭===========================
-东东农场 = type=cron,script-path=jd_fruit.js, cronexpr="5 6-18/6 * * *", timeout=3600, enable=true
+东东农场日常任务 = type=cron,script-path=jd_fruit_task.js, cronexpr="5 6-18/6 * * *", timeout=3600, enable=true
 
 export DO_TEN_WATER_AGAIN="" 默认再次浇水
 
@@ -105,7 +105,7 @@ async function jdFruit() {
                 option['open-url'] = urlSchema;
                 $.msg($.name, ``, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】${$.farmInfo.farmUserPro.name}已可领取\n请去京东APP或微信小程序查看\n点击弹窗即达`, option);
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}水果已可领取`, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】${$.farmInfo.farmUserPro.name}已可领取\n请去京东APP或微信小程序查看`);
+                    //await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName || $.UserName}水果已可领取`, `【京东账号${$.index}】${$.nickName || $.UserName}\n【提醒⏰】${$.farmInfo.farmUserPro.name}已可领取\n请去京东APP或微信小程序查看`);
                 }
                 return
             } else if ($.farmInfo.treeState === 1) {
@@ -115,7 +115,7 @@ async function jdFruit() {
                 option['open-url'] = urlSchema;
                 $.msg($.name, ``, `【京东账号${$.index}】 ${$.nickName || $.UserName}\n【提醒⏰】您忘了种植新的水果\n请去京东APP或微信小程序选购并种植新的水果\n点击弹窗即达`, option);
                 if ($.isNode()) {
-                    await notify.sendNotify(`${$.name} - 您忘了种植新的水果`, `京东账号${$.index} ${$.nickName || $.UserName}\n【提醒⏰】您忘了种植新的水果\n请去京东APP或微信小程序选购并种植新的水果`);
+                    //await notify.sendNotify(`${$.name} - 您忘了种植新的水果`, `京东账号${$.index} ${$.nickName || $.UserName}\n【提醒⏰】您忘了种植新的水果\n请去京东APP或微信小程序选购并种植新的水果`);
                 }
                 return
             }
@@ -131,7 +131,7 @@ async function jdFruit() {
             } else {
                 console.log('不执行再次浇水，攒水滴')
             }
-            await predictionFruit(); //预测水果成熟时间
+            //await predictionFruit(); //预测水果成熟时间
         } else {
             console.log(`初始化农场数据异常, 请登录京东 app查看农场0元水果功能是否正常。`);
             if ($.retry < 2) {
