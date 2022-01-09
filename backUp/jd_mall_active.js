@@ -1,7 +1,25 @@
 /*
 逛京东会场
+活动入口：逛京东会场
 自定义环境变量 ACT_URL 为json地址，格式参考默认
-0 0 * * * jd_mall_active.js
+脚本更新时间：2021-12-7 14:20
+脚本兼容: Node.js
+新手写脚本，难免有bug，能用且用。
+============Quantumultx===============
+[task_local]
+#逛京东会场
+0 0,18 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_mall_active.js, tag=逛京东会场, enabled=true
+
+================Loon==============
+[Script]
+cron "0 0,18 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_mall_active.js,tag=逛京东会场
+
+===============Surge=================
+逛京东会场 = type=cron,cronexp="0 0,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_mall_active.js
+
+============小火箭=========
+逛京东会场 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_mall_active.js, cronexpr="0 0,18 * * *", timeout=3600, enable=true
+
 */
 const $ = new Env("逛京东会场");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
@@ -14,7 +32,7 @@ if ($.isNode()) {
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false")
     console.log = () => {};
   if (process.env.ACT_URL && process.env.ACT_URL === '') console.log = () => {};
-  actURL = process.env.ACT_URL || 'https://gitee.com/fatelight/code/raw/master/mall_active.json'
+  actURL = process.env.ACT_URL || 'https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/mall_active.json'
 } else {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
@@ -88,7 +106,8 @@ async function main(urlID,code) {
     $.actId = ($.url2.match(/mall\/active\/([^/]+)\/index\.html/) && $.url2.match(/mall\/active\/([^/]+)\/index\.html/)[1]);
     let arr = getBody($.UA, $.url2);
     await getEid(arr);
-    console.log(`$.actId:` + $.actId);
+    //console.log(`$.actId:` + $.actId);
+	console.log('暂时未获取到活动，自行禁用或等待活动开启！');
     await $.wait(500);
   }
 }
