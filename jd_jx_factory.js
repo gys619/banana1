@@ -19,7 +19,7 @@ $.setOptions({
 });
 $.readme = `
 44 */6 * * * task ${$.runfile}
-exprot ${$.runfile}=2  #如需增加被助力账号,在这边修改人数
+exprot ${$.runfile}=4  #如需增加被助力账号,在这边修改人数
 `
 eval(common.eval.mainEval($));
 async function prepare() {
@@ -34,7 +34,7 @@ async function prepare() {
         max = Math.max(...Object.keys(dicts).filter(d => parseInt(d) < $.timestamp))
         $.activeId = dicts[max]
     } catch (e) {
-        $.activeId = 'yNtpovqFehHByNrt_lmb3g=='
+        $.activeId = 'MaiSqG4Q1P3lVFK0Hud3NA=='
     }
     console.log("开团ID:", $.activeId)
     let url = `https://m.jingxi.com/dreamfactory/tuan/QueryActiveConfig?activeId=${$.activeId}&tuanId=&_time=1623214804148&_stk=_time%2CactiveId%2CtuanId&_ste=1&sceneval=2&g_login_type=1&callback=jsonpCBKA&g_ty=ls`

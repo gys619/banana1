@@ -1,6 +1,10 @@
 /*
 https://lzkj-isv.isvjcloud.com/wxgame/activity/8530275?activityId=
 
+TG https://t.me/duckjobs
+
+不能并发
+
 JD_CART_REMOVESIZE || 20; // 运行一次取消多全部已关注的商品。数字0表示不取关任何商品
 JD_CART_REMOVEALL || true;    //是否清空，如果为false，则上面设置了多少就只删除多少条
 
@@ -9,7 +13,7 @@ const $ = new Env('加购物车抽奖');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '' ,isPush = false;
-let activityIdList = ['5e733f46fd1b4d7db9ee3fbe345542ef', '0d609439062847e8a7b79db2968ba9d5', 'cb2f397a60994ae5b6f05913a3fd6384', '7ba1c4420f094931a90508bda10d92b1', '21a824f2b2c149528667179ed08a334a', 'ba0a7dcabdab4ae2af6aa3912c8f3f12', '5113f35b6f2a4c08bd413eb8573ebead', '1900f76d7d37467ca2eaf17992e67e57', '4b83932e9860452f8d102c3dae21a8ea', '49f8d4ba5be245bfa808ec98c0b9c95b', '29432360178c48bda065f6769e5ec1f4', 'aabfd610b86b482e81a513cb36d72af3', 'f728e93a6d694096845e80e6c537f852', 'c0c2a97214c7468c936220d01d74e556', 'de50659b20bc4dfe957d473ce799f22c', 'a9635959cc8a4672bd5ae5e4facf2194', '199c985626ff4cd2b8095e73376485ac', '82b2e9dd9e8f405c8c7b2cb4d6c412a9', '1b29dceb483541f68ce56c0c24aef172']
+let activityIdList = ['bdacfcba95964d04b3e1cf0cb0e186dd', '6cb3e11671af40f9a8ab461d68995583', '892cb7fbfb844d0098e7f11d69bad6bd', 'cb052bef22334cd29089a39a52dfa1ed', '51de2cce01754429a6a0bc10c369ad8a', 'a1e3fb99b82345738aee4cc907224232', '6818e794a8d143328a819e0a22aced29']
 let lz_cookie = {}
 
 if (process.env.ACTIVITY_ID && process.env.ACTIVITY_ID != "") {
@@ -75,25 +79,25 @@ $.keywordsNum = 0;
                 $.drawInfoName = false
                 $.getPrize = null;
                 await addCart();
-                // if($.drawInfoName === false || $.getPrize === null){
-                //     break
-                // } else if($.getPrize != null && !$.getPrize.includes("京豆")){
-                //     break
-                // }
-                // await $.wait(3000)
-                // await requireConfig();
-                // do {
-                //     await getCart_xh();
-                //     $.keywordsNum = 0
-                //     if($.beforeRemove !== "0"){
-                //         await cartFilter_xh(venderCart);
-                //         if(parseInt($.beforeRemove) !== $.keywordsNum) await removeCart();
-                //         else {
-                //             console.log('由于购物车内的商品均包含关键字，本次执行将不删除购物车数据')
-                //             break;
-                //         }
-                //     } else break;
-                // } while(isRemoveAll && $.keywordsNum !== $.beforeRemove)
+                if($.drawInfoName === false || $.getPrize === null){
+                    break
+                } else if($.getPrize != null && !$.getPrize.includes("京豆")){
+                    break
+                }
+                await $.wait(2000)
+                await requireConfig();
+                do {
+                    await getCart_xh();
+                    $.keywordsNum = 0
+                    if($.beforeRemove !== "0"){
+                        await cartFilter_xh(venderCart);
+                        if(parseInt($.beforeRemove) !== $.keywordsNum) await removeCart();
+                        else {
+                            console.log('由于购物车内的商品均包含关键字，本次执行将不删除购物车数据')
+                            break;
+                        }
+                    } else break;
+                } while(isRemoveAll && $.keywordsNum !== $.beforeRemove)
                 if ($.bean > 0) {
                     message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
                 }
@@ -133,11 +137,11 @@ async function addCart() {
             if ($.activityContent.drawInfo.name.includes("京豆")) {
                 $.log("-> 加入购物车")
                 for(let i in $.activityContent.cpvos){
-                    await $.wait(3000)
+                    await $.wait(1000)
                     await task('addCart', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&productId=${$.activityContent.cpvos[i].skuId}`)
                 }
                 $.log("-> 抽奖")
-                await $.wait(3000)
+                await $.wait(1000)
                 await task('getPrize', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`)
             } else {
                 $.log("未能成功获取到活动信息")
@@ -355,6 +359,10 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 
 }
+function strToJson(str){
+	var json = eval('(' + str + ')');
+	return json;
+}
 function requireConfig(){
     return new Promise(resolve => {
         if($.isNode() && process.env.JD_CART){
@@ -377,7 +385,7 @@ function getCart_xh(){
         }
         $.get(option, async(err, resp, data) => {
             try{
-                data = JSON.parse(getSubstr(data, "window.cartData = ", "window._PFM_TIMING"));
+                data = strToJson(getSubstr(data, "window.cartData = ", "window._PFM_TIMING"));
                 $.areaId = data.areaId;   // locationId的传值
                 $.traceId = data.traceId; // traceid的传值
                 venderCart = data.cart.venderCart;

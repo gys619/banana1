@@ -2,7 +2,7 @@
 组队分豆-安佳 [jd_anjia.js]
 
 ————————————————
-入口：[组队分豆-安佳 (https://lzkjdz-isv.isvjcloud.com/pool/captain/12318?activityId=e7c37c2548284d1eb7920079fbf6be68&shareUuid=9ee33dadd1be4ba8a5fa4875f800b617)]
+入口：[组队分豆-安佳 (https://lzkjdz-isv.isvjcloud.com/pool/captain/15935?activityId=ecaf4a23237e403896efdc9507a31ea2&shareUuid=f653a4464fb040fb801994284753a983)]
 IOS等用户直接用NobyDa的jd cookie
 cron "1 0,7,12 * * *" script-path=jd_anjia.js,tag=组队分豆-安佳
 */
@@ -30,7 +30,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    console.log(`若之前做过该活动，则无法重复入队。\n入口:\nhttps://lzkjdz-isv.isvjcloud.com/pool/captain/12318?activityId=e7c37c2548284d1eb7920079fbf6be68&shareUuid=9ee33dadd1be4ba8a5fa4875f800b617`)
+    console.log(`若之前做过该活动，则无法重复入队。\n入口:\nhttps://lzkjdz-isv.isvjcloud.com/pool/captain/15935?activityId=ecaf4a23237e403896efdc9507a31ea2&shareUuid=f653a4464fb040fb801994284753a983`)
 
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
@@ -50,10 +50,10 @@ if ($.isNode()) {
                 }
                 continue
             }
-            authorCodeList = ['9ee33dadd1be4ba8a5fa4875f800b617']
+            authorCodeList = ['f653a4464fb040fb801994284753a983','06743944ef0f43a68eafe9a154173a4f','0b234d5900094ccaad1ee2f4a78c3e9c']
             $.bean = 0;
             $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
-            $.activityId = 'e7c37c2548284d1eb7920079fbf6be68'
+            $.activityId = 'ecaf4a23237e403896efdc9507a31ea2'
             $.activityShopId = '1000014486'
             $.randomNum = random(1000000, 9999999)
             $.activityUrl = `https://lzkjdz-isv.isvjcloud.com/pool/captain/${$.randomNum}?activityId=${$.activityId}&signUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
@@ -93,7 +93,7 @@ async function anjia() {
         await getMyPing();
         if ($.secretPin) {
             console.log('加入队伍 -> ' + $.authorCode);
-            await task('common/accessLogWithAD', `venderId=${$.activityShopId}&code=46&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=null`, 1);
+            await task('common/accessLogWithAD', `venderId=${$.activityShopId}&code=99&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=null`, 1);
             await $.wait(2000)
             await task('activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&signUuid=${encodeURIComponent($.authorCode)}`)
             if ($.activityContent) {
@@ -105,8 +105,8 @@ async function anjia() {
                     if (!$.activityContent.openCard) {
                         $.log("加入会员")
                         await $.wait(2000)
-                        await getShopOpenCardInfo({ "venderId": "1000014486", "channel": 7005 }, 1000014486)
-                        await bindWithVender({ "venderId": "1000014486", "shopId": "1000010410", "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": 2006823, "channel": 7005 }, $.activityShopId)
+                        await getShopOpenCardInfo({ "venderId": "1000014486", "channel": 401 }, 1000014486)
+                        await bindWithVender({ "venderId": "1000014486", "shopId": "1000014486", "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": 3282318, "channel": 401 }, 100000000000085)
                     }
                     await $.wait(2000)
                     await task('activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&signUuid=${encodeURIComponent($.authorCode)}`, 0, 1)

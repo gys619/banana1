@@ -61,7 +61,6 @@ let activityCookie =''
   $.actId = '7cc0fa6c45b8450_220108'
   $.MixNicks = ''
   $.inviteNick = 'k1Nobb+P0er+C2sysxnx/P2KELO9izRVpwCyqu0eqVZ5aW7RHzlMobrzJ/e9r/uf'
-  console.log(`自行测试有水无水，无水禁用`)
   console.log(`活动地址:https://3.cn/104c6-0Gl`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
