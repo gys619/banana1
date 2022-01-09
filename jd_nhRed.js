@@ -1,21 +1,25 @@
 /*
-年货节红包
-cron 0 0,20 * * *  https://raw.githubusercontent.com/11111120/scripts/master/gua_nhjRed.js
-整点跑 红包几率大点
+年货节火力值
+脚本兼容: Node.js
+============Quantumultx===============
+[task_local]
+#年货节火力值
+0 0,23,12 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_nhjred.js, tag=年货节火力值, enabled=true
 
-https://u.jd.com/SCLyQi4
-跳转到app 可查看助力情况
+================Loon==============
+[Script]
+cron "0 0,23,12 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/d_nhjred.js,tag=年货节火力值
 
-变量：gua_nhjRed_rebateCode，若需要返利给自己，请自己修改环境变量[gua_nhjRed_rebateCodes]
-SCLyQi4换成自己的返利
-export gua_nhjRed_rebateCode="SCLyQi4"
+===============Surge=================
+年货节火力值 = type=cron,cronexp="0 0,23,12 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/d_nhjred.js
+
+============小火箭=========
+年货节火力值 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/d_nhjred.js, cronexpr="0 0,23,12 * * *", timeout=3600, enable=true
 */
-
-let rebateCodes = ''
-
-const $ = new Env('年货节红包');
+const $ = new Env('年货节火力值');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
+let rebateCodes = 'SKib2Yf'
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '';
@@ -27,7 +31,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-rebateCodes = $.isNode() ? (process.env.gua_nhjRed_rebateCodes ? process.env.gua_nhjRed_rebateCodes : `${rebateCodes}`) : ($.getdata('gua_nhjRed_rebateCodes') ? $.getdata('gua_nhjRed_rebateCodes') : `${rebateCodes}`);
+rebateCodes = $.isNode() ? (process.env.jd_rebateCode ? process.env.jd_rebateCode : `${rebateCodes}`) : ($.getdata('jd_rebateCode') ? $.getdata('jd_rebateCode') : `${rebateCodes}`);
 rebateCode = rebateCodes
 message = ''
 newCookie = ''
@@ -47,10 +51,10 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
   if (nowTime > new Date(activeEndTime).getTime()) {
     //活动结束后弹窗提醒
     $.msg($.name, '活动已结束', `请删除此脚本\n咱江湖再见`);
-    $.setdata('','gua_JDnhjRed')
+    $.setdata('','jd_JDnhjRed')
     return
   }
-  $.shareCodeArr = $.getdata('gua_JDnhjRed') || {};
+  $.shareCodeArr = $.getdata('jd_JDnhjRed') || {};
   // $.shareCodeArr = {};
   let pinUpdateTime = $.shareCodeArr["updateTime"] || ''
   $.shareCode = ''
@@ -60,11 +64,8 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
     $.shareCodeArr = {}
     $.shareCodeArr["flag"] = true
   }
-  const flCodeArr = ["SLI8zFT", "SIMHz54", "StIuUgG"];
   try{
     for (let i = 0; i < cookiesArr.length; i++) {
-      rebateCode = rebateCodes ? rebateCodes : flCodeArr[Math.floor(Math.random() * flCodeArr.length)];
-      // console.log(rebateCode)
       cookie = cookiesArr[i];
       if (cookie) {
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -78,7 +79,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
   }catch(e){
     console.log(e)
   }
-  if(Object.getOwnPropertyNames($.shareCodeArr).length > 0 && $.shareCodeArr["updateTime"] != pinUpdateTime) $.setdata($.shareCodeArr,'gua_JDnhjRed')
+  if(Object.getOwnPropertyNames($.shareCodeArr).length > 0 && $.shareCodeArr["updateTime"] != pinUpdateTime) $.setdata($.shareCodeArr,'jd_JDnhjRed')
   if(Object.getOwnPropertyNames($.shareCodeArr).length > 0){
     for(let s in $.shareCodeArr || {}){
       if(s === 'flag' || s === 'updateTime') continue
@@ -88,8 +89,6 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
   
   for (let i = 0; i < cookiesArr.length; i++) {
     if($.endFlag) break
-    rebateCode = rebateCodes ? rebateCodes : flCodeArr[Math.floor(Math.random() * flCodeArr.length)];
-    // console.log(rebateCode)
     cookie = cookiesArr[i];
     if (cookie) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -101,11 +100,11 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       if($.endFlag) break
     }
   }
-  if(Object.getOwnPropertyNames($.shareCodeArr).length > 0 && $.shareCodeArr["updateTime"] != pinUpdateTime) $.setdata($.shareCodeArr,'gua_JDnhjRed')
+  if(Object.getOwnPropertyNames($.shareCodeArr).length > 0 && $.shareCodeArr["updateTime"] != pinUpdateTime) $.setdata($.shareCodeArr,'jd_JDnhjRed')
   if(message){
-    $.msg($.name, ``, `${message}\nhttps://u.jd.com/\n\n跳转到app 可查看助力情况`);
+    $.msg($.name, ``, `${message}\nhttps://u.jd.com/SKib2Yf\n\n跳转到app 可查看助力情况`);
     if ($.isNode()){
-      // await notify.sendNotify(`${$.name}`, `${message}\n\nhttps://u.jd.com/\n跳转到app 可查看助力情况`);
+      // await notify.sendNotify(`${$.name}`, `${message}\n\nhttps://u.jd.com/SKib2Yf\n跳转到app 可查看助力情况`);
     }
   }
 })()
