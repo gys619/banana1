@@ -1,9 +1,24 @@
 /*
-京享红包
-0 0,20,21 * * * jd_redEnvelope.js
+京东领红包
 添加环境变量FLCODE 如需自己返利，请填写该变量（https://u.jd.com/后面的英文）
+脚本兼容: Node.js
+============Quantumultx===============
+[task_local]
+#京东领红包
+0 0,12,20,21 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_redEnvelope.js, tag=京东领红包, enabled=true
+
+================Loon==============
+[Script]
+cron "0 0,12,20,21 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_redEnvelope.js,tag=京东领红包
+
+===============Surge=================
+京东领红包 = type=cron,cronexp="0 0,12,20,21 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_redEnvelope.js
+
+============小火箭=========
+京东领红包 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_redEnvelope.js, cronexpr="0 0,12,20,21 * * *", timeout=3600, enable=true
+
 */
-const $ = new Env("京享红包");
+const $ = new Env("京东领红包");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 let cookiesArr = [];
 if ($.isNode()) {
@@ -16,7 +31,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
 let cookie = "";
-$.shareCode = "DH50c";
+$.shareCode = "iHBMh";
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取", "https://bean.m.jd.com/bean/signIndex.action", { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
@@ -54,7 +69,7 @@ async function main() {
   $.UA = `jdapp;iPhone;10.2.0;13.1.2;${randomString(40)};M/5.0;network/wifi;ADID/;model/iPhone8,1;addressid/2308460622;appBuild/167853;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1;`;
   $.max = false;
   $.hotFlag = false;
-  const flCodeArr = ["SIMHz54", "StIuUgG", "SLI8zFT"];
+  const flCodeArr = ["SKib2Yf", "SwIzrUi", "SdIbtXo"];
   let flCode = flCodeArr[Math.floor(Math.random() * flCodeArr.length)];
   let FLCODE = $.isNode() ? process.env.JD_FLCODE ? process.env.JD_FLCODE : '' : $.getdata("JD_FLCODE") ? $.getdata("JD_FLCODE") : ''
   if (FLCODE) {
