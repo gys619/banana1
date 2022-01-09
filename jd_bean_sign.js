@@ -263,7 +263,7 @@ function downloadUrl(url = 'https://raw.githubusercontent.com/NobyDa/Script/mast
         if (err) {
           // console.log(`${JSON.stringify(err)}`)
           console.log(`检测到您当前网络环境不能访问外网,将使用jsdelivr CDN下载JD_DailyBonus.js文件`);
-          await $.http.get({url: `https://purge.jsdelivr.net/gh/NobyDa/Script@master/JD-DailyBonus/JD_DailyBonus.js`, timeout: 10000}).then((resp) => {
+          await //$.http.get({url: `https://purge.jsdelivr.net/gh/NobyDa/Script@master/JD-DailyBonus/JD_DailyBonus.js`, timeout: 10000}).then((resp) => {
             if (resp.statusCode === 200) {
               let { body } = resp;
               body = JSON.parse(body);

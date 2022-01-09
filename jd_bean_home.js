@@ -43,7 +43,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
   $.newShareCodes = []
   $.authorCode = await getAuthorShareCode('')
   if (!$.authorCode) {
-    $.http.get({url: ''}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    //$.http.get({url: ''}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
     $.authorCode = await getAuthorShareCode('') || []
   }

@@ -220,7 +220,7 @@ async function getToken() {
       //   $.setdata(`${count}`, 'countFlag');
       //   $.msg($.name, '更新Token: 成功🎉', ``);
       //   console.log(`开始上传Token，${LKYLToken}\n`)
-      //   await $.http.get({url: `http://jd.turinglabs.net/api/v2/jd/joy/create/${LKYLToken}/`}).then((resp) => {
+      //   await //$.http.get({url: `http://jd.turinglabs.net/api/v2/jd/joy/create/${LKYLToken}/`}).then((resp) => {
       //     if (resp.statusCode === 200) {
       //       let { body } = resp;
       //       console.log(`Token提交结果:${body}\n`)

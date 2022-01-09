@@ -31,7 +31,7 @@ async function main() {
   if ($.body) {
     eval($.body);
   }
-  $.http.get({url: `https://purge.jsdelivr.net/gh/yangtingxiao/QuantumultX@master/scripts/jd/jd_lotteryMachine.js`}).then((resp) => {
+  //$.http.get({url: `https://purge.jsdelivr.net/gh/yangtingxiao/QuantumultX@master/scripts/jd/jd_lotteryMachine.js`}).then((resp) => {
     if (resp.statusCode === 200) {
       let { body } = resp;
       body = JSON.parse(body);

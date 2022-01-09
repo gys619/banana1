@@ -48,7 +48,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
   }
   $.authorTuanList = await getAuthorShareCode('');
   if (!$.authorTuanList) {
-    $.http.get({url: ''}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    //$.http.get({url: ''}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
     $.authorTuanList = await getAuthorShareCode('') || [];
   }
@@ -731,7 +731,7 @@ function getAuthorShareCode(url) {
   })
 }
 async function getRandomCode() {
-  await $.http.get({url: `http:///${randomCount}`, timeout: 10000}).then(async (resp) => {
+  await //$.http.get({url: `http:///${randomCount}`, timeout: 10000}).then(async (resp) => {
     if (resp.statusCode === 200) {
       try {
         let { body } = resp;

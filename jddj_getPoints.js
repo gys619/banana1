@@ -120,7 +120,7 @@ async function userinfo() {
     return new Promise(async resolve => {
         try {
             let option = urlTask('https://daojia.jd.com/client?channel=wx_xcx&platform=5.0.0&platCode=mini&mpChannel=wx_xcx&appVersion=8.10.5&xcxVersion=8.10.1&appName=paidaojia&functionId=mine%2FgetUserAccountInfo&isForbiddenDialog=false&isNeedDealError=false&isNeedDealLogin=false&body=%7B%22cityId%22%3A' + cityid + '%2C%22fromSource%22%3A%225%22%7D&afsImg=&lat_pos=' + lat + '&lng_pos=' + lng + '&lat=' + lat + '&lng=' + lng + '&city_id=' + cityid + '&deviceToken=' + deviceid + '&deviceId=' + deviceid + '&deviceModel=appmodel&business=&traceId=' + deviceid + '1628044517506&channelCode=', '');
-            $.http.get(option).then(response => {
+            //$.http.get(option).then(response => {
                 //console.log(response.body);
                 let data = JSON.parse(response.body);
                 if (data.code == 0) {
@@ -204,7 +204,7 @@ async function taskLoginUrl(thiscookie) {
                     }
                 };
                 let ckstr = '';
-                await $.http.get(option).then(async response => {
+                await //$.http.get(option).then(async response => {
                     //console.log(response);
                     let body = JSON.parse(response.body);
                     if (body.code == 0) {

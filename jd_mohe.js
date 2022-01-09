@@ -47,7 +47,7 @@ $.shareId = [];
       '活动地址: https://blindbox5g.jd.com\n' +
       '活动时间：2021-8-2到2021-10-29\n' +
       '更新时间：2021-8-8 19:00');
-  $.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+  //$.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
   await $.wait(1000)
   await updateShareCodesCDN('')
   await $.wait(1000)
