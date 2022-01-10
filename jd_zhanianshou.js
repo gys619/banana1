@@ -1,8 +1,3 @@
-if (!["true"].includes(process.env.JD_ZNS)) {
-    console.log("避免自动运行请设置环境变量JD_ZNS为\"true\"来运行本脚本")
-    return
-}
-
 /*
 
 脚本有问题，凑活用
@@ -28,7 +23,7 @@ if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
     })
-    if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
+    if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => { };
 } else {
     cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
@@ -38,14 +33,24 @@ let inviteCodes = [
 ]
 $.shareCodesArr = [];
 
-!(async() => {
+!(async () => {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
 
     $.inviteIdCodesArr = {}
+    var pins = process.env.NIAN_PINS+""
+    if(!pins){
+        console.log("本脚本不支持跑所有账号，因为没手动开启活动就跑本脚本招黑，所以需要设置环境变量以跑指定账号，参见https://t.me/kczz2021")
+    }else{
+        console.log("如果只显示助力码，说明已经跑过脚本，或者黑了。")
+    }
+    
     for (let i = 0; i < cookiesArr.length && true; i++) {
+        if (pins.indexOf(/pt_pin=([^;\s]+)/.exec(cookiesArr[i])[1]) == -1) {
+            continue
+        }
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -54,6 +59,9 @@ $.shareCodesArr = [];
         }
     }
     for (let i = 0; i < cookiesArr.length; i++) {
+        if (pins.indexOf(/pt_pin=([^;\s]+)/.exec(cookiesArr[i])[1]) == -1) {
+            continue
+        }
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
             $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -114,7 +122,7 @@ $.shareCodesArr = [];
                                 }
 
                                 for (var o = 0; o < tmp.length; o++) {
-                                    console.log(`\n\n ${tmp[o].title?tmp[o].title:tmp[o].shopName}`)
+                                    console.log(`\n\n ${tmp[o].title ? tmp[o].title : tmp[o].shopName}`)
                                     if (tmp[o].status == 1) {
                                         conti = true
                                         await tigernian_collectScore(tmp[o].taskToken, task.taskId)
@@ -157,6 +165,9 @@ $.shareCodesArr = [];
                                 }
                                 break
                             case 21:
+                                if (process.env.FS_LEVEL != 'card') {
+                                    console.log('默认不开卡，设置FS_LEVEL为card开卡')
+                                } else {
                                     for (var o = 0; o < task.brandMemberVos.length; o++) {
                                         if (task.brandMemberVos[o].status == 1) {
                                             console.log(`\n\n ${task.brandMemberVos[o].title}`)
@@ -167,6 +178,7 @@ $.shareCodesArr = [];
                                         }
 
                                     }
+                                }
                         }
 
                     }
@@ -187,7 +199,7 @@ $.shareCodesArr = [];
         }
     }
 })()
-.catch((e) => {
+    .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
     })
     .finally(() => {
@@ -198,8 +210,8 @@ function transform(str) {
     var REQUEST = new Object,
         data = str.slice(str.indexOf("?") + 1, str.length - 1),
         aParams = data.substr(1).split("&");
-    for (i = 0; i < aParams.length; i++) {　　
-        var aParam = aParams[i].split("=");　　
+    for (i = 0; i < aParams.length; i++) {
+        var aParam = aParams[i].split("=");
         REQUEST[aParam[0]] = aParam[1]
     }
     return REQUEST
@@ -208,7 +220,7 @@ function transform(str) {
 function get_secretp() {
     let body = {};
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_getHomeData", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_getHomeData", body), async (err, resp, data) => {
             //console.log(data)
             try {
                 if (err) {
@@ -221,11 +233,11 @@ function get_secretp() {
                             if (data.data && data.data.bizCode === 0) {
                                 secretp = data.data.result.homeMainInfo.secretp
                                 console.log(secretp)
-                          }
-                        } else 
-                        if (data.code != 0) {
-                            //console.log(`\n\nsecretp失败:${JSON.stringify(data)}\n`)
-                        }
+                            }
+                        } else
+                            if (data.code != 0) {
+                                //console.log(`\n\nsecretp失败:${JSON.stringify(data)}\n`)
+                            }
                     }
                 }
             } catch (e) {
@@ -240,7 +252,7 @@ function get_secretp() {
 function tigernian_sign() {
     let body = { "ss": { "extraData": { "log": "", "sceneid": "ZNShPageh5" }, "secretp": secretp, "random": randomString(6) } };
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_sign", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_sign", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -274,7 +286,7 @@ function tigernian_sign() {
 function tigernian_raise() {
     let body = { "ss": { "extraData": { "log": "", "sceneid": "ZNShPageh5" }, "secretp": secretp, "random": randomString(6) } };
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_raise", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_raise", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -308,7 +320,7 @@ function tigernian_raise() {
 function tigernian_collectAtuoScore() {
     let body = { "ss": { "extraData": { "log": "", "sceneid": "ZNShPageh5" }, "secretp": secretp, "random": randomString(6) } };
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_collectAtuoScore", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_collectAtuoScore", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -338,7 +350,7 @@ function tigernian_collectAtuoScore() {
 function tigernian_getTaskDetail() {
     let body = {};
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_getTaskDetail", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_getTaskDetail", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -373,7 +385,7 @@ function tigernian_collectScore(taskToken, taskId) {
     let body = { "taskId": taskId, "taskToken": taskToken, "actionType": 1, "ss": { "extraData": { "log": "", "sceneid": "ZNShPageh5" }, "secretp": secretp, "random": randomString(6) } };
 
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_collectScore", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_collectScore", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -403,7 +415,7 @@ function qryViewkitCallbackResult(taskToken) {
     let body = { "dataSource": "newshortAward", "method": "getTaskAward", "reqParams": `{\"taskToken\":"${taskToken}"}`, "sdkVersion": "1.0.0", "clientLanguage": "zh", "onlyTimeId": new Date().getTime(), "riskParam": { "platform": "3", "orgType": "2", "openId": "-1", "pageClickKey": "Babel_VKCoupon", "eid": "", "fp": "-1", "shshshfp": "", "shshshfpa": "", "shshshfpb": "", "childActivityUrl": "", "userArea": "-1", "client": "", "clientVersion": "", "uuid": "", "osVersion": "", "brand": "", "model": "", "networkType": "", "jda": "-1" } };
 
     return new Promise((resolve) => {
-        $.post(taskPostUrl2("qryViewkitCallbackResult", body), async(err, resp, data) => {
+        $.post(taskPostUrl2("qryViewkitCallbackResult", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -431,7 +443,7 @@ function tigernian_getBadgeAward(taskToken) {
     let body = { "awardToken": taskToken };
 
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_getBadgeAward", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_getBadgeAward", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -470,7 +482,7 @@ function tigernian_getFeedDetail(taskId) {
     let body = { "taskId": taskId.toString() };
 
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_getFeedDetail", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_getFeedDetail", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -500,7 +512,7 @@ function tigernian_getFeedDetail2(taskId) {
     let body = { "taskId": taskId.toString() };
 
     return new Promise((resolve) => {
-        $.post(taskPostUrl("tigernian_getFeedDetail", body), async(err, resp, data) => {
+        $.post(taskPostUrl("tigernian_getFeedDetail", body), async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -542,7 +554,7 @@ function join(venderId, channel, shopId) {
                 'Referer': `https://shopmember.m.jd.com/shopcard/?venderId=${venderId}&shopId=${venderId}&venderType=5&channel=401&returnUrl=https://lzdz1-isv.isvjcloud.com/dingzhi/personal/care/activity/4540555?activityId=dz210768869313`,
                 'Accept-Encoding': 'gzip, deflate, br'
             }
-        }, async(err, resp, data) => {
+        }, async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
@@ -669,7 +681,7 @@ function Env(t, e) {
         getjson(t, e) {
             let s = e;
             const i = this.getdata(t);
-            if (i) try { s = JSON.parse(this.getdata(t)) } catch {}
+            if (i) try { s = JSON.parse(this.getdata(t)) } catch { }
             return s
         }
         setjson(t, e) { try { return this.setdata(JSON.stringify(t), e) } catch { return !1 } }
@@ -741,8 +753,8 @@ function Env(t, e) {
         getval(t) { return this.isSurge() || this.isLoon() ? $persistentStore.read(t) : this.isQuanX() ? $prefs.valueForKey(t) : this.isNode() ? (this.data = this.loaddata(), this.data[t]) : this.data && this.data[t] || null }
         setval(t, e) { return this.isSurge() || this.isLoon() ? $persistentStore.write(t, e) : this.isQuanX() ? $prefs.setValueForKey(t, e) : this.isNode() ? (this.data = this.loaddata(), this.data[e] = t, this.writedata(), !0) : this.data && this.data[e] || null }
         initGotEnv(t) { this.got = this.got ? this.got : require("got"), this.cktough = this.cktough ? this.cktough : require("tough-cookie"), this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar, t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar)) }
-        get(t, e = (() => {})) {
-            t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.get(t, (t, s, i) => {!t && s && (s.body = i, s.statusCode = s.status), e(t, s, i) })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, { hints: !1 })), $task.fetch(t).then(t => {
+        get(t, e = (() => { })) {
+            t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.get(t, (t, s, i) => { !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i) })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, { hints: !1 })), $task.fetch(t).then(t => {
                 const { statusCode: s, statusCode: i, headers: r, body: o } = t;
                 e(null, { status: s, statusCode: i, headers: r, body: o }, o)
             }, t => e(t))) : this.isNode() && (this.initGotEnv(t), this.got(t).on("redirect", (t, e) => {
@@ -760,8 +772,8 @@ function Env(t, e) {
                 e(s, i, i && i.body)
             }))
         }
-        post(t, e = (() => {})) {
-            if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.post(t, (t, s, i) => {!t && s && (s.body = i, s.statusCode = s.status), e(t, s, i) });
+        post(t, e = (() => { })) {
+            if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.post(t, (t, s, i) => { !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i) });
             else if (this.isQuanX()) t.method = "POST", this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, { hints: !1 })), $task.fetch(t).then(t => {
                 const { statusCode: s, statusCode: i, headers: r, body: o } = t;
                 e(null, { status: s, statusCode: i, headers: r, body: o }, o)
