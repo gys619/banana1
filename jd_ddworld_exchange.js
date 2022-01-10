@@ -1,25 +1,12 @@
-/*
+
+/**
 东东世界兑换
-活动入口：https://3.cn/102TmB-4K
-https://raw.githubusercontent.com/Annyoo2021/scripts/main/jd_ddworld_exchange.js
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
-[task_local]
-#东东世界兑换
-2 0,17 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_ddworld.js, tag=东东世界兑换, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
-================Loon==============
-[Script]
-cron "2 0,17 * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_ddworld.js,tag=东东世界兑换
-===============Surge=================
-东东世界兑换 = type=cron,cronexp="2 0,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_ddworld.js
-============小火箭=========
-东东世界兑换 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_ddworld.js, cronexpr="2 0,17 * * *", timeout=3600, enable=true
- */
+cron 0 0 * * * jd_ddworld_exchange.js
+*/
 const $ = new Env("东东世界兑换");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
-let cookiesArr = [], cookie = '',UUID="",UA=""
+let cookiesArr = [], cookie = ''
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -73,11 +60,12 @@ async function main() {
             await task('get_exchange');
             if (!$.hotFlag) {
                 if ($.exchangeList) {
-                    $.exchangeList = $.exchangeList.filter((x) => !x.name.includes('红包'))
-                    for (const vo of $.exchangeList.reverse()) {
-                        $.log(`去兑换：${vo.name}`)
-                        await taskPost('do_exchange', `id=${vo.id}`);
-                        await $.wait(5000)
+                    for (const vo of $.exchangeList.sort((a,b)=> b.coins-a.coins)) {
+                        if (!vo.name.match(/红包\d*/)) {
+                            $.log(`去兑换：${vo.name}`)
+                            await taskPost('do_exchange', `id=${vo.id}`);
+                            await $.wait(3000)
+                        }
                     }
                 } else {
                     $.log("没有获取到兑换列表！")
@@ -137,9 +125,8 @@ function taskPost(function_id, body) {
                                 if (data.prize) {
                                     console.log(`兑换成功：数量${data.prize.setting.beans_count}`)
                                 } else {
-                                    console.log(JSON.stringify(data["message"]))
+                                    console.log(JSON.stringify(data))
                                 }
-                                console.log(``)
                                 break;
                             default:
                                 $.log(JSON.stringify(data))
@@ -169,7 +156,7 @@ function taskPostUrl(function_id, body) {
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/x-www-form-urlencoded",
             "Origin": "https://ddsj-dz.isvjcloud.com",
-            "User-Agent": $.UA,
+            "User-Agent": UA,
             "Connection": "keep-alive",
             "Referer": "https://ddsj-dz.isvjcloud.com/dd-world/logined_jd/",
         }
@@ -187,7 +174,7 @@ function taskUrl(function_id) {
             "Accept": "application/json, text/plain, */*",
             "Referer": "https://ddsj-dz.isvjcloud.com/dd-world",
             "Accept-Language": "zh-cn",
-            "User-Agent": $.UA,
+            "User-Agent": UA,
             "Authorization": `${$.tokenType} ${$.accessToken}`,
         }
     }

@@ -84,11 +84,11 @@ if ($.isNode()) {
       await $.wait(2000);
     }
   }
-  let res = await getAuthorShareCode('')
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/cfd.json')
   if (!res) {
-    //$.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    //$.http.get({url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/cfd.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('')
+    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/cfd.json')
   }
   $.strMyShareIds = [...(res && res.shareId || [])]
   await shareCodesFormat()
@@ -493,7 +493,6 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的当天有效`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n`);
             $.shareCodes.push(strMyShareId)
-            await uploadShareCode(strMyShareId)
           }
           $.info = {
             ...$.info,
@@ -639,33 +638,10 @@ function showMsg() {
     resolve();
   });
 }
-function uploadShareCode(code) {
-  return new Promise(async resolve => {
-    $.get({url: `http://`+process.env.JDSHAREURL+`/api/runTimes?activityId=cfdmoon&sharecode=${code}`, timeout: 10000}, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(JSON.stringify(err))
-          console.log(`${$.name} uploadShareCode API请求失败，请检查网路重试`)
-        } else {
-          if (data) {
-            if (data === 'ok') {
-              console.log(`已自动提交助力码\n`)
-            }
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
-    await $.wait(10000);
-    resolve()
-  })
-}
+
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `http://`+process.env.JDSHAREURL+`/api/cfdmoon/20`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://111111/cfd`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
@@ -806,7 +782,7 @@ async function requestAlgo() {
       "expandParams": ""
     })
   }
-  new Promise(async resolve => {
+  return new Promise(async resolve => {
     $.post(options, (err, resp, data) => {
       try {
         if (err) {

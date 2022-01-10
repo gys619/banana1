@@ -308,7 +308,7 @@ function submitCode(shareCode) {
 function readShareCode() {
   return new Promise(async resolve => {
     $.get({
-      url: ``,
+      url: `http://www.11111114/jdcodes/getcode.php?type=jxlhb&num=30`,
       'timeout': 10000
     }, (err, resp, data) => {
       try {
