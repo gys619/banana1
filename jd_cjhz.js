@@ -130,7 +130,7 @@ async function main() {
                         $.itemName = $.doList.taskItemList[y].itemName;
                         console.log(`去浏览${$.itemName}`)
                         await apDoTask({ "taskId": $.allList[i].id, "taskType": $.allList[i].taskType, "channel": 4, "itemId": $.startList.itemId, "linkId": "Ll3Qb2mhCXSEWxruhv8qIw", "encryptPin": "7pcfSWHrAG9MKu3RKLl127VL5L4aIE1sZ1eRRdphpl8" })
-                        await $.wait(1000)
+                        await $.wait(2000)
                     }
                 } else return
             }
