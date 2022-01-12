@@ -73,7 +73,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
           }
           continue
         }
-        await receiveRedRain(id);
+        await queryRedRainTemplateNew(id)
       }
     }
   }
@@ -89,27 +89,71 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.done();
   })
 
-function receiveRedRain(actId) {
-  return new Promise(resolve => {
-    const body = { actId };
-    $.get(taskUrl('noahRedRainLottery', body), (err, resp, data) => {
+// 查询红包
+function queryRedRainTemplateNew(actId) {
+  const body = { "actId": actId };
+  return new Promise(async resolve => {
+    const options = {
+      url: `https://api.m.jd.com/client.action?appid=redrain-2021&functionId=queryRedRainTemplateNew&client=wh5&clientVersion=1.0.0&body=${encodeURIComponent(JSON.stringify(body))}&_=${(new Date).getTime()}`,
+      headers: {
+        Host: "api.m.jd.com",
+        origin: 'https://h5.m.jd.com/',
+        Accept: "*/*",
+        "Accept-Language": "zh-cn",
+        "Accept-Encoding": "gzip, deflate, br",
+        Cookie: cookie,
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; WLZ-AN00 Build/HUAWEIWLZ-AN00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/89.0.4389.72 MQQBrowser/6.2 TBS/045811 Mobile Safari/537.36 MMWEBID/2874 MicroMessenger/8.0.15.2020(0x28000F39) Process/tools WeChat/arm64 Weixin NetType/4G Language/zh_CN ABI/arm64",
+        "Referer": `https://h5.m.jd.com/`
+      }
+    }
+    $.get(options, async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`queryRedRainTemplateNew api请求失败，请检查网路重试`)
         } else {
-          if (safeGet(data)) {
+          if (data) {
             data = JSON.parse(data);
-            if (data.subCode === '0') {
-              console.log(`领取成功，获得${JSON.stringify(data.lotteryResult)}`)
-              // message+= `领取成功，获得${JSON.stringify(data.lotteryResult)}\n`
-              message += `领取成功，获得 ${(data.lotteryResult.jPeasList[0].quantity)}京豆`
-              allMessage += `京东账号${$.index}${$.nickName || $.UserName}\n领取成功，获得 ${(data.lotteryResult.jPeasList[0].quantity)}京豆${$.index !== cookiesArr.length ? '\n\n' : ''}`;
-            } else if (data.subCode === '8') {
-              console.log(`领取失败：本场已领过`)
-              message += `领取失败，本场已领过`;
+            await doInteractiveAssignment(data.activityInfo.encryptProjectId, data.activityInfo.encryptAssignmentId);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+
+// 拆红包
+function doInteractiveAssignment(encryptProjectId, encryptAssignmentId) {
+  const body = { "encryptProjectId": encryptProjectId, "encryptAssignmentId": encryptAssignmentId, "completionFlag": true, "sourceCode": "acehby20210924" };
+  return new Promise(async resolve => {
+    const options = {
+      url: `https://api.m.jd.com/client.action?appid=redrain-2021&functionId=doInteractiveAssignment&client=wh5&clientVersion=1.0.0&body=${encodeURIComponent(JSON.stringify(body))}&_=${(new Date).getTime()}`,
+      headers: {
+        Host: "api.m.jd.com",
+        origin: 'https://h5.m.jd.com/',
+        Accept: "*/*",
+        "Accept-Language": "zh-cn",
+        "Accept-Encoding": "gzip, deflate, br",
+        Cookie: cookie,
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; WLZ-AN00 Build/HUAWEIWLZ-AN00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/89.0.4389.72 MQQBrowser/6.2 TBS/045811 Mobile Safari/537.36 MMWEBID/2874 MicroMessenger/8.0.15.2020(0x28000F39) Process/tools WeChat/arm64 Weixin NetType/4G Language/zh_CN ABI/arm64",
+        "Referer": `https://h5.m.jd.com/`
+      }
+    }
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`doInteractiveAssignment api请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            if (data.subCode == "0") {
+              console.log(`${data.rewardsInfo.successRewards[3][0].rewardName}个`);
             } else {
-              console.log(`返回信息：${JSON.stringify(data)}`)
+              console.log(data);
             }
           }
         }
@@ -121,6 +165,7 @@ function receiveRedRain(actId) {
     })
   })
 }
+
 
 
 function taskUrl(function_id, body = {}) {
