@@ -2,7 +2,6 @@
 /**
 东东世界兑换
 cron 0 0 * * * jd_ddworld_exchange.js
-TG频道：https://t.me/sheeplost
 */
 const $ = new Env("东东世界兑换");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -61,7 +60,7 @@ async function main() {
             await task('get_exchange');
             if (!$.hotFlag) {
                 if ($.exchangeList) {
-                    for (const vo of $.exchangeList.reverse()) {
+                    for (const vo of $.exchangeList.sort((a,b)=> b.coins-a.coins)) {
                         if (!vo.name.match(/红包\d*/)) {
                             $.log(`去兑换：${vo.name}`)
                             await taskPost('do_exchange', `id=${vo.id}`);
