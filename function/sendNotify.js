@@ -31,7 +31,7 @@ const querystring = require('querystring');
 const exec = require('child_process').exec;
 const $ = new Env();
 const timeout = 15000; //超时时间(单位毫秒)
-console.log("加载sendNotify，当前版本: 20220110");
+console.log("加载sendNotify，当前版本: 20220112");
 // =======================================go-cqhttp通知设置区域===========================================
 //gobot_url 填写请求地址http://127.0.0.1/send_private_msg
 //gobot_token 填写在go-cqhttp文件设置的访问密钥
@@ -1249,7 +1249,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By ht
         }
 
         if (ShowRemarkType != "1" && titleIndex3 == -1) {
-            console.log("正在处理账号Remark.....");
+            console.log("sendNotify正在处理账号Remark.....");
             //开始读取青龙变量列表
             const envs = await getEnvs();
             if (envs[0]) {
@@ -1481,19 +1481,19 @@ function getQLinfo(strCK, intcreated, strTimestamp, strRemark) {
                         if (TempRemarkList[j].length == 13) {
                             DateTimestamp = new Date(parseInt(TempRemarkList[j]));
                             //console.log(strPtPin + ": 获取登录时间成功:" + GetDateTime(DateTimestamp));
+                            //过期时间
+                            var UseDay = Math.ceil((DateToday.getTime() - DateCreated.getTime()) / 86400000);
+                            var LogoutDay = 30 - Math.ceil((DateToday.getTime() - DateTimestamp.getTime()) / 86400000);
+                            if (LogoutDay < 1) {
+                                strReturn = "\n【登录信息】总挂机" + UseDay + "天(账号即将到期，请重登续期)"
+                            } else {
+                                strReturn = "\n【登录信息】总挂机" + UseDay + "天(有效期约剩" + LogoutDay + "天)"
+                            }
                             break;
                         }
                     }
                 }
             }
-        }
-        //过期时间
-        var UseDay = Math.ceil((DateToday.getTime() - DateCreated.getTime()) / 86400000);
-        var LogoutDay = 30 - Math.ceil((DateToday.getTime() - DateTimestamp.getTime()) / 86400000);
-        if (LogoutDay < 1 ) {
-            strReturn = "\n【登录信息】已服务" + UseDay + "天(登录状态即将到期，请重新登录)"
-        } else {
-            strReturn = "\n【登录信息】已服务" + UseDay + "天(有效期约剩" + LogoutDay + "天)"
         }
 
     }
@@ -1601,9 +1601,9 @@ async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n\n本通知 B
                     }
                     console.log("处理完成，开始发送通知...");
                     desp = buildLastDesp(desp, author);
-					if (strAllNotify) {
-						desp = strAllNotify+"\n" + desp;
-					}
+                    if (strAllNotify) {
+                        desp = strAllNotify + "\n" + desp;
+                    }
                     await wxpusherNotifyByOne(text, desp, strsummary);
                 } else {
                     console.log("未查询到用户的Uid,取消一对一通知发送...");
