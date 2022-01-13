@@ -1,11 +1,6 @@
 /*
 #天天压岁钱
-33 0,13 * * * jd_ttysq.js
-
-#############
-PS:(不是玩代码的人，写代码有bug很正常！！)
-
-
+50 0,16 * * * jd_ttysq.js
  */
 const $ = new Env('天天压岁钱');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -34,13 +29,7 @@ const JD_API_HOST = `https://m.jingxi.com`;
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS
   //做任务
   console.log(`CK1 助力作者！CK1 助力作者！CK1 助力作者！`)
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/888888/updateTeam/main/shareCodes/ttysq.json')
-  if (!res) {
-    res = await getAuthorShareCode('https://raw.fastgit.org/888888/updateTeam/main/shareCodes/ttysq.json')
-  }
-  if (res) {
-    authorCode = res.sort(() => 0.5 - Math.random())
-  }
+  let res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/ttysq.json')
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
@@ -65,7 +54,7 @@ const JD_API_HOST = `https://m.jingxi.com`;
     }
   };
 
-    console.log(`要助力的助理码${JSON.stringify($.shareCoseList.length)}个\n`)
+    console.log(`要助力的助力码${JSON.stringify($.shareCoseList.length)}个\n`)
     //助力任务
     for (let i = 1; i < cookiesArr.length; i++) {
         $.canHelp = true
