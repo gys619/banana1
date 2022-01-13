@@ -1,6 +1,6 @@
 /*
 蛙老的会场红包脚本
-0 0,10,20 * * * jd_nhRedEnvelope.js
+0 0,20 * * * gua_nhjRed.js
 整点跑 红包几率大点
 
 返利变量：gua_nhjRed_rebateCode，若需要返利给自己，请自己修改环境变量[gua_nhjRed_rebateCode]换成自己的返利
