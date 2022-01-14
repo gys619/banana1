@@ -1,6 +1,6 @@
 /*
 #天天压岁钱
-50 0,16 * * * jd_ttysq.js
+50 0,14,20 * * * jd_ttysq.js
  */
 const $ = new Env('天天压岁钱');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -46,22 +46,25 @@ const JD_API_HOST = `https://m.jingxi.com`;
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
             //做任务
             await main()
+            if (i != cookiesArr.length - 1) {
+                await $.wait(3000)
+            }
         }
     }
-    let res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/ttysq.json')
+    let res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/ttysq2.json')
     if (!res) {
-        res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/ttysq.json')
+        res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/ttysq2.json')
     }
     if (res) {
         authorCode = res.sort(() => 0.5 - Math.random())
         if (authorCode.length > 3) {
             authorCode = authorCode.splice(0, 3)
         }
-        authorCode = authorCode.map(code => {
+        authorCode = authorCode.map(entity => {
             return {
                 "user": "author",
-                "code": code,
-                "redId": Math.floor(1 + Math.random() * 10),
+                "code": entity.code,
+                "redId": entity.rpids[Math.floor((Math.random() * entity.rpids.length))],
                 "beHelp": 0,
                 "helpId": $.taskId
             }
@@ -92,8 +95,8 @@ const JD_API_HOST = `https://m.jingxi.com`;
                         console.log(`\n京东账号${$.index} ${$.nickName || $.UserName}去助力${$.shareCoseList[y].user}助力码${$.shareCoseList[y].code}`)
                         console.log(`助力任务`)
                         await task(`jxnhj/DoTask`, `taskId=${$.taskId}&strShareId=${$.shareCoseList[y].code}&bizCode=jxnhj_task&configExtra=`);
-                        //if ($.max === true){}
-                        await $.wait(3000);
+                        if ($.max === true){$.shareCoseList[y].beHelp = false}
+                        await $.wait(4000);
                         if ($.canHelp === false) { break }
                     }
                 }
@@ -126,7 +129,7 @@ const JD_API_HOST = `https://m.jingxi.com`;
                         console.log(`助力红包，Id: ${$.shareCoseList[y].redId}`)
                         await task(`jxnhj/BestWishes`, `shareId=${$.shareCoseList[y].code}&id=${$.shareCoseList[y].redId}`);
                         if ($.goHelp === true) {
-                            await $.wait(1000)
+                            await $.wait(2000)
                             await task(`jxnhj/WishHelp`, `id=${$.shareCoseList[y].redId}&shareId=${$.shareCoseList[y].code}`);
                             $.doHelpTimes += 1;
                             $.shareCoseList[y].beHelp += 1;
@@ -169,11 +172,11 @@ function getAuthorShareCode(url) {
 async function main() {
     try {
         await task(`jxnhj/GetUserInfo`, `strInviteId=&nopopup=0`, show = true)
-        await $.wait(500)
+        await $.wait(1500)
         await task(`jxnhj/BestWishes`)
-        await $.wait(500)
+        await $.wait(1500)
         await task(`jxnhj/GetTaskList`)
-        await $.wait(500)
+        await $.wait(1500)
         if (!$.allTaskList) {
             console.log(`获取任务列表失败`)
         } else {
@@ -184,8 +187,8 @@ async function main() {
                     $.taskName = $.oneTask.taskName
                     console.log(`去做${$.taskName}`)
                     await task(`jxnhj/DoTask`, `taskId=${$.taskId}&strShareId=&bizCode=jxnhj_task&configExtra=`)
-                    console.log(`等待5秒`)
-                    await $.wait(5100)
+                    console.log(`等待6秒`)
+                    await $.wait(6100)
                     await task(`newtasksys/newtasksys_front/Award`, `taskId=${$.taskId}&bizCode=jxnhj_task&source=jxnhj_task`)
                 }
                 if ([4].includes($.oneTask.taskType)) {
@@ -205,7 +208,7 @@ async function main() {
             for (let w = 0; w < $.lotteryNum; w++) {
                 console.log(`可以抽奖${$.lotteryNum}次 ==>>第${w+1}次抽奖`)
                 await task(`jxnhj/GreetUpgrade`)
-                await $.wait(1000)
+                await $.wait(3000)
             }
         }
     } catch (e) {
