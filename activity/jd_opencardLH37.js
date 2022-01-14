@@ -10,7 +10,7 @@ cron:50 0,13 6-14 1 *
 ============Quantumultx===============
 [task_local]
 #1.6~1.14 联合开卡
-50 0,13 6-14 1 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardLH37.js, tag=1.6~1.14 联合开卡, enabled=true
+50 0,13 6-14 1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardLH37.js, tag=1.6~1.14 联合开卡, enabled=true
 
 */
 const $ = new Env('1.6~1.14 联合开卡');
