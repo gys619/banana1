@@ -130,6 +130,11 @@ async function run() {
     $.openList = []
     $.allOpenCard = false
     await takePostRequest('checkOpenCard');
+    $.log("报名: " + $.signStatus)
+    if(!$.signStatus && !$.outFlag){
+      await takePostRequest('报名');
+      await $.wait(parseInt(Math.random() * 2000 + 1000, 10))
+    }
     // console.log($.actorUuid)
     // return
     if($.allOpenCard == false){
@@ -139,9 +144,8 @@ async function run() {
         if(o.openStatus == false){
           flag = true
           $.joinVenderId = o.venderId
-          await $.wait(parseInt(Math.random() * 3000 + 3000, 10))
           await joinShop()
-          await $.wait(parseInt(Math.random() * 1000 + 1000, 10))
+          await $.wait(parseInt(Math.random() * 2000 + 2000, 10))
           await takePostRequest('activityContent');
           await takePostRequest('drawContent');
           await takePostRequest('checkOpenCard');
@@ -152,11 +156,9 @@ async function run() {
       console.log('已全部开卡')
     }
     
-    if(flag){
-      await takePostRequest('activityContent');
-    }
+    console.log(`${$.score}值`)
       $.runFalag = true
-      let count = parseInt($.score/1)
+      let count = parseInt($.score/100)
       console.log(`抽奖次数为:${count}`)
       for(m=1;count--;m++){
         console.log(`第${m}次抽奖`)
@@ -230,7 +232,11 @@ async function takePostRequest(type) {
         break;
       case 'checkOpenCard':
         url = `${domain}/dingzhi/bigname/memberday/initOpenCard`;
-        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&shareUuid=${$.shareUuid}`
+        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&shareUuid=${$.shareUuid}`
+        break;
+      case '报名':
+        url = `${domain}/dingzhi/bigname/memberday/saveTask`;
+        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&taskType=0&taskValue=`
         break;
       case 'info':
         url = `${domain}/dingzhi/linkgame/task/opencard/info`;
@@ -241,8 +247,9 @@ async function takePostRequest(type) {
         body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&drawType=1`
         break;
       case 'followShop':
-        url = `${domain}/dingzhi/bigname/memberday/saveTask`;
-        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}&actorUuid=${$.actorUuid}&taskType=23&taskValue=1&shareUuid=${$.shareUuid}`
+        url = `${domain}/dingzhi/opencard/follow/shop`;
+        // url = `${domain}/dingzhi/dz/openCard/saveTask`;
+        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}`
         break;
       case 'sign':
       case 'addCart':
@@ -264,8 +271,7 @@ async function takePostRequest(type) {
       case 'visitSku':
       case 'toShop':
       case 'addSku':
-      case 'toMainActive':
-        url = `${domain}/dingzhi/bigname/memberday/saveTask`;
+        url = `${domain}/dingzhi/opencard/${type}`;
         let taskType = ''
         let taskValue = ''
         if(type == 'viewVideo'){
@@ -299,8 +305,8 @@ async function takePostRequest(type) {
         body = `activityId=${$.activityId}`
         break;
       case '抽奖':
-        url = `${domain}/dingzhi/bigname/memberday/draw`;
-        body = `activityId=${$.activityId}&pin=${encodeURIComponent($.Pin)}`
+        url = `${domain}/dingzhi/opencard/draw`;
+        body = `activityId=${$.activityId}&actorUuid=${$.actorUuid}&pin=${encodeURIComponent($.Pin)}`
         break;
       default:
         console.log(`错误${type}`);
@@ -404,13 +410,11 @@ async function dealReturn(type, data) {
         if(typeof res == 'object'){
           if(res.result && res.result === true){
             $.endTime = res.data.endTime || (res.data.activityVo && res.data.activityVo.endTime) || res.data.activity.endTime || 0
-            $.hasEnd = res.data.isEnd || false
-            $.drawCount = res.data.drawCount || (res.data.actor && res.data.actor.drawCount) || 0
-            $.point = res.data.point || (res.data.actor && res.data.actor.point) || 0
-            $.score = res.data.score || (res.data.actor && res.data.actor.score) || 0
-            $.actorUuid = res.data.actorUuid || (res.data.actor && res.data.actor.actorUuid) || ''
-            $.followShop = res.data.followShop || (res.data.actor && res.data.actor.followShopStatus) || ''
-            $.toMainActive = res.data.toMainActive || ''
+            $.hasEnd = res.data.hasEnd || false
+            $.score = res.data.assistCount || 0
+            $.actorUuid = res.data.actorUuid || ''
+            $.followShop = res.data.followShopStatus || ''
+            $.signStatus = res.data.signStatus || false
           }else if(res.errorMessage){
             console.log(`${type} ${res.errorMessage || ''}`)
           }else{
@@ -439,14 +443,14 @@ async function dealReturn(type, data) {
             let cardList1 = res.data.cardList1 || []
             let cardList2 = res.data.cardList2 || []
             let cardList = res.data.cardList || []
-            let openInfo = res.data.openInfo || []
             let openCardList = res.data.openCardList || []
+            let openInfo = res.data.openInfo || []
             $.openList = [...cardList,...cardList1,...cardList2,...openCardList,...openInfo]
             $.allOpenCard = res.data.allOpenCard || res.data.isOpenCardStatus || false
             $.openCardScore1 = res.data.score1 || 0
             $.openCardScore2 = res.data.score2 || 0
             $.drawScore = res.data.drawScore || 0
-            if(res.data.beans) console.log(`获得:${res.data.beans}豆`)
+            if(res.data.beans || res.data.addBeanNum) console.log(`开卡获得:${res.data.beans || res.data.addBeanNum}豆`)
           }else if(res.errorMessage){
             console.log(`${type} ${res.errorMessage || ''}`)
           }else{
@@ -551,7 +555,7 @@ async function dealReturn(type, data) {
         if(typeof res == 'object'){
           if(res.result && res.result === true && res.data){
             $.ShareCount = res.data.length
-            $.log(`=========== 你邀请了:${res.data.length}个`)
+            $.log(`=========== 你邀请了:${$.ShareCount}个`)
           }else if(res.errorMessage){
             console.log(`${type} ${res.errorMessage || ''}`)
           }else{
@@ -717,7 +721,7 @@ function joinShop() {
     $.get(options, async (err, resp, data) => {
       try {
         // console.log(data)
-        let res = $.toObj(data);
+        let res = $.toObj(data,data);
         if(typeof res == 'object'){
           if(res.success === true){
             console.log(res.message)
@@ -758,11 +762,15 @@ function getshopactivityId() {
     }
     $.get(options, async (err, resp, data) => {
       try {
-        let res = $.toObj(data);
-        if(res.success == true){
-          // console.log($.toStr(res.result))
-          console.log(`入会:${res.result.shopMemberCardInfo.venderCardName || ''}`)
-          $.shopactivityId = res.result.interestsRuleList && res.result.interestsRuleList[0] && res.result.interestsRuleList[0].interestsInfo && res.result.interestsRuleList[0].interestsInfo.activityId || ''
+        let res = $.toObj(data,data);
+        if(typeof res == 'object'){
+          if(res.success == true){
+            // console.log($.toStr(res.result))
+            console.log(`入会:${res.result.shopMemberCardInfo.venderCardName || ''}`)
+            $.shopactivityId = res.result.interestsRuleList && res.result.interestsRuleList[0] && res.result.interestsRuleList[0].interestsInfo && res.result.interestsRuleList[0].interestsInfo.activityId || ''
+          }
+        }else{
+          console.log(data)
         }
       } catch (e) {
         $.logErr(e, resp)
