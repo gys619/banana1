@@ -57,9 +57,9 @@ const JD_API_HOST = `https://m.jingxi.com`;
             }
         }
     }
-    let res = await getAuthorShareCode('https://raw.githubusercontent.com/888888/updateTeam/main/shareCodes/ttysq2.json')
+    let res = await getAuthorShareCode('https://raw.githubusercontent.com/555555/updateTeam/main/shareCodes/ttysq2.json')
     if (!res) {
-        res = await getAuthorShareCode('https://raw.fastgit.org/888888/updateTeam/main/shareCodes/ttysq2.json')
+        res = await getAuthorShareCode('https://raw.fastgit.org/555555/updateTeam/main/shareCodes/ttysq2.json')
     }
     if (res) {
         authorCode = res.sort(() => 0.5 - Math.random())
