@@ -17,7 +17,7 @@ cron:1 3,17 8-15 1 *
 ============Quantumultx===============
 [task_local]
 #2022.1.8-1.15 大牌联合 宠爱有礼
-1 3,17 8-15 1 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL37.js, tag=2022.1.8-1.15 大牌联合 宠爱有礼, enabled=true
+1 3,17 8-15 1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL37.js, tag=2022.1.8-1.15 大牌联合 宠爱有礼, enabled=true
 
 */
 const $ = new Env("2022.1.8-1.15 大牌联合 宠爱有礼");
