@@ -103,6 +103,9 @@ const JD_API_HOST = `https://m.jingxi.com`;
                 }
             }
         }
+        if (i != cookiesArr.length - 1) {
+                await $.wait(5000)
+            }
     };
     //助力红包
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -371,7 +374,7 @@ function getToken(timeout = 0) {
 
 function taskUrl(function_path, body = '', dwEnv = 7) {
     let url = `${JD_API_HOST}/${function_path}?__t=${Date.now()}&dwEnv=${dwEnv}&${body}&_stk=__t%2CbizCode%2CconfigExtra%2CdwEnv%2CstrShareId%2CtaskId&_ste=1`;
-    url += `&h5st=${Date.now(), '', '', url}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&g_ty=ajax`;
+    url += `&h5st=${Date.now(), '', '', url}&sceneval=2&g_login_type=1&g_ty=ajax`;
     return {
         url,
         headers: {
