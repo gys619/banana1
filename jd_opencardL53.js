@@ -16,7 +16,7 @@ cron:1 0,14 20-26 1 *
 ============Quantumultx===============
 [task_local]
 #1.20~1.26 联合开卡 瓜分千万京豆
-1 2,14 20-26 1 * jd_opencardL53.js, tag=1.20~1.26 联合开卡 瓜分千万京豆, enabled=true
+1 0,14 20-26 1 * jd_opencardL53.js, tag=1.20~1.26 联合开卡 瓜分千万京豆, enabled=true
 
 */
 
