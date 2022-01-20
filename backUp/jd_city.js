@@ -301,7 +301,7 @@ function city_lotteryAward() {
 }
 function readShareCode(num=3) {
   return new Promise(async resolve => {
-    $.get({url: `https://api.jdsharecode.xyz/api/city/${num}`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `https://transfer.nz.lu/city/${num}`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
