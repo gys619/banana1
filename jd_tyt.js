@@ -263,7 +263,7 @@ function help(packetId) {
                               if (data.msg.indexOf("完成") != -1) {
                                    $.ok = true
                               }
-                             
+                              console.log(data.msg)
                          }
                     }
 
