@@ -16,7 +16,7 @@ cron:21 0,17 21-29 1 *
 ============Quantumultx===============
 [task_local]
 #2022.1.21-1.29 大牌好礼带回家
-21 0,17 21-29 1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL56.js, tag=2022.1.21-1.29 大牌好礼带回家, enabled=true
+21 0,17 21-29 1 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL56.js, tag=2022.1.21-1.29 大牌好礼带回家, enabled=true
 
 */
 const $ = new Env("2022.1.21-1.29 大牌好礼带回家");
