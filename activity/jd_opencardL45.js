@@ -16,7 +16,7 @@ cron:1 6,21 14-21 1 *
 ============Quantumultx===============
 [task_local]
 #2022.1.14-1.21 超级年货节 惊喜不打烊
-1 6,21 14-21 1 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL45.js, tag=2022.1.14-1.21 超级年货节 惊喜不打烊, enabled=true
+1 6,21 14-21 1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL45.js, tag=2022.1.14-1.21 超级年货节 惊喜不打烊, enabled=true
 
 */
 const $ = new Env("2022.1.14-1.21 超级年货节 惊喜不打烊");
