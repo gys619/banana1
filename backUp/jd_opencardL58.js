@@ -4,9 +4,6 @@
 https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=14e6bdc3ee7a496f87b89eee902a370e&shareUuid=3004fd71aceb4100a0fc36c0344b0c4e
 
 cron 37 1,19 21-26 1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL58.js
-
-默认执行脚本。如果需要不执行
-环境变量 NO_RUSH=false
 */
 const $ = new Env("1.21 - 1.26 大牌集结 玩转年货节");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -27,9 +24,6 @@ if ($.isNode()) {
     cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
     cookiesArr.reverse();
     cookiesArr = cookiesArr.filter(item => !!item);
-}
-if (process.env.NO_RUSH && process.env.NO_RUSH != "") {
-    isRush = process.env.NO_RUSH;
 }
 !(async () => {
     if (!cookiesArr[0]) {
@@ -69,13 +63,7 @@ if (process.env.NO_RUSH && process.env.NO_RUSH != "") {
             $.activityId = '14e6bdc3ee7a496f87b89eee902a370e'
             $.activityShopId = '1000013169'
             $.activityUrl = `https://lzdz1-isv.isvjd.com/dingzhi/dz/openCard/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
-            if (isRush === true) {
-                console.log("未检测到不执行环境变量，执行任务")
-                await rush();
-            } else {
-                console.log("检测到不执行环境变量，退出任务，环境变量 NO_RUSH")
-                break
-            }
+            await rush();
             await $.wait(3000)
             if ($.bean > 0) {
                 message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
@@ -130,15 +118,19 @@ async function rush() {
             }
             $.log("->->->> 加入店铺会员")
             if ($.openCardStatus) {
-                for (let i = 0; i < ($.openCardStatus.cardList1.length + $.openCardStatus.cardList2.length); i++) {
+                for (let i = 0; i < ($.openCardStatus.cardList1.length + $.openCardStatus.cardList2.length + $.openCardStatus.cardList3.length + $.openCardStatus.cardList4.length); i++) {
                     $.log("模拟上报访问记录")
-                    await task('crm/pageVisit/insertCrmPageVisit', `venderId=1000004065&pageId=14e6bdc3ee7a496f87b89eee902a370ehp&elementId=${encodeURIComponent(`去开卡${i}`)}&pin=${encodeURIComponent($.secretPin)}`, 1)
+                    await task('crm/pageVisit/insertCrmPageVisit', `venderId=1000013169&pageId=14e6bdc3ee7a496f87b89eee902a370e&elementId=${encodeURIComponent(`去开卡${i}`)}&pin=${encodeURIComponent($.secretPin)}`, 1)
                     await $.wait(2000)
                 }
                 t1TaskList = []
                 $.openCardStatus.cardList1.filter((x) => { if (x.status === 0) { t1TaskList.push(x) } })
                 t2TaskList = []
                 $.openCardStatus.cardList2.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
+				t3TaskList = []
+                $.openCardStatus.cardList3.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
+				t4TaskList = []
+                $.openCardStatus.cardList4.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
                 if (t1TaskList.length < 1) {
                     console.log("    >>>已经完成入会任务")
 
@@ -150,6 +142,18 @@ async function rush() {
                         await $.wait(2000)
                     }
                     for (const vo of t2TaskList) {
+                        $.log(`    >>>${vo.name}`)
+                        await getShopOpenCardInfo({ "venderId": `${vo.value}`, "channel": "401" })
+                        await bindWithVender({ "venderId": `${vo.value}`, "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": $.openCardActivityId, "channel": 401 }, vo.value)
+                        await $.wait(2000)
+					}
+					for (const vo of t3TaskList) {
+                        $.log(`    >>>${vo.name}`)
+                        await getShopOpenCardInfo({ "venderId": `${vo.value}`, "channel": "401" })
+                        await bindWithVender({ "venderId": `${vo.value}`, "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": $.openCardActivityId, "channel": 401 }, vo.value)
+                        await $.wait(2000)
+					}
+					for (const vo of t4TaskList) {
                         $.log(`    >>>${vo.name}`)
                         await getShopOpenCardInfo({ "venderId": `${vo.value}`, "channel": "401" })
                         await bindWithVender({ "venderId": `${vo.value}`, "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": $.openCardActivityId, "channel": 401 }, vo.value)
