@@ -111,7 +111,6 @@ async function rush() {
                 } else {
                     $.log("    >>>已经关注过了\n")
                     await $.wait(2000)
-                    return
                 }
             } else {
                 $.log("没有获取到对应的任务。\n")
@@ -128,7 +127,7 @@ async function rush() {
                 t2TaskList = []
                 $.openCardStatus.cardList2.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
 				t3TaskList = []
-                $.openCardStatus.cardList3.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
+                $.openCardStatus.cardList3.filter((x) => { if (x.status === 0) { t1TaskList.push(x) } })
 				t4TaskList = []
                 $.openCardStatus.cardList4.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
                 if (t1TaskList.length < 1) {
@@ -173,7 +172,7 @@ async function rush() {
                 $.log("没有获取到对应的任务。\n")
             }
             $.log("->->->> 加购物车")
-            await task("dz/openCard/saveTask", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&actorUuid=${$.actorUuid}&type=21&taskValue=100025232454`)
+            await task("dz/openCard/saveTask", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&actorUuid=${$.actorUuid}&type=2&taskValue=100025232454`)
         }
     }
 }
