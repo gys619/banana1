@@ -97,7 +97,7 @@ const JD_API_HOST = `https://m.jingxi.com`;
                         console.log(`助力任务`)
                         await task(`jxnhj/DoTask`, `taskId=${$.taskId}&strShareId=${$.shareCoseList[y].code}&bizCode=jxnhj_task&configExtra=`);
                         if ($.max === true){$.shareCoseList[y].beHelp = false}
-                        await $.wait(4000);
+                        await $.wait(6000);
                         if ($.canHelp === false) { break }
                     }
                 }
@@ -133,7 +133,7 @@ const JD_API_HOST = `https://m.jingxi.com`;
                         console.log(`助力红包，Id: ${$.shareCoseList[y].redId}`)
                         await task(`jxnhj/BestWishes`, `shareId=${$.shareCoseList[y].code}&id=${$.shareCoseList[y].redId}`);
                         if ($.goHelp === true) {
-                            await $.wait(2000)
+                            await $.wait(3000)
                             await task(`jxnhj/WishHelp`, `id=${$.shareCoseList[y].redId}&shareId=${$.shareCoseList[y].code}`);
                             $.doHelpTimes += 1;
                             $.shareCoseList[y].beHelp += 1;
@@ -199,7 +199,7 @@ async function main() {
                     console.log(`去做${$.taskName}`)
                     await task(`jxnhj/DoTask`, `taskId=${$.taskId}&strShareId=&bizCode=jxnhj_task&configExtra=`)
                     console.log(`等待6秒`)
-                    await $.wait(6100)
+                    await $.wait(8100)
                     await task(`newtasksys/newtasksys_front/Award`, `taskId=${$.taskId}&bizCode=jxnhj_task&source=jxnhj_task`)
                 }
                 if ([4].includes($.oneTask.taskType)) {
