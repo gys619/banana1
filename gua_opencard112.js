@@ -204,6 +204,12 @@ async function run() {
       await $.wait(parseInt(Math.random() * 1000 + 3000, 10))
     }
     
+    $.log("关注: " + $.followShop)
+    if(!$.followShop && !$.outFlag){
+      flag = true
+      await takePostRequest('followShop');
+      await $.wait(parseInt(Math.random() * 3000 + 2000, 10))
+    }
     $.log("加购: " + $.addSku)
     if(!$.addSku && !$.outFlag){
       if(guaopencard_addSku+"" == "true"){
@@ -466,7 +472,7 @@ async function dealReturn(type, data) {
             $.endTime = res.data.endTime || 0
             $.hasEnd = res.data.hasEnd || false
             $.actorUuid = res.data.actorUuid || ''
-            // $.followShop = res.data.followShop.allStatus || false
+            $.followShop = res.data.followShop.allStatus || false
             $.addSku = res.data.addSku.allStatus || false
             if(res.data.followShop && res.data.followShop.settings && res.data.followShop.settings[0]){
               $.followShopValue = res.data.followShop.settings[0].value || 1
