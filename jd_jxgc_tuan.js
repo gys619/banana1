@@ -1,7 +1,7 @@
 /**
 京喜工厂开团
 
-cron 5,20,35,50 1 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_jxgc_tuan.js
+cron 5,10,15,20 0 * * * https://raw.githubusercontent.com/11111115/JDHelp/main/jd_jxgc_tuan.js
 
 一个账号能参团一次，一个账号一天能开三次团，请根据自己的情况设置需要开团的CK，一般至少5个CK能成团
 脚本每执行一次，会领取上一次成团的奖励和新开一次团，每天执行4次能开完3次团和领取3次团的奖励

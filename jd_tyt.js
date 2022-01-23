@@ -7,7 +7,7 @@
 3 1 * * * http://47.101.146.160/scripts/jd_tyt.js, tag=搞基大神-推一推, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
 
-const $ = new Env('搞基大神-推一推');//助力前三个可助力的账号
+const $ = new Env('推一推');//助力前三个可助力的账号
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -263,7 +263,7 @@ function help(packetId) {
                               if (data.msg.indexOf("完成") != -1) {
                                    $.ok = true
                               }
-                              console.log(data.msg)
+                             
                          }
                     }
 

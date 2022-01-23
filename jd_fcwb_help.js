@@ -54,7 +54,7 @@ let curRound = 1
     console.log(`\n注意：本脚本暂时只会执行助力，助力后，请手动进活动进行游戏（发财挖宝: 入口,极速版-》我的-》发财挖宝）\n`)
     let res = [];
 
-    try{res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/fcwb.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/555555/updateTeam/main/shareCodes/fcwb.json');}catch (e) {}
      if(!res){res = [];}
     
     if(res.length > 0){
