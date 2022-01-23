@@ -1,5 +1,5 @@
 /*
-活动入口： 京东极速版-我的-发财大赢家
+活动入口： 微信小程序-京东好物街-发财大赢家
  * /
  * 助力逻辑：优先助力互助码环境变量
  * 环境变量：export dyjCode="redEnvelopeId@inviter"
@@ -9,17 +9,17 @@
 ============Quantumultx===============
 [task_local]
 #发财大赢家
-1 1,18 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js, tag=发财大赢家, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+1 1,18 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_fcdyj.js, tag=发财大赢家, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "1 1,18 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js tag=发财大赢家
+cron "1 1,18 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcdyj.js tag=发财大赢家
 
 ===============Surge=================
-发财大赢家 = type=cron,cronexp="1 1,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js
+发财大赢家 = type=cron,cronexp="1 1,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcdyj.js
 
 ============小火箭=========
-发财大赢家 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcdyj.js, cronexpr="1 1,18 * * *", timeout=3600, enable=true
+发财大赢家 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcdyj.js, cronexpr="1 1,18 * * *", timeout=3600, enable=true
  */
 const $ = new Env('发财大赢家助力');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -38,8 +38,6 @@ if ($.isNode()) {
 }
 const JD_API_HOST = `https://api.m.jd.com`;
 !(async () => {
-	console.log('助力逻辑：优先助力互助码环境变量')
-    console.log('环境变量添加：export dyjCode="redEnvelopeId@inviter" 只支持单个账号助力')
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {
             "open-url": "https://bean.m.jd.com/bean/signIndex.action"
@@ -51,7 +49,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
     $.needhelp = true
     $.canDraw = false
     $.canHelp = true;
-    $.linkid = "PFbUR7wtwUcQ860Sn8WRfw"
+    $.linkid = "J6BvN4C_Jb01SFG0vSMFJg"
     //开红包查询
     for (let i = 0; i < cookiesArr.length && $.needhelp; i++) {
         cookie = cookiesArr[i];
@@ -84,7 +82,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
             }
         }
     }
-    if (new Date().getHours() >= 10) {
+    if (new Date().getHours() >= 0) {
         await getAuthorShareCode()
         if ($.authorCode && $.authorCode.length) {
             for (let i = 0; i < cookiesArr.length; i++) {
@@ -317,7 +315,7 @@ function help(rid, inviter, type) {
 function getAuthorShareCode() {
     return new Promise(resolve => {
         $.get({
-            url: "https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/fcdyj.json",
+            url: "https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/fcdyj.json",
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }
