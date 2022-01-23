@@ -780,7 +780,7 @@ function getAuthorShareCode(url='https://raw.githubusercontent.com/11111115/para
   })
 }
 async function getRandomCode() {
-  await //$.http.get({url: `https://code.c-hiang.cn/api/v1/jd/zuan/read/${randomCount}`, timeout: 10000}).then(async (resp) => {
+  await $.http.get({url: `https://code.c-hiang.cn/api/v1/jd/zuan/read/${randomCount}`, timeout: 10000}).then(async (resp) => {
     if (resp.statusCode === 200) {
       try {
         let { body } = resp;

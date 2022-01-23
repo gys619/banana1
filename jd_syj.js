@@ -51,7 +51,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     }
     $.authorTuanList = await getAuthorShareCode('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/jd_zz.json');
     if (!$.authorTuanList) {
-        //$.http.get({ url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_zz.json' }).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+        $.http.get({ url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_zz.json' }).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
         await $.wait(1000)
         $.authorTuanList = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_zz.json') || [];
     }
@@ -775,7 +775,7 @@ function getAuthorShareCode(url) {
     })
 }
 async function getRandomCode() {
-    await //$.http.get({ url: `http://go.chiang.fun/read/zuan/${randomCount}`, timeout: 10000 }).then(async(resp) => {
+    await $.http.get({ url: `http://go.chiang.fun/read/zuan/${randomCount}`, timeout: 10000 }).then(async(resp) => {
         if (resp.statusCode === 200) {
             try {
                 let { body } = resp;

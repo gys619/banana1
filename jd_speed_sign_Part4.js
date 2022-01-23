@@ -1,8 +1,8 @@
 /*
-cron "20 0,8 * * *" jd_speed_sign_Part3.js, tag:京东极速版任务1
+cron "20 0,8 * * *" jd_speed_sign_Part4.js, tag:京东极速版任务1
 */
  //详细说明参考 https://github.com/ccwav/QLScript2.
-const $ = new Env('京东极速版任务3');
+const $ = new Env('京东极速版任务4');
 
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -28,14 +28,16 @@ const JD_API_HOST = 'https://api.m.jd.com/', actCode = 'visa-card-001';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  let lnStartAcc=Math.ceil(cookiesArr.length/3)*2;
-  let lnTotalAcc=cookiesArr.length;
+  let lnStartAcc=Math.ceil(cookiesArr.length/5)*3;
+  let lnTotalAcc=Math.ceil(cookiesArr.length/5)*4;
+  
+  if (lnTotalAcc>cookiesArr.length){
+	  lnTotalAcc=cookiesArr.length;
+  }
   if (lnStartAcc>=lnTotalAcc){
-	  console.log(`账号太少不需要第三个任务,跳出\n`);
+	  console.log(`账号太少不需要第四个任务,跳出\n`);
 	  return 
   }
-	  
-  
   console.log(`本次执行第${lnStartAcc+1}到${lnTotalAcc}个账号\n`);
   for (let i = lnStartAcc ; i < lnTotalAcc; i++) {
     if (cookiesArr[i]) {
@@ -103,7 +105,7 @@ async function signInit() {
     $.get(taskUrl('speedSignInit', {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
-      "inviterId":""
+      "inviterId":"U44jAghdpW58FKgfqPdotA=="
     }), async (err, resp, data) => {
       try {
         if (err) {
@@ -353,7 +355,7 @@ async function startItem(activeId, activeType) {
                 await $.wait(videoBrowsing * 1000)
 				await $.wait(3000);
                 await endItem(data.data.uuid, activeType, activeId, activeType === 3 ? videoBrowsing : "")
-				await $.wait(4000);
+				await $.wait(4000);                
               } else {
                 console.log(`${$.taskName}任务已达上限`)
                 $.canStartNewItem = false
@@ -666,6 +668,7 @@ function taskGetUrl(function_id, body) {
     }
   }
 }
+
 
 function TotalBean() {
   return new Promise(async resolve => {

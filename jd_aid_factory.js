@@ -1,3 +1,8 @@
+/**
+cron=44 0-23/6 * * * jd_aid_factory.js
+new Env('京喜工厂助力');
+ */
+
 let common = require("./function/common");
 let $ = new common.env('京喜工厂助力');
 let min = 3,
