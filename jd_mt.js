@@ -7,14 +7,9 @@ IOS等用户直接用NobyDa的jd cookie
 ============Quantumultx===============
 [task_local]
 #组队分豆-美泰
-18 2,14 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_mt.js, tag=组队分豆-美泰, enabled=true
+18 2,14 * * * jd_mt.js
 ================Loon==============
-[Script]
-cron "18 2,14 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_mt.js,tag=组队分豆-美泰
-===============Surge=================
-组队分豆-美泰 = type=cron,cronexp="18 2,14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_mt.js
-============小火箭=========
-组队分豆-美泰 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_mt.js, cronexpr="18 2,14 * * *", timeout=3600, enable=true
+
 */
 const $ = new Env("组队分豆-美泰");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -59,7 +54,7 @@ if ($.isNode()) {
                 }
                 continue
             }
-            authorCodeList = ['5e5d87e47a8a4f8ab2656e2ce879dc00','daef7ee6e0ec4e94af6ac9fb4ffa0d4c','43b8f74bf1ec47759a7addc5a7ba1351']
+            authorCodeList = ['']
             $.bean = 0;
             $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
             $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');

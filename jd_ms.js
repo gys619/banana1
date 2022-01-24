@@ -67,12 +67,12 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
     }
   }
 })()
-    .catch((e) => {
-      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-    })
-    .finally(() => {
-      $.done();
-    })
+  .catch((e) => {
+    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+  })
+  .finally(() => {
+    $.done();
+  })
 
 async function jdMs() {
   $.score = 0
@@ -81,12 +81,12 @@ async function jdMs() {
   await getActInfo()
   $.cur = $.score
   if ($.encryptProjectId) {
-    console.log(`领红包签到`)
-    await readpacksign()
+      console.log(`领红包签到`)
+      await readpacksign()
     await getTaskList()
   }
   await getUserInfo(false)
-
+  
   await showMsg()
 }
 
@@ -238,7 +238,7 @@ function doTask(body) {
 
 function tttsign() {
   return new Promise(resolve => {
-    body = 'appid=babelh5&body=%7B%22encryptProjectId%22%3A%224NzhoLbAJtBXbyRj5zGwprtf6GDv%22%2C%22encryptAssignmentId%22%3A%223yRMFkp3SN8nXpX49xAdCWsdy5XP%22%2C%22completionFlag%22%3Atrue%2C%22itemId%22%3A%221%22%2C%22sourceCode%22%3A%22aceaceqingzhan%22%7D&sign=11&t=1642929553660'
+      body = 'appid=babelh5&body=%7B%22encryptProjectId%22%3A%224NzhoLbAJtBXbyRj5zGwprtf6GDv%22%2C%22encryptAssignmentId%22%3A%223yRMFkp3SN8nXpX49xAdCWsdy5XP%22%2C%22completionFlag%22%3Atrue%2C%22itemId%22%3A%221%22%2C%22sourceCode%22%3A%22aceaceqingzhan%22%7D&sign=11&t=1642929553660'
     $.post(ttt(body), (err, resp, data) => {
       try {
         if (err) {
@@ -263,9 +263,9 @@ function tttsign() {
 }
 function readpacksign() {
   return new Promise(resolve => {
-    body = 'uuid=88888&clientVersion=10.3.4&client=wh5&osVersion=&area=4_48201_54794_0&networkType=unknown&functionId=signRedPackage&body={"random":"23715587","log":"~1oji7rf","sceneid":"MShPageh5","ext":{"platform":"1","eid":"","referUrl":-1,"userAgent":-1}}&appid=SecKill2020'
+      body = 'uuid=88888&clientVersion=10.3.4&client=wh5&osVersion=&area=4_48201_54794_0&networkType=unknown&functionId=signRedPackage&body={"random":"23715587","log":"~1oji7rf","sceneid":"MShPageh5","ext":{"platform":"1","eid":"","referUrl":-1,"userAgent":-1}}&appid=SecKill2020'
     $.post(readpack(body), (err, resp, data) => {
-
+    
       try {
         if (err) {
           console.log(`${err},${jsonParse(resp.body)['message']}`)
@@ -303,7 +303,7 @@ function ttt(body) {
     headers: {
       "Cookie": cookie,
       "origin": "https://prodev.m.jd.com",
-
+     
       'Content-Type': 'application/x-www-form-urlencoded',
       "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
     }
@@ -318,7 +318,7 @@ function readpack(body) {
     headers: {
       "Cookie": cookie,
       "origin": "https://h5.m.jd.com",
-
+     
       'Content-Type': 'application/x-www-form-urlencoded',
       "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
     }
