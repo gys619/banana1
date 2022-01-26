@@ -11,17 +11,17 @@ export jd_rebatePin="pin1,pin2"
 ============Quantumultx===============
 [task_local]
 #京东领红包
-0 0,10,20,22 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_red.js, tag=京东领红包, enabled=true
+0 0,10,20,22 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_red.js, tag=京东领红包, enabled=true
 
 ================Loon==============
 [Script]
-cron "0 0,10,20,22 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_red.js,tag=京东领红包
+cron "0 0,10,20,22 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_red.js,tag=京东领红包
 
 ===============Surge=================
-京东领红包 = type=cron,cronexp="0 0,10,20,22 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_red.js
+京东领红包 = type=cron,cronexp="0 0,10,20,22 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_red.js
 
 ============小火箭=========
-京东领红包 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_red.js, cronexpr="0 0,10,20,22 * * *", timeout=3600, enable=true
+京东领红包 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_red.js, cronexpr="0 0,10,20,22 * * *", timeout=3600, enable=true
 */
 const $ = new Env('京东领红包');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
