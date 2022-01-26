@@ -1,6 +1,6 @@
 /*
 年货节红包
-cron 0 0,10,20,22 * * *  https://raw.githubusercontent.com/11111120/scripts/master/gua_nhjRed.js
+cron 0 0,10,20,22 * * *  https://raw.githubusercontent.com/smiek2121/scripts/master/gua_nhjRed.js
 整点跑 红包几率大点
 
 https://u.jd.com/SKCvfBS
@@ -23,8 +23,8 @@ let rebateCodes = 'SKCvfBS'
 let rebatePin = ''
 
 const $ = new Env('年货节红包');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 CryptoScripts()
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
 //IOS等用户直接用NobyDa的jd cookie
