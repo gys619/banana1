@@ -16,7 +16,7 @@ cron:21 4,10 21-28 1 *
 ============Quantumultx===============
 [task_local]
 #2022.1.21-1.28 年货不打烊 好物带回家
-21 4,10 21-28 1 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL57.js, tag=2022.1.21-1.28 年货不打烊 好物带回家, enabled=true
+21 4,10 21-28 1 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL57.js, tag=2022.1.21-1.28 年货不打烊 好物带回家, enabled=true
 
 */
 const $ = new Env("2022.1.21-1.28 年货不打烊 好物带回家");
