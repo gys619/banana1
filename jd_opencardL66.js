@@ -1,5 +1,5 @@
 /*
-1.29~2.15 瓜分千万京豆 免费抽大奖 
+1.29~2.15 京东粉丝联盟福利社 入会赢专享好礼
 新增开卡脚本，一次性脚本
 
 
@@ -7,7 +7,7 @@
 第一个CK失效会退出脚本
 
 ————————————————
-入口：[ 1.29~2.15 瓜分千万京豆 免费抽大奖 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz220107100001616201shop&shareUuid=488be07602b444ba9b2b4825aec09d81)]
+入口：[ 1.29~2.15 京东粉丝联盟福利社 入会赢专享好礼 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz220107100001616201shop&shareUuid=488be07602b444ba9b2b4825aec09d81)]
 
 请求太频繁会被黑ip
 过10分钟再执行
@@ -15,11 +15,11 @@
 cron:30 1,14 29-31,1-15 1,2 *
 ============Quantumultx===============
 [task_local]
-#1.29~2.15 瓜分千万京豆 免费抽大奖
-30 1,14 29-31,1-15 1,2 * jd_opencardL66.js, tag=1.29~2.15 瓜分千万京豆 免费抽大奖, enabled=true
+#1.29~2.15 京东粉丝联盟福利社 入会赢专享好礼
+30 1,14 29-31,1-15 1,2 * jd_opencardL66.js, tag=1.29~2.15 京东粉丝联盟福利社 入会赢专享好礼, enabled=true
 
 */
-const $ = new Env('1.29~2.15 瓜分千万京豆 免费抽大奖');
+const $ = new Env('1.29~2.15 京东粉丝联盟福利社 入会赢专享好礼');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
@@ -626,7 +626,7 @@ function joinShop() {
     $.get(options, async (err, resp, data) => {
       try {
         // console.log(data)
-        let res = $.toObj(data);
+        let res = $.toObj(data,data);
         if(typeof res == 'object'){
           if(res.success === true){
             console.log(res.message)
@@ -667,11 +667,15 @@ function getshopactivityId() {
     }
     $.get(options, async (err, resp, data) => {
       try {
-        let res = $.toObj(data);
-        if(res.success == true){
-          // console.log($.toStr(res.result))
-          console.log(`入会:${res.result.shopMemberCardInfo.venderCardName || ''}`)
-          $.shopactivityId = res.result.interestsRuleList && res.result.interestsRuleList[0] && res.result.interestsRuleList[0].interestsInfo && res.result.interestsRuleList[0].interestsInfo.activityId || ''
+        let res = $.toObj(data,data);
+        if(typeof res == 'object'){
+          if(res.success == true){
+            // console.log($.toStr(res.result))
+            console.log(`入会:${res.result.shopMemberCardInfo.venderCardName || ''}`)
+            $.shopactivityId = res.result.interestsRuleList && res.result.interestsRuleList[0] && res.result.interestsRuleList[0].interestsInfo && res.result.interestsRuleList[0].interestsInfo.activityId || ''
+          }
+        }else{
+          console.log(data)
         }
       } catch (e) {
         $.logErr(e, resp)
