@@ -1054,7 +1054,7 @@ function safeGet(data) {
 }
 
 function addAuCode() {
-  let url = 'https://raw.githubusercontent.com/11111115/params/main/codes.json'
+  let url = 'https://raw.githubusercontent.com/he1pu/params/main/codes.json'
   return new Promise(async resolve => {
     const options = {
       url: `${url}?${new Date()}`, "timeout": 10000, headers: {
