@@ -8,17 +8,17 @@ Last Modified time: 2022-1-21
 ============Quantumultx===============
 [task_local]
 #搞鸡玩家-秒秒币
-20 7 * * * jd_ms.js, tag=搞鸡玩家-秒秒币, img-url=, enabled=true
+30 8 * * * jd_ms.js, tag=搞鸡玩家-秒秒币, img-url=, enabled=true
 
 ================Loon==============
 [Script]
-cron "20 7 * * *" script-path=jd_ms.js, tag=搞鸡玩家-秒秒币
+cron "30 8 * * *" script-path=jd_ms.js, tag=搞鸡玩家-秒秒币
 
 ===============Surge=================
-搞鸡玩家-秒秒币 = type=cron,cronexp="20 7 * * *",wake-system=1,timeout=3600,script-path=jd_ms.js
+搞鸡玩家-秒秒币 = type=cron,cronexp="30 8 * * *",wake-system=1,timeout=3600,script-path=jd_ms.js
 
 ============小火箭=========
-搞鸡玩家-秒秒币 = type=cron,script-path=jd_ms.js, cronexpr="20 7 * * *", timeout=3600, enable=true
+搞鸡玩家-秒秒币 = type=cron,script-path=jd_ms.js, cronexpr="30 8 * * *", timeout=3600, enable=true
  */
 const $ = new Env('搞鸡玩家-秒秒币');
 
