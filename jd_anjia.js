@@ -2,7 +2,7 @@
 组队分豆-安佳 [jd_anjia.js]
 
 ————————————————
-入口：[组队分豆-安佳 (https://lzkjdz-isv.isvjcloud.com/pool/captain/15935?activityId=ecaf4a23237e403896efdc9507a31ea2&shareUuid=f653a4464fb040fb801994284753a983)]
+入口：[组队分豆-安佳 (https://lzkjdz-isv.isvjcloud.com/pool/captain/15935?activityId=9222c59c4de14e039d124ba1d88d7004&shareUuid=b8807b8efe3d4a34bb3c74fa7724c993)]
 IOS等用户直接用NobyDa的jd cookie
 cron "1 0,7,12 * * *" script-path=jd_anjia.js,tag=组队分豆-安佳
 */
@@ -30,7 +30,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    console.log(`若之前做过该活动，则无法重复入队。\n入口:\nhttps://lzkjdz-isv.isvjcloud.com/pool/captain/15935?activityId=ecaf4a23237e403896efdc9507a31ea2&shareUuid=f653a4464fb040fb801994284753a983`)
+    console.log(`若之前做过该活动，则无法重复入队。\n入口:\nhttps://lzkjdz-isv.isvjcloud.com/pool/captain/15935?activityId=9222c59c4de14e039d124ba1d88d7004&shareUuid=b8807b8efe3d4a34bb3c74fa7724c993`)
 
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
@@ -50,10 +50,10 @@ if ($.isNode()) {
                 }
                 continue
             }
-            authorCodeList = ['f653a4464fb040fb801994284753a983','06743944ef0f43a68eafe9a154173a4f','0b234d5900094ccaad1ee2f4a78c3e9c']
+            authorCodeList = ['b8807b8efe3d4a34bb3c74fa7724c993','4ef2c1660f304c63a3b0c208de4cf01f','241c6c30ddf44ee4a02c453d5c661261']
             $.bean = 0;
             $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
-            $.activityId = 'ecaf4a23237e403896efdc9507a31ea2'
+            $.activityId = '9222c59c4de14e039d124ba1d88d7004'
             $.activityShopId = '1000014486'
             $.randomNum = random(1000000, 9999999)
             $.activityUrl = `https://lzkjdz-isv.isvjcloud.com/pool/captain/${$.randomNum}?activityId=${$.activityId}&signUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
