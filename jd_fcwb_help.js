@@ -2,25 +2,21 @@
 发财挖宝
 更新时间：2021-10-30
 活动入口：极速版-发财挖宝
-目前需要下一单才能通关，需要的自己玩下
-活动部分账号验证h5st参数，请自行抓包参数添加 
-小号助力大号，抓包助力成功链接在代码236行修改为完整抓包链接，运行脚本提示 都黑号了，别薅了 为正常现象。
-h5st参数有时效性，抓包后请及时运行脚本
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #发财挖宝
-40 6,17 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js, tag=发财挖宝, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+40 6,17 * * * https://raw.githubusercontent.com/okyyds/yydspure/master/jd_fcwb.js, tag=发财挖宝, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "40 6,17 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js,tag=发财挖宝
+cron "40 6,17 * * *" script-path=https://raw.githubusercontent.com/okyyds/yydspure/master/jd_fcwb.js,tag=发财挖宝
 
 ===============Surge=================
-发财挖宝 = type=cron,cronexp="40 6,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js
+发财挖宝 = type=cron,cronexp="40 6,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/okyyds/yydspure/master/jd_fcwb.js
 
 ============小火箭=========
-发财挖宝 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js, cronexpr="40 6,17 * * *", timeout=3600, enable=true
+发财挖宝 = type=cron,script-path=https://raw.githubusercontent.com/okyyds/yydspure/master/jd_fcwb.js, cronexpr="40 6,17 * * *", timeout=3600, enable=true
 
 * * */
 const $ = new Env('发财挖宝');
@@ -55,10 +51,10 @@ let curRound = 1
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-	console.log("\n活动入口：极速版-》我的-》发财挖宝"+"\n请务必先手动进入活动后随意点击方块后执行脚本"+"\n若点击方块获得0.01红包即活动黑了。"+"\n没助力是因为验证h5st，自行抓包替换");
+    console.log(`\n注意：本脚本暂时只会执行助力，助力后，请手动进活动进行游戏（发财挖宝: 入口,极速版-》我的-》发财挖宝）\n`)
     let res = [];
 
-    try{res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/fcwb.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/555555/updateTeam/main/shareCodes/fcwb.json');}catch (e) {}
      if(!res){res = [];}
     
     if(res.length > 0){
@@ -160,15 +156,14 @@ async function main() {
     if(fcwbinviter && fcwbinviteCode){
         console.log(`去助力:${fcwbinviter}`);
         await takeRequest(`happyDigHelp`,`{"linkId":"${link}","inviter":"${fcwbinviter}","inviteCode":"${fcwbinviteCode}"}`);
-        //console.log(`助力结果：${JSON.stringify(homeInfo)}`);
+        //console.log(`助力结果：${JSON.stringify(HelpInfo)}`);
     }
     $.freshFlag = false;
     if($.index === 1){
         fcwbinviter = homeInfo.markedPin;
         fcwbinviteCode = homeInfo.inviteCode;
-		await doTask();
     }
-
+    await doTask();
     if($.freshFlag){
         await $.wait(2000);
         homeInfo = await takeRequest(`happyDigHome`,`{"linkId":"${link}"}`,true);
@@ -185,25 +180,24 @@ async function doTask(){
             continue;
         }
         if(oneTask.taskType === 'BROWSE_CHANNEL'){
-            if(oneTask.id === 454){
+            if(oneTask.id === 360){
                 console.log(`任务：${oneTask.taskTitle},${oneTask.taskShowTitle},去执行`);
                 let doTask = await takeRequest(`apDoTask`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4,"itemId":"${encodeURIComponent(oneTask.taskSourceUrl)}","checkVersion":false}`);
                 console.log(`执行结果：${JSON.stringify(doTask)}`);
                 await $.wait(2000);
                 $.freshFlag = true;
             }
-            if(oneTask.id === 504){
-                 //let detail = await takeRequest(`apTaskDetail`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4}`);
-                 //await $.wait(1000);
-                 //let status = detail.status;
-                 //let taskItemList =  detail.taskItemList;
-                 //for (let j = 0; j < taskItemList.length && j < (status.finishNeed - status.userFinishedTimes); j++) {
-                     //console.log(`浏览：${taskItemList[j].itemName}`);
-                     //let doTask = await takeRequest(`apTaskTimeRecord`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4,"itemId":"${encodeURIComponent(taskItemList[j].itemId)}","checkVersion":false}`);
-                     //await $.wait(31000);
-					 //console.log(`执行结果：${JSON.stringify(doTask)}`);
-                     //await $.wait(2000);
-                 //}
+            if(oneTask.id === 357){
+                // let detail = await takeRequest(`apTaskDetail`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4}`);
+                // await $.wait(1000);
+                // let status = detail.status;
+                // let taskItemList =  detail.taskItemList;
+                // for (let j = 0; j < taskItemList.length && j < (status.finishNeed - status.userFinishedTimes); j++) {
+                //     console.log(`浏览：${taskItemList[j].itemName}`);
+                //     let doTask = await takeRequest(`apDoTask`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4,"itemId":"${encodeURIComponent(taskItemList[j].itemId)}","checkVersion":false}`);
+                //     console.log(`执行结果：${JSON.stringify(doTask)}`);
+                //     await $.wait(2000);
+                // }
             }
         }
     }
@@ -232,8 +226,11 @@ function safeGet(data) {
         return false;
     }
 }
-async function takeRequest(functionId,bodyInfo){
+async function takeRequest(functionId,bodyInfo,h5stFlag = false){
     let  url = `https://api.m.jd.com/?functionId=${functionId}&body=${encodeURIComponent(bodyInfo)}&t=${Date.now()}&appid=activities_platform&client=H5&clientVersion=1.0.0`;
+    if(h5stFlag){
+        //url = await getH5stUrl(functionId,bodyInfo);
+    }
     const headers = {
         'Host' : `api.m.jd.com`,
         'Accept' : `application/json, text/plain, */*`,

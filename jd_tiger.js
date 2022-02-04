@@ -2,7 +2,7 @@
 萌虎摇摇乐
 https://yearfestival.jd.com
 优先内部互助,剩余次数助力作者和助力池
-cron 0 0,18 * * * jd_tiger.js
+0 0,12,18 * * * jd_tiger.js
 转义自HW大佬
 const $ = new Env('萌虎摇摇乐');
 */
@@ -87,9 +87,30 @@ Object.keys(jdCookieNode).forEach((item) => {
         // index === 0 ?
         //     shareCodes = Array.from(new Set([...shareCodesHW, ...shareCodesSelf, ...temp])) :
         //     shareCodes = Array.from(new Set([...shareCodesSelf, ...shareCodesHW, ...temp]))
-        //shareCodes = Array.from(new Set([...shareCodesSelf, ...authorCode, ...pool]))
+        shareCodes = Array.from(new Set([...shareCodesSelf, ...authorCode, ...pool]))
         // console.log(shareCodes)
+        for (let code of shareCodes) {
+            console.log(`账号${i + 1} 去助力 ${code} ${shareCodesSelf.includes(code) ? '(内部)' : ''}`)
+            try {
+                const res = await api({ "shareId": code, "apiMapping": "/api/task/support/doSupport" })
+                if (res.data.status === 1) {
+                    !res.data.supporterPrize ?
+                        console.log('不助力自己') :
+                        console.log('助力成功，京豆：', res.data.supporterPrize.beans, '，积分：', res.data.supporterPrize.score)
+                } else if (res.data.status === 7) {
+                    console.log('上限')
+                    break
+                } else if (res.data.status === 3) {
+                    console.log('已助力过')
+                } else {
+                    console.log('其他情况', res.data.status)
+                }
+                await wait(1000)
+            } catch (e) {
+                console.log('黑号？', e)
+            }
 
+        }
     }
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i]
@@ -98,9 +119,10 @@ Object.keys(jdCookieNode).forEach((item) => {
         try {
             let res = await api({ "apiMapping": "/api/index/indexInfo" })
             let lotteryNum = res.data.lotteryNum
+            console.log('抽奖次数：', lotteryNum)
             for (let i = 0; i < lotteryNum; i++) {
                 res = await api({ "apiMapping": "/api/lottery/lottery" })
-                console.log('抽奖：', res.data.prizeName)
+                console.log('抽奖', i + 1, '/', lotteryNum, res.data.prizeName)
                 await wait(4000)
             }
         } catch (e) {
@@ -108,12 +130,12 @@ Object.keys(jdCookieNode).forEach((item) => {
         }
     }
 })()
-    .catch((e) => {
-        console.error(`${name} error: ${e.stack}`)
-    })
-    .finally(() => {
-        console.log(`${name} finished`)
-    })
+.catch((e) => {
+    console.error(`${name} error: ${e.stack}`)
+})
+.finally(() => {
+    console.log(`${name} finished}`)
+})
 
 async function getAuthorShareCode(url) {
     try {
@@ -173,17 +195,17 @@ async function getShareCodePool(key, num) {
     let shareCode = []
     for (let i = 0; i < 2; i++) {
         try {
-            const { body } = await got(``)
-            //console.debug('getShareCodePool:', body)
+            const { body } = await got(`https://api.11111117/api/${key}/${num}`)
+            console.debug('getShareCodePool:', body)
             shareCode = JSON.parse(body).data || []
-            //console.log(`随机获取${num}个${key}成功：${JSON.stringify(shareCode)}`)
+            console.log(`随机获取${num}个${key}成功：${JSON.stringify(shareCode)}`)
             if (shareCode.length !== 0) {
                 break
             }
         } catch (e) {
             // console.warn(e.stack)
-            // console.log("getShareCodePool Error, Retry...")
-            //await wait(2000 + Math.floor((Math.random() * 4000)))
+            console.log("getShareCodePool Error, Retry...")
+            await wait(2000 + Math.floor((Math.random() * 4000)))
         }
     }
     return shareCode
