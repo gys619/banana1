@@ -1024,11 +1024,11 @@ async function tuanActivity() {
   }
 }
 async function joinLeaderTuan() {
-  let res = await updateTuanIdsCDN('https://raw.githubusercontent.com/222222/11111128/master/shareCodes/11111127')
+  let res = await updateTuanIdsCDN('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/jd_updateFactoryTuanId.json')
   if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127');
+    res = await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json');
   }
   $.authorTuanIds = [...(res && res.tuanIds || [])]
   if ($.authorTuanIds && $.authorTuanIds.length) {
@@ -1356,11 +1356,11 @@ async function showMsg() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `http://111111/jxfactory`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: ``, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
-          console.log(JSON.stringify(err))
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          //console.log(`${JSON.stringify(err)}`)
+          //console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
             console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
@@ -1401,15 +1401,15 @@ function requireConfig() {
   return new Promise(async resolve => {
     // tuanActiveId = $.isNode() ? (process.env.TUAN_ACTIVEID || tuanActiveId) : ($.getdata('tuanActiveId') || tuanActiveId);
     // if (!tuanActiveId) {
-    //   await updateTuanIdsCDN('https://raw.githubusercontent.com/222222/11111128/master/shareCodes/11111127');
+    //   await updateTuanIdsCDN('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/jd_updateFactoryTuanId.json');
     //   if ($.tuanConfigs && $.tuanConfigs['tuanActiveId']) {
     //     tuanActiveId = $.tuanConfigs['tuanActiveId'];
     //     console.log(`拼团活动ID: 获取成功 ${tuanActiveId}\n`)
     //   } else {
     //     if (!$.tuanConfigs) {
-    //       $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    //       $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     //       await $.wait(1000)
-    //       await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127');
+    //       await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json');
     //       if ($.tuanConfigs && $.tuanConfigs['tuanActiveId']) {
     //         tuanActiveId = $.tuanConfigs['tuanActiveId'];
     //         console.log(`拼团活动ID: 获取成功 ${tuanActiveId}\n`)
