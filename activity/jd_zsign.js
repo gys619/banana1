@@ -3,15 +3,14 @@
 芥么签到
 入口：微信-芥么小程序
 cron 11 0,9 * * * jd_zsign.js
-TG:https://t.me/sheeplost
 */
 const $ = new Env('芥么签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let appid = "KRFM89OcZwyjnyOIPyAZxA";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
+$.shareCodes = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -52,26 +51,18 @@ if ($.isNode()) {
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
 
 async function main() {
-  $.hotFlag = false;
   await apSignIn_day();
   await signPrizeDetailList();
-  if ($.hotFlag) return;
   if ($.tasklist) {
     for (const vo of $.tasklist) {
-      if (vo.remainTime != null) {
-        $.log(`去提现金额：${vo.prizeValue}`)
-        await apCashWithDraw(vo.prizeType, vo.business, vo.id, vo.poolBaseId, vo.prizeGroupId, vo.prizeBaseId)
-      }
-    }
-    if ($.tasklist[0].remainTime === null) {
-      console.log("当天已提现")
+      await apCashWithDraw(vo.prizeType, vo.business, vo.id, vo.poolBaseId, vo.prizeGroupId, vo.prizeBaseId)
     }
   } else {
     $.log("没有获取到信息")
   }
 }
 function apCashWithDraw(prizeType, business, id, poolBaseId, prizeGroupId, prizeBaseId) {
-  let body = { "linkId": appid, "businessSource": "DAY_DAY_RED_PACKET_SIGN", "base": { "prizeType": prizeType, "business": business, "id": id, "poolBaseId": poolBaseId, "prizeGroupId": prizeGroupId, "prizeBaseId": prizeBaseId } }
+  let body = { "linkId": "KRFM89OcZwyjnyOIPyAZxA", "businessSource": "DAY_DAY_RED_PACKET_SIGN", "base": { "prizeType": prizeType, "business": business, "id": id, "poolBaseId": poolBaseId, "prizeGroupId": prizeGroupId, "prizeBaseId": prizeBaseId } }
   return new Promise(resolve => {
     $.post(taskPostUrl("apCashWithDraw", body), async (err, resp, data) => {
       try {
@@ -84,8 +75,8 @@ function apCashWithDraw(prizeType, business, id, poolBaseId, prizeGroupId, prize
             if (data.success) {
               if (data.data.status === "310") {
                 console.log(data.data.message)
-              } else {
-                console.log(JSON.stringify(data));
+              } else if (data.data.status === "1000") {
+                console.log("今天已经完成提现了");
               }
             } else {
               console.log(JSON.stringify(data));
@@ -103,7 +94,7 @@ function apCashWithDraw(prizeType, business, id, poolBaseId, prizeGroupId, prize
   })
 }
 function signPrizeDetailList() {
-  let body = { "linkId": appid, "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1, "pageSize": 20, "page": 1 }
+  let body = { "linkId": "KRFM89OcZwyjnyOIPyAZxA", "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1, "pageSize": 20, "page": 1 }
   return new Promise(resolve => {
     $.post(taskPostUrl("signPrizeDetailList", body), async (err, resp, data) => {
       try {
@@ -127,7 +118,7 @@ function signPrizeDetailList() {
   })
 }
 function apSignIn_day() {
-  let body = { "linkId": appid, "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1 }
+  let body = { "linkId": "KRFM89OcZwyjnyOIPyAZxA", "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1 }
   return new Promise(resolve => {
     $.post(taskPostUrl("apSignIn_day", body), async (err, resp, data) => {
       try {
@@ -138,11 +129,8 @@ function apSignIn_day() {
           if (data) {
             data = JSON.parse(data);
             if (data.success) {
-              if (data.data.retCode === 0) {
-                console.log(`签到状态：${data.errMsg}`)
-              } else if (data.data.retCode === 10010) {
-                console.log(data.data.retMessage)
-                $.hotFlag = true;
+              if (data.data.historySignInAnCycle) {
+                console.log(`签到成功：获得${data.data.historySignInAnCycle[0].prizeAwardVale}`)
               } else {
                 console.log(data.data.retMessage)
               }

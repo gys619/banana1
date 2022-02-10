@@ -1,9 +1,20 @@
 /*
+组队分豆-蒙牛 [jd_mengniu.js]
 
+————————————————
+入口：[组队分豆-蒙牛 (https://lzkjdz-isv.isvjcloud.com/pool/captain/4471266?activityId=4e3b9b6233104c199c0c44ff6edbc85d&signUuid=)]
+IOS等用户直接用NobyDa的jd cookie
+============Quantumultx===============
+[task_local]
 #组队分豆-蒙牛
-18 1,16 * * * jd_mengniu.js, tag=组队分豆-蒙牛, enabled=true
-
-
+18 1,16 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_mengniu.js, tag=组队分豆-蒙牛, enabled=true
+================Loon==============
+[Script]
+cron "18 1,16 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_mengniu.js,tag=组队分豆-蒙牛
+===============Surge=================
+组队分豆-蒙牛 = type=cron,cronexp="18 1,16 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_mengniu.js
+============小火箭=========
+组队分豆-蒙牛 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_mengniu.js, cronexpr="18 1,16 * * *", timeout=3600, enable=true
 */
 const $ = new Env("组队分豆-蒙牛");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -48,7 +59,7 @@ if ($.isNode()) {
                 }
                 continue
             }
-            authorCodeList = ['336fe9c225674104bed22b169c820190']
+            authorCodeList = ['','','']
             $.bean = 0;
             $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
             $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
