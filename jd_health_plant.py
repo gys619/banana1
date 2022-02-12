@@ -551,7 +551,7 @@ def start():
             account = setName (cookie)
             access_token = get_ck(cookie,sid_ck,account)
             cookie = get_Authorization (access_token, account)
-            get_planted_info (cookie,sid)
+            get_planted_info (cookie, sid,account)
             if nowtime > flag_time1 and nowtime < flag_time2:
                 taskName,taskId,taskToken = get_sleep (cookie,sid)
                 do_task(cookie,taskName,taskId,taskToken,sid,account)
