@@ -417,7 +417,7 @@ def check_cloud():
             return i
     logger.info("\n云端地址全部失效, 请检查网络!")
     try:
-        send('WSKEY转换', '云端地址失效. 请检查网络.')
+        send('WSKEY转换', '云端地址失效. 请联系作者或者检查网络.')
     except Exception as err:
         logger.debug(str(err))
         logger.info("通知发送失败")
@@ -435,13 +435,14 @@ def check_port():
             logger.info("使用默认端口5700")
             return 5700
     else:
-        return 5700
+        port = 5700
     if not ql_check(port):
         logger.info(str(port) + "端口检查失败, 如果改过端口, 请在变量中声明端口 \n在config.sh中加入 export QL_PORT=\"端口号\"")
         logger.info("\n如果你很确定端口没错, 还是无法执行, 在GitHub给我发issus\n--------------------\n")
         sys.exit(1)
     else:
         logger.info(str(port) + "端口检查通过")
+        return port
 
 
 if __name__ == '__main__':
@@ -490,12 +491,12 @@ if __name__ == '__main__':
                     else:
                         if "WSKEY_AUTO_DISABLE" in os.environ:  # 从系统变量中获取 WSKEY_AUTO_DISABLE
                             logger.info(str(wspin) + "账号失效")
-                            text = "账号: {0} WsKey失效".format(wspin)
+                            text = "账号: {0} WsKey疑似失效".format(wspin)
                         else:
                             eid = return_serch[2]
                             logger.info(str(wspin) + "账号禁用")
                             ql_disable(eid)
-                            text = "账号: {0} WsKey失效, 已禁用Cookie".format(wspin)
+                            text = "账号: {0} WsKey疑似失效, 已禁用Cookie".format(wspin)
                         try:
                             send('WsKey转换脚本', text)
                         except Exception as err:
