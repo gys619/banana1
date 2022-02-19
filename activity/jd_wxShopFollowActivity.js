@@ -1,17 +1,19 @@
 /*
-TG https://t.me/duckjobs
-https://lzkj-isv.isvjcloud.com/lzclient/12345/cjwx/common/entry.html?activityId=xxxx
-
-7 7 7 7 * jd_lzclient.js
+作者：小埋
+活动链接：https://lzkj-isv.isvjcloud.com//activity/xxx?activityId=xxx
+SHOP_FOLLOW_ID // 活动ID 以逗号分隔
 */
-const $ = new Env('超级无线店铺抽奖');
+
+const $ = new Env('关注店铺抽奖');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
-let activityIdList = [
-
-]
+let activityIdList = []
 let lz_cookie = {}
+
+if (process.env.SHOP_FOLLOW_ID && process.env.SHOP_FOLLOW_ID != "") {
+    activityIdList = process.env.SHOP_FOLLOW_ID.split(",");
+}
 
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
@@ -27,14 +29,15 @@ if ($.isNode()) {
     cookiesArr.reverse();
     cookiesArr = cookiesArr.filter(item => !!item);
 }
+
 !(async () => {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    // activityIdList = await getActivityIdList('https://raw.githubusercontent.com/FKPYW/777777/master/code/gameType.json')
+    //let activityIdList = await getActivityIdList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/wxShopFollow.json')
     for(let a in activityIdList){
-        activityId = activityIdList[a];
+        let activityId = activityIdList[a];
         console.log("开起第 "+ a +" 个活动，活动id："+activityId)
         for (let i = 0; i < cookiesArr.length; i++) {
             if (cookiesArr[i]) {
@@ -54,18 +57,24 @@ if ($.isNode()) {
                     }
                     continue
                 }
+                // authorCodeList = [
+                //     'b5d9535918264a4f92fff9d314d7db81',
+                // ]
                 $.bean = 0;
                 $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
                 $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+                // $.authorCode = authorCodeList[random(0, authorCodeList.length)]
+                $.authorNum = `${random(1000000, 9999999)}`
                 $.activityId = activityId
-                $.activityUrl = `https://lzkj-isv.isvjcloud.com/lzclient/${$.activityId}/cjwx/common/entry.html?activityId=${$.activityId}&sid=&un_area=`
-                await lzclient();
-                await $.wait(2000)
+                $.activityUrl = `https://lzkj-isv.isvjcloud.com/wxShopFollowActivity/activity/${$.activityId}?activityId=${$.activityId}&adsource=null&lng=00.000000&lat=00.000000&sid=&un_area=`
+                await wxShopFollow()
+                await $.wait(5000)
                 if ($.bean > 0) {
                     message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
                 }
             }
         }
+        await $.wait(3000)
     }
     if (message !== '') {
         if ($.isNode()) {
@@ -83,32 +92,30 @@ if ($.isNode()) {
     })
 
 
-async function lzclient() {
+async function wxShopFollow() {
     $.token = null;
     $.secretPin = null;
     $.venderId = null;
     await getFirstLZCK()
     await getToken();
-    await task('wxCommonInfo/token', `activityId=${$.activityId}`, 1)
-    await $.wait(1000)
-    await task('wxCommonInfo/initActInfo', `activityId=${$.activityId}`, 1)
-    await $.wait(1000)
+    // await task('wxAssemblePage/getFloatIconStatus', `activityId=${$.activityId}`, 1)
     await task('customer/getSimpleActInfoVo', `activityId=${$.activityId}`, 1)
-    await $.wait(1000)
     if ($.token) {
         await getMyPing();
         if ($.secretPin) {
-            await task('common/accessLogWithAD', `venderId=${$.venderId}&code=${$.activityType}&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=`, 1);
-            await $.wait(1000)
-            await task('wxDrawActivity/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`, 1);
-            await $.wait(1000)
-            await task('wxDrawActivity/getGiveContent', `pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}`, 1);
-            await $.wait(1000)
-            await task('wxActionCommon/followShop',`userId=${$.venderId}&buyerNick=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&activityType=${$.activityType}`,1);
-            console.log(`抽奖`)
-            await $.wait(1000)
-            await task('wxDrawActivity/start',`activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`,1);
-            await $.wait(1000)
+            await task('common/accessLogWithAD', `venderId=${$.venderId}&code=${$.activityType}&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=tg_xuanFuTuBiao`, 1);
+            // await task('wxActionCommon/getUserInfo', `pin=${encodeURIComponent($.secretPin)}`, 1)
+            await task('activityContentOnly', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`)
+            if ($.activityContent) {
+                // await $.wait(3000)
+                $.log("-> 关注店铺")
+                await task('follow', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`)
+                await $.wait(3000)
+                $.log("-> 抽奖")
+                await task('getPrize', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`)
+            } else {
+                $.log("未能成功获取到活动信息")
+            }
         } else {
             $.log("没有成功获取到用户信息")
         }
@@ -136,37 +143,31 @@ function task(function_id, body, isCommon = 0) {
                                 cookie += vo + '=' + lz_cookie[vo] + ';'
                             }
                         }
-                        if (data) {
+                        if (data.result) {
                             switch (function_id) {
+                                case 'wxAssemblePage/getFloatIconStatus':
+                                    console.log(data.data);
+                                    break;
                                 case 'customer/getSimpleActInfoVo':
-                                    $.activityId = data.data.activityId;
                                     $.jdActivityId = data.data.jdActivityId;
                                     $.venderId = data.data.venderId;
-                                    $.shopId = data.data.shopId;
+                                    $.activityShopId = data.data.shopId;
                                     $.activityType = data.data.activityType;
                                     break;
-                                case 'wxDrawActivity/activityContent':
+                                case 'activityContentOnly':
                                     $.activityContent = data.data;
-                                    // console.log($.activityContent)
+                                    console.log("活动奖品: "+$.activityContent.drawContentVOs[0]['name'])
                                     break;
-                                case 'wxDrawActivity/getGiveContent':
-                                    console.log("抽奖次数: "+data.data.day.giveTimes);
-                                    break;
-                                case 'wxActionCommon/followShop':
-                                    console.log(data.data);
+                                case 'follow':
+                                    console.log(data.data)
                                     break
-                                case 'wxCommonInfo/token':
-                                    // $.venderId = data.data.userId;
-                                    // console.log(data);
-                                    break
-                                case 'wxCommonInfo/initActInfo':
-                                    $.venderId = data.data.venderId;
-                                    break
-                                case 'wxDrawActivity/start':
-                                    console.log(data.data);
+                                case 'getPrize':
+                                    console.log(data.data)
+                                    // $.getPrize = data.data.name;
+                                    // await notify.sendNotify($.name, data.data.name, '', `\n`);
                                     break
                                 default:
-                                    // $.log(JSON.stringify(data))
+                                    $.log(JSON.stringify(data))
                                     break;
                             }
                         }
@@ -182,7 +183,7 @@ function task(function_id, body, isCommon = 0) {
 }
 function taskUrl(function_id, body, isCommon) {
     return {
-        url: isCommon ? `https://lzkj-isv.isvjcloud.com/${function_id}` : `https://lzkj-isv.isvjcloud.com/wxDrawActivity/${function_id}`,
+        url: isCommon ? `https://lzkj-isv.isvjcloud.com/${function_id}` : `https://lzkj-isv.isvjcloud.com/wxShopFollowActivity/${function_id}`,
         headers: {
             Host: 'lzkj-isv.isvjcloud.com',
             Accept: 'application/json',
@@ -243,6 +244,8 @@ function getMyPing() {
                         } else {
                             $.log(data.errorMessage)
                         }
+                    } else {
+                        $.log("京东返回了空数据")
                     }
                 }
             } catch (error) {
@@ -317,12 +320,16 @@ function getToken() {
         })
     })
 }
+function random(min, max) {
 
+    return Math.floor(Math.random() * (max - min)) + min;
+
+}
 function getActivityIdList(url) {
     return new Promise(resolve => {
         const options = {
             url: `${url}?${new Date()}`, "timeout": 10000, headers: {
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }
         };
         $.get(options, async (err, resp, data) => {
@@ -330,7 +337,7 @@ function getActivityIdList(url) {
                 if (err) {
                     $.log(err)
                 } else {
-                if (data) data = JSON.parse(data)
+                    if (data) data = JSON.parse(data)
                 }
             } catch (e) {
                 $.logErr(e, resp)
@@ -339,12 +346,6 @@ function getActivityIdList(url) {
             }
         })
     })
-}
-
-function random(min, max) {
-
-    return Math.floor(Math.random() * (max - min)) + min;
-
 }
 function getUUID(format = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', UpperCase = 0) {
     return format.replace(/[xy]/g, function (c) {

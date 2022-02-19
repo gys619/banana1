@@ -7,17 +7,17 @@ https://lzkj-isv.isvjcloud.com/wxgame/activity/8530275?activityId=xxxxxx
 ============Quantumultx===============
 [task_local]
 #通用游戏任务
-31 1 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_game.js, tag=通用游戏任务, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+31 1 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_game.js, tag=通用游戏任务, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "31 1 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_game.js,tag=通用游戏任务
+cron "31 1 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_game.js,tag=通用游戏任务
 
 ===============Surge=================
-通用游戏任务 = type=cron,cronexp="31 1 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_game.js
+通用游戏任务 = type=cron,cronexp="31 1 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_game.js
 
 ============小火箭=========
-通用游戏任务 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_game.js, cronexpr="31 1 * * *", timeout=3600, enable=true
+通用游戏任务 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_game.js, cronexpr="31 1 * * *", timeout=3600, enable=true
 */
 const $ = new Env('通用游戏任务');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -52,7 +52,7 @@ if (process.env.WXGAME_ACT_ID && process.env.WXGAME_ACT_ID != "") {
     }
     if (!wxgameActivityId) {
         $.log(`没有通用ID任务，尝试获取远程`);
-        let data = await getData("https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/jd_game.json")
+        let data = await getData("https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/jd_game.json")
         if (data.wxgameActivityId && data.wxgameActivityId.length) {
             $.log(`获取到远程且有数据`);
             wxgameActivityId = data.wxgameActivityId.join('@')
