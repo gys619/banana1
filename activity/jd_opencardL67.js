@@ -6,17 +6,17 @@
 ============Quantumultx===============
 [task_local]
 #情人节活动
-35 10 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL67.js, tag=情人节活动, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+35 10 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL67.js, tag=情人节活动, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "35 10 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL67.js,tag=情人节活动
+cron "35 10 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL67.js,tag=情人节活动
 
 ===============Surge=================
-情人节活动 = type=cron,cronexp="35 10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL67.js
+情人节活动 = type=cron,cronexp="35 10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL67.js
 
 ============小火箭=========
-情人节活动 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL67.js, cronexpr="35 10 * * *", timeout=3600, enable=true
+情人节活动 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL67.js, cronexpr="35 10 * * *", timeout=3600, enable=true
 
 
 */
