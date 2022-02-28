@@ -117,8 +117,8 @@ console.log(`共${cookiesArr.length}个京东账号\n`);
             option = {};
             lnrun++;
 			await jdPet();
-			if (lnrun == 5) {
-              console.log(`\n【访问接口次数达到5次，休息一分钟.....】\n`);
+			if (lnrun == 3) {
+              console.log(`\n【访问接口次数达到3次，休息一分钟.....】\n`);
               await $.wait(60 * 1000);
               lnrun = 0;
 			}
@@ -183,7 +183,7 @@ async function jdPet() {
             $.taskInfo = $.taskInit.result;
 			if (llhelp){
 				await slaveHelp(); //助力好友
-				await $.wait(30 * 1000);
+				await $.wait(10 * 1000);
 			}
             //await showMsg();
             
