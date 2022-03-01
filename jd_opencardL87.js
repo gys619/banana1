@@ -137,6 +137,10 @@ async function run() {
           flag = true
           $.joinVenderId = o.value
           await joinShop()
+		  if($.joinShopresmessage === '活动太火爆，请稍后再试'){
+			  console.log('重新开卡')
+			  await joinShop()
+		  }
           await $.wait(parseInt(Math.random() * 2000 + 3000, 10))
           await takePostRequest('drawContent');
           await takePostRequest('checkOpenCard');
@@ -180,8 +184,8 @@ async function run() {
     }
     await $.wait(parseInt(Math.random() * 1000 + 5000, 10))
     if(flag) await $.wait(parseInt(Math.random() * 1000 + 10000, 10))
-      if($.index % 3 == 0) console.log('休息1分钟，别被黑ip了\n可持续发展')
-      if($.index % 3 == 0) await $.wait(parseInt(Math.random() * 5000 + 60000, 10))
+      if($.index % 3 == 0) console.log('休息一下，别被黑ip了\n可持续发展')
+      if($.index % 3 == 0) await $.wait(parseInt(Math.random() * 5000 + 10000, 10))
   } catch (e) {
     console.log(e)
   }
@@ -630,6 +634,7 @@ function joinShop() {
         if(typeof res == 'object'){
           if(res.success === true){
             console.log(res.message)
+			$.joinShopresmessage = res.message
             if(res.result && res.result.giftInfo){
               for(let i of res.result.giftInfo.giftList){
                 console.log(`入会获得:${i.discountString}${i.prizeName}${i.secondLineDesc}`)
