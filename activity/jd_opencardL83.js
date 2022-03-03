@@ -15,7 +15,7 @@ cron:25 12 27-28,1-4 2,3 *
 ============Quantumultx===============
 [task_local]
 #2.24~3.4 常青藤联合开卡
-25 12 27-28,1-4 2,3 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL83.js, tag=2.24~3.4 常青藤联合开卡, enabled=true
+25 12 27-28,1-4 2,3 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL83.js, tag=2.24~3.4 常青藤联合开卡, enabled=true
 
 */
 const $ = new Env('2.24~3.4 常青藤联合开卡');
@@ -50,7 +50,7 @@ let authorCodeList = []
     return;
   }
   $.activityId = "dzb1830e004adfb1f0b05a83bf6ac7"
-  authorCodeList = await getAuthorCodeList('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/opencard83.json')
+  authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/opencard83.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             '0ca1c88a3437428c9f0c2376af590c7f',
