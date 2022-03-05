@@ -685,7 +685,7 @@ function invite2() {
     "wXX9SjXOdYMWe5Ru/1+x9A==",
     "4AVQao+eH8Q8kvmXnWmkG8ef/fNr5fdejnD9+9Ugbec=",
     "jbGBRBPo5DmwB9ntTCSVOGXuh1YQyccCuZpWwb3PlIc=",
-    "w22w0sZEccp/OWxg1d20RtsryQGfghc94PsLIBqeX0E=",
+    "m95y+Pagsmn6cXWtNhfrV9ymDN4QK1ivsmbN32lpEHw=",
     "mCvmrmFghpDCLcL3VZs53BkAhucziHAYn3HhPmURJJE=",
     "DuqL56/3h17VpbHIW+v8uJRRyPL6k9E1Hu5UhCyHw/s=",
   ]
@@ -719,7 +719,7 @@ function invite() {
     "wXX9SjXOdYMWe5Ru/1+x9A==",
     "4AVQao+eH8Q8kvmXnWmkG8ef/fNr5fdejnD9+9Ugbec=",
     "jbGBRBPo5DmwB9ntTCSVOGXuh1YQyccCuZpWwb3PlIc=",
-    "w22w0sZEccp/OWxg1d20RtsryQGfghc94PsLIBqeX0E=",
+    "m95y+Pagsmn6cXWtNhfrV9ymDN4QK1ivsmbN32lpEHw=",
     "mCvmrmFghpDCLcL3VZs53BkAhucziHAYn3HhPmURJJE=",
     "DuqL56/3h17VpbHIW+v8uJRRyPL6k9E1Hu5UhCyHw/s=",
   ]
