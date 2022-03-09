@@ -6,17 +6,17 @@
 ============Quantumultx===============
 [task_local]
 #个护女神节
-35 10 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL85.js, tag=个护女神节, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+35 10 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL85.js, tag=个护女神节, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "35 10 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL85.js,tag=个护女神节
+cron "35 10 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL85.js,tag=个护女神节
 
 ===============Surge=================
-个护女神节 = type=cron,cronexp="35 10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL85.js
+个护女神节 = type=cron,cronexp="35 10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL85.js
 
 ============小火箭=========
-个护女神节 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL85.js, cronexpr="35 10 * * *", timeout=3600, enable=true
+个护女神节 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL85.js, cronexpr="35 10 * * *", timeout=3600, enable=true
 
 
 */
