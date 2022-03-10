@@ -72,11 +72,11 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/wish.json')
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/222222/11111128/master/shareCodes/11111127')
   if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/wish.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/wish.json')
+    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127')
   }
   $.shareCode = [...$.shareCode, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
