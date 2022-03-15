@@ -13,7 +13,7 @@ cron:25 15 10-16 3 *
 ============Quantumultx===============
 [task_local]
 #3.10-3.16 男士品类日
-25 15 10-16 3 * https://raw.githubusercontent.com/444444/JDJB/main/jd_opencardL95.js, tag=3.10-3.16 男士品类日, enabled=true
+25 15 10-16 3 * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_opencardL95.js, tag=3.10-3.16 男士品类日, enabled=true
 
 */
 const $ = new Env('3.10-3.16 男士品类日');
@@ -48,7 +48,7 @@ let authorCodeList = []
     return;
   }
   $.activityId = "dz04bfe2a64b46bbcb1110fc0ca9bf"
-  authorCodeList = await getAuthorCodeList('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/opencard95.json')
+  authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/opencard95.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             'd08920bbdcd44feca9f9aba68133c5d1',
