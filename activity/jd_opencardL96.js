@@ -55,7 +55,7 @@ let activityCookie =''
   }
   $.assistStatus = false
   $.activityId = "2203100041074702"
-  authorCodeList = await getAuthorCodeList('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/opencard96.json')
+  authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/opencard96.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             '76f9a4f1df2e42fd98c05997c0c9bc7d',
