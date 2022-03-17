@@ -8,7 +8,7 @@ by:小手冰凉
 ===========================
 [task_local]
 #白条抽奖
-10 9 13-31,1-7 1,2 * jd_bt_sign.js, tag=白条抽奖, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdte.png, enabled=true
+9 9 13-31,1-7 1,2 * jd_bt_sign.js, tag=白条抽奖, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdte.png, enabled=true
  */
 
 const $ = new Env('白条抽奖');
