@@ -1,26 +1,12 @@
 /*
-愤怒的锦鲤
-更新时间：2021-7-11
-备注：高速并发请求，专治偷助力。在kois环境变量中填入需要助力的pt_pin，有多个请用@符号连接
-
-风之凌殇 魔改版：
-2021.11.27 修复不能正常先满足第一个账号的问题，并添加车头和公平模式
-2021.11.29 增加自动开红包的功能
-
-改用以下变量
-#雨露均沾，若配置，则车头外的ck随机顺序，这样可以等概率的随到前面来
-export  KOI_FAIR_MODE="true"
-## 设置1个车头，如果有更多个车头，就写对应数目。仅当车头互助满，才会尝试后面的。
-export KOI_CHETOU_NUMBER="1"
-
-TG学习交流群：https://t.me/cdles
-5 0 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_angryKoi.js
+0 0 * * * 愤怒的锦鲤
 */
 const $ = new Env("愤怒的锦鲤")
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random() * 4 + 10)}.${Math.ceil(Math.random() * 4)};${randomString(40)}`
 let fair_mode = process.env.KOI_FAIR_MODE == "true" ? true : false
 let chetou_number = process.env.KOI_CHETOU_NUMBER ? Number(process.env.KOI_CHETOU_NUMBER) : 0
+var kois = process.env.kois ?? ""
 let cookiesArr = []
 var tools = []
 
@@ -54,10 +40,17 @@ let notify, allMessage = '';
         shuffle(otherIndexes)
         cookieIndexOrder = cookieIndexOrder.concat(otherIndexes)
     } else {
+        let otherIndexes = []
         // 未开启公平模式，则按照顺序互助，前面的先互助满
         for (let idx = 0; idx < cookiesArr.length; idx++) {
-            cookieIndexOrder.push(idx)
+            var cookie = cookiesArr[idx];
+            if (kois.indexOf(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]) != -1) {
+                otherIndexes.push(idx)
+            }else{
+                cookieIndexOrder.push(idx)
+            }
         }
+        cookieIndexOrder = otherIndexes.concat(cookieIndexOrder)
     }
     console.log(`最终互助顺序如下（优先互助满前面的）：\n${cookieIndexOrder}`)
     allMessage += `本次互助顺序(车头优先，其余等概率随机，每次运行都不一样): ${cookieIndexOrder}\n\n`
@@ -107,7 +100,7 @@ let notify, allMessage = '';
                     remainingTryCount -= 1
 
                     // 等待一会，避免频繁请求
-                    await $.wait(500)
+                    // await $.wait(500)
                 }
             } else {
                 // 获取失败，跳过
@@ -397,7 +390,7 @@ async function helpThisUser(help, tool) {
 async function requestApi(functionId, cookie, body = {}) {
     return new Promise(resolve => {
         $.post({
-            url: `${JD_API_HOST}/api?appid=jinlihongbao&functionId=${functionId}&loginType=2&client=jinlihongbao&t=${Date.now()}&clientVersion=10.3.5&osVersion=AndroidOS&d_brand=Xiaomi&d_model=Xiaomi`,
+            url: `${JD_API_HOST}/api?appid=jinlihongbao&functionId=${functionId}&loginType=2&client=jinlihongbao&clientVersion=10.2.4&osVersion=AndroidOS&d_brand=Xiaomi&d_model=Xiaomi`,
             headers: {
                 "Cookie": cookie,
                 "origin": "https://h5.m.jd.com",
