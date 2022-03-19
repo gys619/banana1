@@ -76,6 +76,8 @@ exports.main_handler = async (event, context, callback) => {
 
 **注意：**<br>
 Ⅰ方案一与方案二不能混合到同一个index.js文件中使用，同一个仓库下，二者只能选择其一。<br>
+Ⅱ感谢[issues#115](https://github.com/LXK9301/jd_scripts/issues/115)中的解决方案，目前云函数连续测试已经可以规避热启动问题了。<br>
+Ⅲ在确保完全按照本教程设置的情况下测试云函数运行情况，对于部分人运行日志中出现某些脚本运行失败其他正常，并且错误提示带有strict字样的，请自行删除index.js中的```'use strict';```，再做测试<br>
 
  **增加cookie**
 
@@ -158,8 +160,7 @@ let CookieJDs = [
 |      JavaScript      |         脚本名称          | 活动时间 |  serverless.yml   |
 | :------------------: | :-----------------------: | :------: | :---------------: |
 |    `getJDCookie`     |    扫码获取京东Cookie     |   长期   |         /         |
-|   `jd_bean_month_change`   |       京豆月变动通知        |   长期   |    10 7 1-31/7 * *     |
-|   `jd_bean_day_change`   |       京豆日变动通知        |   长期   |    2 9 * * *     |
+|   `jd_bean_change`   |       京豆变动通知        |   长期   |    30 7 * * *     |
 |    `jd_bean_home`    |      领京豆额外奖励       |   长期   |    30 7 * * *     |
 |    `jd_bean_sign`    |         京豆签到          |   长期   |     0 0 * * *     |
 |     `jd_beauty`      |        美丽研究院         |   长期   | 0 0-16/8,20 * * * |
@@ -209,6 +210,6 @@ let CookieJDs = [
 |   `jd_superMarket`   |         东东超市          |   长期   |   15 */6 * * *    |
 |       `jd_syj`       |          十元街           |   长期   |     3 1 * * *     |
 |   `jd_unsubscribe`   |    取关京东店铺和商品     |   长期   |    10 0 * * *     |
-|      `jd_jxsign`       |         京喜签到          |   长期   |     3 1 * * *     |
+|      `jx_sign`       |         京喜签到          |   长期   |     3 1 * * *     |
 
 点击提交，所有流程就结束了。

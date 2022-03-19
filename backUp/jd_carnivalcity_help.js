@@ -2,16 +2,20 @@
 京东手机狂欢城活动，每日可获得20+以上京豆（其中20京豆是往期奖励，需第一天参加活动后，第二天才能拿到）
 活动时间: 2021-8-9至2021-8-28
 活动入口：暂无 [活动地址](https://carnivalcity.m.jd.com/)
+
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ===================quantumultx================
 [task_local]
 #京东手机狂欢城助力
 10 0,8 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js, tag=京东手机狂欢城助力, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
 =====================Loon================
 [Script]
 cron "10 0,8 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js, tag=京东手机狂欢城助力
+
 ====================Surge================
 京东手机狂欢城助力 = type=cron,cronexp=10 0,8 * * *,wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js
+
 ============小火箭=========
 京东手机狂欢城助力 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js, cronexpr="10 0,8 * * *", timeout=3600, enable=true
 */
@@ -38,12 +42,15 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  //$.updatePkActivityIdRes = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_cityShareCodes.json')
-  //if (!$.updatePkActivityIdRes) {
-    //$.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_cityShareCodes.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    //await $.wait(1000)
-    //$.updatePkActivityIdRes = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_cityShareCodes.json')
-  //}
+  $.updatePkActivityIdRes = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_cityShareCodes.json')
+  if (!$.updatePkActivityIdRes) {
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_cityShareCodes.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    await $.wait(1000)
+    $.updatePkActivityIdRes = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_cityShareCodes.json')
+  }
+  let tempcode = []
+  tempcode = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/jd_cityShareCodes.json')
+  $.updatePkActivityIdRes = [...$.updatePkActivityIdRes,...(tempcode || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -253,7 +260,7 @@ function getAuthorShareCode(url) {
 
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `http://transfer.nz.lu/carnivalcity`, 'timeout': 20000}, (err, resp, data) => {
+    $.get({url: `https://transfer.nz.lu/carnivalcity`, 'timeout': 20000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -279,9 +286,9 @@ function shareCodesFormat() {
     $.newShareCodes = [];
     const readShareCodeRes = await readShareCode();
     if (readShareCodeRes && readShareCodeRes.code === 200) {
-      $.newShareCodes = [...new Set([...$.shareCodes])];
+      $.newShareCodes = [...new Set([...$.shareCodes, ...$.updatePkActivityIdRes, ...(readShareCodeRes.data || [])])];
     } else {
-      $.newShareCodes = [...new Set([...$.shareCodes])];
+      $.newShareCodes = [...new Set([...$.shareCodes, ...$.updatePkActivityIdRes])];
     }
     console.log(`\n\n您将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();

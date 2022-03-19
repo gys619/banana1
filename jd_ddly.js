@@ -8,14 +8,18 @@
 ============Quantumultx===============
 [task_local]
 #东东乐园
-35 7 * * * jd_ddly.js, tag=东东乐园
+30 7 * * * https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js, tag=东东乐园, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
 ================Loon==============
 [Script]
-cron "35 7 * * *" script-path=jd_ddly.js tag=东东乐园
+cron "30 7 * * *" script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js tag=东东乐园
+
 ===============Surge=================
-东东乐园 = type=cron,cronexp="35 7 * * *",wake-system=1,timeout=3600,script-path=jd_ddly.js
+东东乐园 = type=cron,cronexp="30 7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js
+
 ============小火箭=========
-东东乐园 = type=cron,script-path=jd_ddly.js, cronexpr="35 7 * * *", timeout=3600, enable=true
+东东乐园 = type=cron,script-path=https://raw.githubusercontent.com/Wenmoux/scripts/wen/jd/jd_ddnc_farmpark.js, cronexpr="30 7 * * *", timeout=3600, enable=true
+
  */
 const $ = new Env('东东乐园');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -81,9 +85,9 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                     await browseAward(task.topResource.task.advertId, index, task.type)
                 }
             }
-            //console.log(`\n集勋章得好礼  By：【888888】`)
-            //console.log(`\n由于我自己写这个脚本的时候已经手动开启活动了\n所以不知道开启活动的代码\n没有开启的手动开启吧，活动入口：东东农场->水车\n`)
-            //await collect()
+            // console.log(`\n集勋章得好礼  By：【888888】`)
+            // console.log(`\n由于我自己写这个脚本的时候已经手动开启活动了\n所以不知道开启活动的代码\n没有开启的手动开启吧，活动入口：东东农场->水车\n`)
+            // await collect()
         }
     }
 

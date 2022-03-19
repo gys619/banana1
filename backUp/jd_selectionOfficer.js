@@ -1,3 +1,4 @@
+
 /*
 * 活动：APP-美妆馆-右侧浮窗
 cron 23 9,10 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_selectionOfficer.js
@@ -166,15 +167,15 @@ async function doTask(){
                 await $.wait(1000);
             }
         }
-        //if($.oneTask.type === 8 && ["card","car"].includes(process.env.FS_LEVEL)){
-            //let subList = $.oneTask.info;
-            //for (let j = 0; j < subList.length; j++) {
-                //$.subListInfo = subList[j];
-                //console.log(`任务：${subList[j].title},去执行`);
-                //await takePostRequest('add_product');
-                //await $.wait(1000);
-            //}
-        //}
+        if($.oneTask.type === 8 && ["card","car"].includes(process.env.FS_LEVEL)){
+            let subList = $.oneTask.info;
+            for (let j = 0; j < subList.length; j++) {
+                $.subListInfo = subList[j];
+                console.log(`任务：${subList[j].title},去执行`);
+                await takePostRequest('add_product');
+                await $.wait(1000);
+            }
+        }
         if($.oneTask.type === 5){
             let subList = $.oneTask.info;
             for (let j = 0; j < subList.length; j++) {
@@ -184,15 +185,15 @@ async function doTask(){
                 await $.wait(1000);
             }
         }
-        //if($.oneTask.type === 6 && ["card","car"].includes(process.env.FS_LEVEL)){
-            //let subList = $.oneTask.info;
-            //for (let j = 0; j < subList.length; j++) {
-                //$.subListInfo = subList[j];
-                //console.log(`任务：${subList[j].title},去执行`);
-                //await takePostRequest('view_product');
-                //await $.wait(1000);
-            //}
-        //}
+        if($.oneTask.type === 6 && ["card","car"].includes(process.env.FS_LEVEL)){
+            let subList = $.oneTask.info;
+            for (let j = 0; j < subList.length; j++) {
+                $.subListInfo = subList[j];
+                console.log(`任务：${subList[j].title},去执行`);
+                await takePostRequest('view_product');
+                await $.wait(1000);
+            }
+        }
     }
 }
 

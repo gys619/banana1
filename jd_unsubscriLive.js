@@ -2,18 +2,19 @@
 脚本：取关主播
 更新时间：2021-07-27
 默认：每运行一次脚本取关所有主播
+
 脚本兼容: Quantumult X, Surge, Loon, JSBox, Node.js, 小火箭
 ==============Quantumult X===========
 [task_local]
 #取关所有主播
-55 6 * * * jd_unsubscriLive.js, tag=取关所有主播, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+55 22 * * * jd_unsubscriLive.js, tag=取关所有主播, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 ===========Loon============
 [Script]
-cron "55 6 * * *" script-path=jd_unsubscriLive.js,tag=取关所有主播
+cron "55 22 * * *" script-path=jd_unsubscriLive.js,tag=取关所有主播
 ============Surge=============
-取关所有主播 = type=cron,cronexp="55 6 * * *",wake-system=1,timeout=3600,script-path=jd_unsubscriLive.js
+取关所有主播 = type=cron,cronexp="55 22 * * *",wake-system=1,timeout=3600,script-path=jd_unsubscriLive.js
 ===========小火箭========
-取关所有主播 = type=cron,script-path=jd_unsubscriLive.js, cronexpr="55 6 * * *", timeout=3600, enable=true
+取关所有主播 = type=cron,script-path=jd_unsubscriLive.js, cronexpr="55 22 * * *", timeout=3600, enable=true
  */
 const $ = new Env('取关所有主播');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -88,10 +89,10 @@ if ($.isNode()) {
             allMessage += '\n'
         }
     }
-    //if (allMessage) {
-        //allMessage = allMessage.substring(0, allMessage.length - 1)
-        //if ($.isNode() && (process.env.CASH_NOTIFY_CONTROL ? process.env.CASH_NOTIFY_CONTROL === 'false' : !!1)) await notify.sendNotify($.name, allMessage);
-    //}
+    if (allMessage) {
+        allMessage = allMessage.substring(0, allMessage.length - 1)
+        if ($.isNode() && (process.env.CASH_NOTIFY_CONTROL ? process.env.CASH_NOTIFY_CONTROL === 'false' : !!1)) await notify.sendNotify($.name, allMessage);
+    }
 })()
     .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')

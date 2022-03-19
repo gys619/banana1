@@ -1,14 +1,18 @@
-/*
-cron 38 6-20/3 * * * jd_xinruimz.js
-需要手动选品
-入口: https://xinruimz-isv.isvjcloud.com/plantation
-无助力
-*/
-if (process.env.MZYJY != "true") {
-    console.log("默认不运行,容易黑,export MZYJY='true'来运行\n 获取accessToken失败就是黑了，手动进活动看看是不是火爆")
+if (!["true"].includes(process.env.JD_Xinruimz)) {
+    console.log("避免自动运行请设置环境变量JD_Xinruimz为\"true\"来运行本脚本")
     return
 }
-const $ = new Env("美丽研究院-种植园");
+/*
+cron 30 6-20/3 * * * jd_xinruimz.js
+TG https://t.me/duckjobs
+Rpeo https://github.com/okyyds
+需要手动选
+入口: https://xinruimz-isv.isvjcloud.com/plantation
+
+无助力
+*/
+
+const $ = new Env("颜究种植园");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
@@ -208,7 +212,7 @@ async function fertilizerdotask() {
                 $.log("任务完成")
             }
         }
-        if ($.fertilizertasklist.prodcuts && ["card","car"].includes(process.env.FS_LEVEL)) {
+        if ($.fertilizertasklist.prodcuts) {
             $.log("去完成加购任务..")
             if ($.fertilizertasklist.prodcuts.length != $.fertilizerlist.view_product.length) {
                 for (const vo of $.fertilizertasklist.prodcuts) {
