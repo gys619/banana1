@@ -1,11 +1,10 @@
 /*
 #电脑配件ID任务jd_computer,自行加入以下环境变量，多个ID用@连接
-export computer_activityIdList="17"  
-
+export computer_activityId="16"  
 即时任务，无需cron
 */
 
-const $ = new Env('电脑配件通用ID任务');
+const $ = new Env('电脑配件通用任务脚本');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -37,14 +36,8 @@ $.outFlag = 0
     return;
   }
   if (!activityIdList) {
-    let data = await getData("https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/dlpj.json")
-    if (data && data.length) {
-        $.log(`获取到远程且有数据`);
-        activityIdList = data.join('@')
-    }else{
-        $.log(`获取失败或当前无远程数据`);
-        return
-    }
+    $.log(`没有电脑配件ID，改日再来～`);
+    return;
   }
   MD5()
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -146,7 +139,7 @@ function indexInfo() {
             if(res.code == 200 && res.data){
               $.list = res.data.list
               $.extraTaskStatus = res.data.extraTaskStatus
-              
+
             }else if(res.msg){
               if(res.msg.indexOf('活动太火爆') > -1){
                 $.hotFlag = true
@@ -277,29 +270,7 @@ function extraTaskPrize() {
     })
   })
 }
-function getData(url) {
-  return new Promise(async resolve => {
-    const options = {
-      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
-    };
-    $.get(options, async (err, resp, data) => {
-      try {
-        if (err) {
-        } else {
-          if (data) data = JSON.parse(data)
-        }
-      } catch (e) {
-        // $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
-    await $.wait(10000)
-    resolve();
-  })
-}
+
 /*
  *Progcessed By JSDec in 0.01s
  *JSDec - JSDec.js.org
