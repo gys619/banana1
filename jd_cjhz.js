@@ -7,14 +7,11 @@
 [task_local]
 #京东超级盒子
 24 3,13 * * * https://raw.githubusercontent.com/msechen/script/main/jd_cjhz.js, tag=京东超级盒子, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
-
 ================Loon==============
 [Script]
 cron "24 3,13 * * *" script-path=https://raw.githubusercontent.com/msechen/script/main/jd_cjhz.js,tag=京东超级盒子
-
 ===============Surge=================
 京东超级盒子 = type=cron,cronexp="24 3,13 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/msechen/script/main/jd_cjhz.js
-
 ============小火箭=========
 京东超级盒子 = type=cron,script-path=https://raw.githubusercontent.com/msechen/script/main/jd_cjhz.js, cronexpr="24 3,13 * * *", timeout=3600, enable=true
  */
@@ -64,7 +61,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
             await main()
         }
     };
-    $.shareCoseList = [...new Set([...$.shareCoseList,'QmLpaFXm34BaWgn3C3O2WA','ffn_Yc--WKEab2iPzmVB4BM3VKR8-0h7mdYsY627fC0','c_HK4TBhdsqsRJPgFj7RpA'])]
+    $.shareCoseList = [...new Set([...$.shareCoseList])]
     //去助力与开箱
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];

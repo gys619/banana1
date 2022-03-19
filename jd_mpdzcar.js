@@ -1,12 +1,11 @@
 /*
-TG https://t.me/duckjobs
 
 活动入口:京东汽车 - 右下角 - 领京豆
-先跑积分,不要问为什么分开😂
+先跑积分
 
-10 8 * * * jd_mpdzcar.js
+10 3,10 * * * jd_mpdzcar.js
 */
-const $ = new Env("头文子J");
+const $ = new Env("头文字J");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = ''
@@ -88,15 +87,15 @@ async function main() {
                 await $.wait(5000);
                 await taskPost('participantBehavior', { "actId": actId, "buyerNick": $.buyerNick,"behavior":"browseItem"})
             }
-            for (let i = 0; i < 3; i++) {
-                await $.wait(5000);
-                await taskPost('loadItemGroup', { "actId": actId, "buyerNick": $.buyerNick, "itemGroupType": "browseItem"})
-                if ($.shopId) {
-                    await $.wait(10000);
-                    $.log('加购车.. '+$.shopId)
-                    await taskPost('addItemSingle', { "actId": actId, "buyerNick": $.buyerNick, "itemId": $.itemId, "shopId": $.shopId})
-                }
-            }
+            //for (let i = 0; i < 3; i++) {
+            //    await $.wait(5000);
+            //    await taskPost('loadItemGroup', { "actId": actId, "buyerNick": $.buyerNick, "itemGroupType": "browseItem"})
+            //    if ($.shopId) {
+            //        await $.wait(10000);
+            //        $.log('加购车.. '+$.shopId)
+            //        await taskPost('addItemSingle', { "actId": actId, "buyerNick": $.buyerNick, "itemId": $.itemId, "shopId": $.shopId})
+            //    }
+            //}
         } else {
             $.log("没有获取到用户信息")
         }
