@@ -1,17 +1,23 @@
 /*
+cron 0 0 * * * jd_dpqd.js
 店铺签到，各类店铺签到，有新的店铺直接添加token即可
-============Quantumultx===============
-[task_local]
-#店铺签到
-15 2,14 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_shop_sign.js, tag=店铺签到, enabled=true
-===========Loon============
-[Script]
-cron "15 2,14 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_shop_sign.js,tag=店铺签到
-============Surge=============
-店铺签到 = type=cron,cronexp="15 2,14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_shop_sign.js
-===========小火箭========
-店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_shop_sign.jss, cronexpr="15 2,14 * * *", timeout=3600, enable=true
+搬运cui521大佬脚本，请勿外传！！！
+环境变量:
+DPQDTK: token1&token2
+仓库不再提供token
 */
+let token = []
+if (process.env.DPQDTK) {
+  if (process.env.DPQDTK.includes('\n')) {
+    token = [...process.env.DPQDTK.split('\n'),...token]
+  } else {
+    token = [...process.env.DPQDTK.split('&'),...token]
+  }
+}
+if (!token.length) {
+  console.log('无店铺签到token,不执行.需自备token:环境变DPQDTK: tk1&tk2.')
+  return
+}
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -24,25 +30,6 @@ let activityId=''
 let vender=''
 let num=0
 let shopname=''
-const token = [
-  "A2EE985B40C39EA7FFE6ABDE307FDE25",
-  "113946C00C676DD5141D46EF6194E281",
-  "E32A11E8D0F109206A55188A5DE09C4E",
-  "ED0E9E159C9A7DB907DE28542D043BB9",
-  "B6D45CBE79819E9EFE01E875B034AE02",
-  "22C81EC2EE4B7A7B475CFE264894A743",
-  "4F2CF4B77EF54315023FF86FD51D6796",
-  "AFFE4FD8802CB38C906CA4A29959C493",
-  "EEFCCE78D3B14F41CBF10337DE64F4F5",
-  "EEF21A0BF335D139AF93D6A0C0523A8B",
-  "F1574D6A1862900C448E5F026F61CE9B",
-  "B2DB7BED3689F517DC2534104C329FBA",
-  "ED7C7A71E3C4027F44B9E994B1C7E3D8",
-  "0CD24E220BDA7693679AE596291CDA0F",
-  "3C48746007ABF9EE73FFD6B4821A8461",
-  "B51442B6BFA7CC5A2A3F50DCEBDCCAF1",
-  "9D939A8E16E2BA5EF5CA76D580D0B1D9"
-]
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {

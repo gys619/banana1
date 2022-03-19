@@ -2,13 +2,18 @@
 /*
 财富岛兑换红包
 作者：gaoyucindy
-cron "50 * * * *" jd_cfd_hb.js
+============Quantumultx===============
+[task_local]
+#财富岛兑换红包
+50 * * * * https://raw.githubusercontent.com/okyyds/yydspure/master/jd_cfd.hb.js, tag=财富岛兑换红包, enabled=true
+===========Loon============
+[Script]
+cron "50 * * * *" script-path=https://raw.githubusercontent.com/okyyds/yydspure/master/jd_cfd.hb.js,tag=财富岛兑换红包
+============Surge=============
+财富岛兑换红包 = type=cron,cronexp="50 * * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/okyyds/yydspure/master/jd_cfd.hb.js
+===========小火箭========
+财富岛兑换红包 = type=cron,script-path=https://raw.githubusercontent.com/okyyds/yydspure/master/jd_cfd.hb.jss, cronexpr="50 * * * *", timeout=3600, enable=true
  */
-if (process.env.cfd_rp != 'true'){
-  console.log('设置cfd_rp为true运行')
-  return
-}
-
 const $ = new Env('财富岛兑换红包');
 CryptoScripts()
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;

@@ -10,11 +10,17 @@ by:小手冰凉 tg:@chianPLA
 ============Node===============
 [task_local]
 #每周领取权益活动
-10 17 6 12 * jd jd_draw.js, tag=每周领取权益活动, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_jr_draw.png, enabled=true
- 
+15 7,18  * * 2 https://raw.githubusercontent.com/444444/JDJB/main/jd_jr_draw.js, tag=每周领取权益活动, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
+================Loon==============
+[Script]
+cron "15 7,18  * * 2" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_jr_draw.js,tag=每周领取权益活动
+===============Surge=================
+每周领取权益活动 = type=cron,cronexp="15 7,18  * * 2",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_jr_draw.js
+============小火箭=========
+每周领取权益活动 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_jr_draw.js, cronexpr="15 7,18  * * 2", timeout=3600, enable=true
 */
 
-const $ = new Env('京东金融每周领取权益活动');
+const $ = new Env('金融每周领30豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -34,7 +40,7 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
   }
-  console.log("目前已知领取一次 ，其他的未知。");
+  console.log("目前能正常领取 ，其他的未知。");
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -120,7 +126,7 @@ function drawNewMemberRights1(rightsId) {
       try {
         if (err) {
           console.log(`${$.toStr(err)}`)
-          console.log(`drawNewMemberRights1 API请求失败，请检查网路重试`)
+          console.log(`queryNewRightsDetail API请求失败，请检查网路重试`)
         } else {
           data = JSON.parse(data);
           console.log(data);

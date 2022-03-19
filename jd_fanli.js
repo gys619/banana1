@@ -1,24 +1,7 @@
-
-/* 
+/*
 京东饭粒
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
-[task_local]
-#京东饭粒
-40 0,9,17 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_fanli.js, tag=京东饭粒, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png, enabled=true
-
-================Loon==============
-[Script]
-cron "40 0,9,17 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fanli.js,tag=京东饭粒
-
-===============Surge=================
-京东饭粒 = type=cron,cronexp="40 0,9,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fanli.js
-
-============小火箭=========
-京东饭粒 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fanli.js, cronexpr="40 0,9,17 * * *", timeout=3600, enable=true
-*/
-
+长期活动，结束时间未知！
+ */
 const $ = new Env('京东饭粒');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -282,8 +265,6 @@ function getTaskList(ck) {
                         // console.log(data,"活动列表")
                         if(data.content){
                             $.taskList=data.content
-                            $.taskList.sort(function(a,b){
-                                return b.rewardBeans-a.rewardBeans})
                         }
                         else{
                             console.log("未获取到活动列表，请检查活动")

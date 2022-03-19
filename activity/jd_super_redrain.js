@@ -4,20 +4,20 @@
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 [task_local]
 #整点京豆雨
-0 0-23/1 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_super_redrain.js, tag=整点京豆雨, enabled=true
+0 0-23/1 * * * https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_super_redrain.js, tag=整点京豆雨, enabled=true
 ================Loon==============
 [Script]
-cron "0 0-23/1 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_super_redrain.js, tag=整点京豆雨
+cron "0 0-23/1 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_super_redrain.js, tag=整点京豆雨
 ===============Surge=================
-整点京豆雨 = type=cron,cronexp="0 0-23/1 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_super_redrain.js
+整点京豆雨 = type=cron,cronexp="0 0-23/1 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_super_redrain.js
 ============小火箭=========
-整点京豆雨= type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_super_redrain.js, cronexpr="0 0-23/1 * * *",timeout=200, enable=true
+整点京豆雨= type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_super_redrain.js, cronexpr="0 0-23/1 * * *",timeout=200, enable=true
 */
 const $ = new Env("整点京豆雨");
 let allMessage = "";
-const notify = $.isNode() ? require("./sendNotify") : "";
+const notify = $.isNode() ? require("../sendNotify") : "";
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
+const jdCookieNode = $.isNode() ? require("../jdCookie.js") : "";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = "", message;
 if ($.isNode()) {

@@ -1,28 +1,28 @@
 /*
 京东手机狂欢城活动，每日可获得20+以上京豆（其中20京豆是往期奖励，需第一天参加活动后，第二天才能拿到）
-活动时间: 2021-10-23至2021-11-13
+活动时间: 2021-8-9至2021-8-28
 活动入口：暂无 [活动地址](https://carnivalcity.m.jd.com/)
 
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ===================quantumultx================
 [task_local]
 #京东手机狂欢城助力
-39 1,10 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_carnivalcity_help.js, tag=京东手机狂欢城助力, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+10 0,8 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js, tag=京东手机狂欢城助力, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =====================Loon================
 [Script]
-cron "39 1,10 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_carnivalcity_help.js, tag=京东手机狂欢城助力
+cron "10 0,8 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js, tag=京东手机狂欢城助力
 
 ====================Surge================
-京东手机狂欢城助力 = type=cron,cronexp=39 1,10 * * *,wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_carnivalcity_help.js
+京东手机狂欢城助力 = type=cron,cronexp=10 0,8 * * *,wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js
 
 ============小火箭=========
-京东手机狂欢城助力 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_carnivalcity_help.js, cronexpr="39 1,10 * * *", timeout=3600, enable=true
+京东手机狂欢城助力 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_carnivalcity_help.js, cronexpr="10 0,8 * * *", timeout=3600, enable=true
 */
-const $ = new Env('京东手机狂欢城内部助力');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const $ = new Env('京东手机狂欢城助力');
+const notify = $.isNode() ? require('../sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 let isLoginInfo = {}
@@ -43,7 +43,12 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     return;
   }
   $.temp = [];
-  $.updatePkActivityIdRes = await getAuthorShareCode('')
+  $.updatePkActivityIdRes = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_cityShareCodes.json')
+  if (!$.updatePkActivityIdRes) {
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_cityShareCodes.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    await $.wait(1000)
+    $.updatePkActivityIdRes = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_cityShareCodes.json')
+  }
   await requireConfig();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
@@ -268,11 +273,11 @@ function getAuthorShareCode(url) {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: ``, 'timeout': 20000}, (err, resp, data) => {
+    $.get({url: `http://share.turinglabs.net/api/v3/carnivalcity/query/20/`, 'timeout': 20000}, (err, resp, data) => {
       try {
         if (err) {
-          //console.log(`${JSON.stringify(err)}`)
-          //console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
             data = JSON.parse(data);
@@ -346,7 +351,7 @@ function taskUrl(body = {}) {
       "referer": "https://carnivalcity.m.jd.com/",
       "origin": "https://carnivalcity.m.jd.com",
       "Cookie": cookie,
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
     }
   }
 }

@@ -10,7 +10,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = [], cookie = '', message = '', allMessage = '';
+let cookiesArr = [], cookie = '', message;
 let jd_mhurlList = '';
 let jd_mhurlArr = [];  
 let jd_mhurl = '';
@@ -65,7 +65,7 @@ if ($.isNode()) {
   if (allMessage) {
     if ($.isNode()) await notify.sendNotify(`${$.name}`, `${allMessage}`);
     $.msg($.name, '', allMessage);
-  }
+    }
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
