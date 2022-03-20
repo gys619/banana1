@@ -1,7 +1,7 @@
 /*
 年货节签到
 只有大吉才会推送
-cron 23 7,21 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_nh_sign.js
+cron 23 7 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_nh_sign.js
 * * */
 const $ = new Env('年货节签到');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
