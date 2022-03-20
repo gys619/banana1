@@ -1,16 +1,20 @@
 /*
 东东世界
+
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #东东世界
 15 3,9 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ddworld.js, tag=东东世界, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
 ================Loon==============
 [Script]
 cron "15 3,9 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ddworld.js,tag=东东世界
+
 ===============Surge=================
 东东世界 = type=cron,cronexp="15 3,9 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ddworld.js
+
 ============小火箭=========
 东东世界 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ddworld.js, cronexpr="15 3,9 * * *", timeout=3600, enable=true
 */
@@ -63,13 +67,18 @@ let tokenInfo = {}, hotInfo = {}
       hotInfo[$.UserName] = $.hot
     }
   }
-  let res = []
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/ddworld.json')
   if (!res) {
-    $.http.get({url: 'https://cdn.jsdelivr.net/gh/6dylan6/updateTeam@main/shareCodes/ddworld.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/ddworld.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/6dylan6/updateTeam@main/shareCodes/ddworld.json')
+    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/ddworld.json')
   }
-  $.shareCodes = [...$.shareCodes, ...(res || [])]
+  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/zero205/updateTeam/main/shareCodes/ddworld.json')
+  if (!res2) {
+    await $.wait(1000)
+    res2 = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/ddworld.json')
+  }
+  $.shareCodes = [...$.shareCodes, ...[...(res || []), ...(res2 || [])].sort(() => 0.5 - Math.random())]
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
