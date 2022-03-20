@@ -6,24 +6,9 @@
 活动部分账号验证h5st参数，请自行抓包参数添加 
 小号助力大号，抓包助力成功链接在代码236行修改为完整抓包链接，运行脚本提示 都黑号了，别薅了 为正常现象。
 h5st参数有时效性，抓包后请及时运行脚本
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
-[task_local]
-#发财挖宝
-40 6,17 * * * https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js, tag=发财挖宝, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
-
-================Loon==============
-[Script]
-cron "40 6,17 * * *" script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js,tag=发财挖宝
-
-===============Surge=================
-发财挖宝 = type=cron,cronexp="40 6,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js
-
-============小火箭=========
-发财挖宝 = type=cron,script-path=https://raw.githubusercontent.com/444444/JDJB/main/jd_fcwb.js, cronexpr="40 6,17 * * *", timeout=3600, enable=true
-
+40 6,14 * * * jd_fcwb_help.js
 * * */
-const $ = new Env('发财挖宝');
+const $ = new Env('发财挖宝-助力');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
