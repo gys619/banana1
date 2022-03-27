@@ -48,11 +48,11 @@ if ($.isNode()) {
   if (process.env.PIGPETSHARECODE) {
     shareId = process.env.PIGPETSHARECODE
   } else {
-    let res = await getAuthorShareCode('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/pigPet.json')
+    let res = await getAuthorShareCode('https://raw.githubusercontent.com/222222/11111128/master/shareCodes/11111127')
     if (!res) {
-      $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/pigPet.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+      $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
       await $.wait(2000)
-      res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/pigPet.json')
+      res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127')
     }
     if (res && res.length) shareId = res[Math.floor((Math.random() * res.length))]
   }
@@ -75,11 +75,11 @@ if ($.isNode()) {
       await jdPigPet();
     }
   }
-  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/222222/updateTeam/master/shareCodes/pig.json')
+  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/222222/11111128/master/shareCodes/11111127')
   if (!res2) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/pig.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
     await $.wait(2000)
-    res2 = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/updateTeam@master/shareCodes/pig.json')
+    res2 = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/222222/11111128@master/shareCodes/11111127')
   }
   $.shareCodes = [...new Set([...$.shareCodes, ...(res2 || [])])]
   console.log($.shareCodes)

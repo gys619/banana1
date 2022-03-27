@@ -122,7 +122,7 @@ Object.keys(jdCookieNode).forEach((item) => {
     console.log(`${name} finished}`)
 })
 
-async function getAuthorShareCode(url='https://raw.githubusercontent.com/11111115/params/main/tiger.json') {
+async function getAuthorShareCode(url='https://raw.githubusercontent.com/11111115/params/main/11111127') {
     try {
         const options = {
             url,

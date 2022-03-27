@@ -1,6 +1,6 @@
 //20 8 1 1 * jd_farm_automation.js
 //二次修改by dylan
-//https://github.com/6dylan6/jdpro.git
+//https://github.com/11111129/jdpro.git
 console.log('默认种植4级水果，如需调整请配置 M_JD_FARM_LEVEL\n使用率不高，建议手动运行，指定（用desi）需要领水果的账号运行\n')
 const {Env} = require('./function/magic');
 const $ = new Env('农场自动兑红包种水果');

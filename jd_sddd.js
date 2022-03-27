@@ -176,7 +176,7 @@ if ($.isNode()) {
 async function getAuthorShareCode() {
     return new Promise(resolve => {
         $.get({
-            url: "https://raw.fastgit.org/888888/updateTeam/main/shareCodes/sd.json",
+            url: "https://raw.fastgit.org/888888/11111128/main/shareCodes/11111127",
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }

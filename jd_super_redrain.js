@@ -137,7 +137,7 @@ function noahRedRainLottery() {
   })
 }
 
-function getRedRainIds(url = "https://cdn.jsdelivr.net/gh/6dylan6/updateTeam@main/shareCodes/super_redrain.json") {
+function getRedRainIds(url = "https://cdn.jsdelivr.net/gh/11111129/11111128@main/shareCodes/super_redrain.json") {
   return new Promise(async resolve => {
     const options = {
       url: `${url}?${new Date()}`, "timeout": 10000, headers: {

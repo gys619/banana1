@@ -455,7 +455,7 @@ function taskPostUrl(functionId, body = '', IsvToken = '') {
   }
 }
 
-function getParams(url='https://raw.githubusercontent.com/11111115/params/main/ddworld.json') {
+function getParams(url='https://raw.githubusercontent.com/11111115/params/main/11111127') {
   return new Promise(async resolve => {
     const options = {
       url: `${url}?${new Date()}`, "timeout": 10000, headers: {
