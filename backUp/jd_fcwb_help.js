@@ -4,23 +4,23 @@
 活动入口：极速版-发财挖宝
 目前需要下一单才能通关，需要的自己玩下
 活动部分账号验证h5st参数，请自行抓包参数添加 
-小号助力大号，抓包助力成功链接在代码227行修改为完整抓包链接，运行脚本提示 都黑号了，别薅了 为正常现象。
+小号助力大号，抓包助力成功链接在代码236行修改为完整抓包链接，运行脚本提示 都黑号了，别薅了 为正常现象。
 h5st参数有时效性，抓包后请及时运行脚本
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #发财挖宝
-40 6,17 * * * https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_fcwb_help.js, tag=发财挖宝, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+40 6,17 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcwb.js, tag=发财挖宝, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "40 6,17 * * *" script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_fcwb_help.js,tag=发财挖宝
+cron "40 6,17 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcwb.js,tag=发财挖宝
 
 ===============Surge=================
-发财挖宝 = type=cron,cronexp="40 6,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_fcwb_help.js
+发财挖宝 = type=cron,cronexp="40 6,17 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcwb.js
 
 ============小火箭=========
-发财挖宝 = type=cron,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_fcwb_help.js, cronexpr="40 6,17 * * *", timeout=3600, enable=true
+发财挖宝 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_fcwb.js, cronexpr="40 6,17 * * *", timeout=3600, enable=true
 
 * * */
 const $ = new Env('发财挖宝');
@@ -57,6 +57,15 @@ let curRound = 1
     }
 	console.log("\n活动入口：极速版-》我的-》发财挖宝"+"\n请务必先手动进入活动后随意点击方块后执行脚本"+"\n若点击方块获得0.01红包即活动黑了。"+"\n没助力是因为验证h5st，自行抓包替换");
     let res = [];
+
+    try{res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/fcwb.json');}catch (e) {}
+     if(!res){res = [];}
+    
+    if(res.length > 0){
+        let actCodeInfo = getRandomArrayElements(res,1)[0];
+        fcwbinviter = actCodeInfo.fcwbinviter;
+        fcwbinviteCode = actCodeInfo.fcwbinviteCode;
+    }
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
@@ -256,7 +265,39 @@ async function takeRequest(functionId,bodyInfo){
         })
     })
 }
-
+function getAuthorShareCode(url) {
+    return new Promise(resolve => {
+        const options = {
+            url: `${url}?${new Date()}`, "timeout": 10000, headers: {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+            }
+        };
+        if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+            const tunnel = require("tunnel");
+            const agent = {
+                https: tunnel.httpsOverHttp({
+                    proxy: {
+                        host: process.env.TG_PROXY_HOST,
+                        port: process.env.TG_PROXY_PORT * 1
+                    }
+                })
+            }
+            Object.assign(options, { agent })
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                } else {
+                    if (data) data = JSON.parse(data)
+                }
+            } catch (e) {
+                // $.logErr(e, resp)
+            } finally {
+                resolve(data);
+            }
+        })
+    })
+}
 function getRandomArrayElements(arr, count) {
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
