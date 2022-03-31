@@ -50,7 +50,7 @@ let activityCookie =''
     return;
   }
   $.activityId = "dz5ba3b5b44e35b7d350806a736090"
-  authorCodeList = await getAuthorCodeList('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/opencard102.json')
+  authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/opencard102.json')
     if(authorCodeList === '404: Not Found'){
         authorCodeList = [
             '834105c76cb745b3b6153b4b39f42c42',
