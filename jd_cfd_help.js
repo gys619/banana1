@@ -100,7 +100,7 @@ if ($.isNode()) {
 			}
     }
   }
-  let res = await getAuthorShareCode('https://gitee.com/444444521/JD-Scripts/raw/master/shareCodes/11111127')
+  let res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/444444/shareCodes@master/11111127')
   $.strMyShareIds = [...(res || [])]
   await shareCodesFormat()
   for (let i = 0; i < cookiesArr.length; i++) {
