@@ -1,13 +1,12 @@
 /*
-清空购物车
+清空购物车_Panda接口专用版
 更新时间：2021-10-27
 因其他脚本会加入商品到购物车，故此脚本用来清空购物车
 包括预售
 需要算法支持
 默认：不执行 如需要请添加环境变量
 gua_cleancart_Run="true"
-gua_cleancart_SignUrl="" # 算法url
-gua_cleancart_Authorization="" # 算法url token 有则填
+gua_cleancart_PandaToken="" # PanDaToken
 
 ——————————————
 1.@&@ 前面加数字 指定账号pin
@@ -36,12 +35,12 @@ pin3@&@不清空👉该pin不清空
 防止没指定的账号购物车全清空
 
 */
-let jdSignUrl = '' // 算法url
-let Authorization = '' // 算法url token 有则填
+let jdSignUrl = 'https://api.jds.codes/jd/sign'
+let jdPandaToken = ''
 let cleancartRun = 'false'
 let cleancartProducts = ''
-
-const $ = new Env('清空购物车');
+let lnrequesttimes=0
+const $ = new Env('清空购物车_Panda');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
@@ -58,15 +57,16 @@ if ($.isNode()) {
 
 message = ''
 
-jdSignUrl = $.isNode() ? (process.env.gua_cleancart_SignUrl ? process.env.gua_cleancart_SignUrl : `${jdSignUrl}`) : ($.getdata('gua_cleancart_SignUrl') ? $.getdata('gua_cleancart_SignUrl') : `${jdSignUrl}`);
-
-Authorization = process.env.gua_cleancart_Authorization ? process.env.gua_cleancart_Authorization : `${Authorization}`
-if(Authorization && Authorization.indexOf("Bearer ") === -1) Authorization = `Bearer ${Authorization}`
+jdPandaToken = $.isNode() ? (process.env.gua_cleancart_PandaToken ? process.env.gua_cleancart_PandaToken : `${jdPandaToken}`) : ($.getdata('gua_cleancart_PandaToken') ? $.getdata('gua_cleancart_PandaToken') : `${jdPandaToken}`);
 
 cleancartRun = $.isNode() ? (process.env.gua_cleancart_Run ? process.env.gua_cleancart_Run : `${cleancartRun}`) : ($.getdata('gua_cleancart_Run') ? $.getdata('gua_cleancart_Run') : `${cleancartRun}`);
 
 cleancartProducts = $.isNode() ? (process.env.gua_cleancart_products ? process.env.gua_cleancart_products : `${cleancartProducts}`) : ($.getdata('gua_cleancart_products') ? $.getdata('gua_cleancart_products') : `${cleancartProducts}`);
 
+if (!jdPandaToken) {
+    console.log('请填写Panda获取的Token,变量是gua_cleancart_PandaToken');
+	return;
+}
 let productsArr = []
 let cleancartProductsAll = []
 for (let i of cleancartProducts && cleancartProducts.split('|-|')) {
@@ -96,7 +96,7 @@ for (let i in productsArr) {
     console.log('脚本停止\n请添加环境变量[gua_cleancart_products]\n清空商品\n内容规则看脚本文件')
     return
   }
-  if(jdSignUrl.indexOf("://jd.11111118/") > -1) {
+  if(jdSignUrl.indexOf("://jd.smiek.tk/") > -1) {
     return
   }
   $.out = false
@@ -264,61 +264,64 @@ function jdApi(functionId,body) {
   })
 }
 
-function jdSign(fn,body) {
-  let sign = ''
-  let flag = false
-  try{
-    const fs = require('fs');
-    if (fs.existsSync('./gua_encryption_sign.js')) {
-      const encryptionSign = require('./gua_encryption_sign');
-      sign = encryptionSign.getSign(fn, body)
-    }else{
-      flag = true
-    }
-    sign = sign.data && sign.data.sign && sign.data.sign || ''
-  }catch(e){
-    flag = true
-  }
-  if(!flag) return sign
-  if(!jdSignUrl.match(/^https?:\/\//)){
-    console.log('请填写算法url')
-    $.out = true
-    return ''
-  }
-  return new Promise((resolve) => {
-    let options = {
-      url: jdSignUrl,
-      body:`{"fn":"${fn}","body":${body}}`,
-      followRedirect:false,
-      headers: {
-        'Accept':'*/*',
-        "accept-encoding": "gzip, deflate, br",
-        'Content-Type': 'application/json',
-      },
-      timeout:30000
-    }
-    if(Authorization) options["headers"]["Authorization"] = Authorization
-    $.post(options, async (err, resp, data) => {
-      try {
-        // console.log(data)
-        let res = $.toObj(data,data)
-        if(typeof res === 'object' && res){
-          if(res.code && res.code == 200 && res.data){
-            if(res.data.sign) sign = res.data.sign || ''
-            if(sign != '') resolve(sign)
-          }else{
-            console.log(data)
-          }
-        }else{
-          console.log(data)
+function jdSign(fn, body) {
+    let sign = '';
+    let flag = false;
+    try {
+        const fs = require('fs');
+        if (fs.existsSync('./gua_encryption_sign.js')) {
+            const encryptionSign = require('./gua_encryption_sign');
+            sign = encryptionSign.getSign(fn, body)
+        } else {
+            flag = true
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve('')
-      }
+        sign = sign.data && sign.data.sign && sign.data.sign || ''
+    } catch (e) {
+        flag = true
+    }
+    if (!flag)
+        return sign
+        if (!jdSignUrl.match(/^https?:\/\//)) {
+            console.log('请填写算法url')
+            $.out = true
+                return ''
+        }
+    return new Promise((resolve) => {
+        let url = {
+            url: jdSignUrl,
+            body: `{"fn":"${fn}","body":${body}}`,
+            followRedirect: false,
+            headers: {
+                'Accept': '*/*',
+                "accept-encoding": "gzip, deflate, br",
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jdPandaToken
+            },
+            timeout: 30000
+        }
+        $.post(url, async(err, resp, data) => {
+            try {
+                data = JSON.parse(data);
+                if (data && data.code == 200) {
+                    lnrequesttimes = data.request_times;
+                    console.log("连接Panda服务成功，当前Token使用次数为" + lnrequesttimes);
+                    if (data.data.sign)
+                        sign = data.data.sign || '';
+                    if (sign != '')
+                        resolve(sign);
+                    else
+                        console.log("签名获取失败,可能Token使用次数上限或被封.");
+                } else {
+                    console.log("签名获取失败.");
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            }
+            finally {
+                resolve('')
+            }
+        })
     })
-  })
 }
 
 
