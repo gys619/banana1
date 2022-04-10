@@ -1,48 +1,60 @@
 /*
 愤怒的锦鲤
-更新时间：2021-7-11
+更新时间：2021-09-01
 备注：高速并发请求，专治偷助力。在kois环境变量中填入需要助力的pt_pin，有多个请用@符号连接
+接入了代理 https://www.xiequ.cn/ 可以去嫖携趣的 每日1000免费ip 选择1个ip txt文本返回即可
 
-风之凌殇 魔改版：
-2021.11.27 修复不能正常先满足第一个账号的问题，并添加车头和公平模式
-2021.11.29 增加自动开红包的功能
+LingFeng魔改版
 
 改用以下变量
 #雨露均沾，若配置，则车头外的ck随机顺序，这样可以等概率的随到前面来
 export  KOI_FAIR_MODE="true"
+#其他变量
+export kois ="pt_pin@pt_pin@pt_pin" 指定车头pin
+export KOI_LOG_URL ="" 锦鲤log api
+export logNums ="" 获取锦鲤数量 默认100
+export proxyUrl ="" ip代理api
 脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
 =================================Quantumultx=========================
 [task_local]
 #愤怒的锦鲤
-30 0,8 * * * https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoii.js, tag=愤怒的锦鲤, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+30 0,8 * * * https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoi.js, tag=愤怒的锦鲤, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 =================================Loon===================================
 [Script]
-cron "30 0,8  * * *" script-path=https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoii.js,tag=愤怒的锦鲤
+cron "30 0,8  * * *" script-path=https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoi.js,tag=愤怒的锦鲤
 ===================================Surge================================
-愤怒的锦鲤 = type=cron,cronexp="30 0,8  * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoii.js
+愤怒的锦鲤 = type=cron,cronexp="30 0,8  * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoi.js
 ====================================小火箭=============================
-愤怒的锦鲤 = type=cron,script-path=https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoii.js, cronexpr="30 0,8  * * *", timeout=3600, enable=true
+愤怒的锦鲤 = type=cron,script-path=https://raw.githubusercontent.com/LingFeng0918/LF_JD/main/jd_angryKoi.js, cronexpr="30 0,8  * * *", timeout=3600, enable=true
  */
-const $ = new Env("愤怒的锦鲤")
+const $ = new Env("愤怒的锦鲤 - LingFeng自用版 ")
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random() * 4 + 10)}.${Math.ceil(Math.random() * 4)};${randomString(40)}`
+//const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random() * 4 + 10)}.${Math.ceil(Math.random() * 4)};${randomString(40)}`
+const ua = "Mozilla/5.0 (Linux; U; Android 8.0.0; zh-cn; Mi Note 2 Build/OPR1.170623.032) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/61.0.3163.128 Mobile Safari/537.36 XiaoMi/MiuiBrowser/10.1.1"
 let fair_mode = process.env.KOI_FAIR_MODE == "true" ? true : false
 let chetou_number = process.env.KOI_CHETOU_NUMBER ? Number(process.env.KOI_CHETOU_NUMBER) : 0
 var kois = process.env.kois ?? ""
 let koiLogUrl = process.env.KOI_LOG_URL ?? ""
+let proxyUrl = process.env.PROXY_URL ?? ""; // 代理的api地址
+let proxy = "";
 let logNums = process.env.KOI_LOG_NUMS ? Number(process.env.KOI_LOG_NUMS) : 100
+let nums = 0;
 let cookiesArr = []
 let scriptsLogArr = []
-let log_i = 0
-let log_j = 0
 var tools = []
+let logs;
 
 let notify, allMessage = '';
 
 !(async () => {
-     await requireConfig()
-     let res = await getJinliLogs(koiLogUrl)
-    scriptsLogArr = [...(res || [])]
+    await requireConfig()
+    let res = await getJinliLogs(koiLogUrl)
+    scriptsLogArr = [...(res || []), ...scriptsLogArr]
+    console.log(`共${scriptsLogArr.length}个助力logn`)
+    if (scriptsLogArr.length == 0){
+        console.log(`LingFeng提醒: log为空,脚本停止运行！`)
+        return
+    }
     console.log(`\n 锦鲤红包助力log需要手动抓取 \n`)
     console.log(`\n 拿你小号口令助力抓包,搜关键字 jinli_h5assist 查看请求文本里，再通过URL转码（推荐 https://tool.chinaz.com/tools/urlencode.aspx）拿到对应参数,青龙环境变量里添加 logs \n`)
     console.log(`\n 示例: logs 值 "random":"75831714","log":"1646396568418~1jD94......太长省略...Qwt9i"\n`)
@@ -92,8 +104,10 @@ let notify, allMessage = '';
     let helpIndex = 0
     while (helpIndex < cookiesArr.length && tools.length > 0 && remainingTryCount > 0) {
         let cookieIndex = cookieIndexOrder[helpIndex]
-
         try {
+            if(proxyUrl){
+                await getProxy();
+            }
             // 按需获取账号的锦鲤信息
             let help = await getHelpInfoForCk(cookieIndex, cookiesArr[cookieIndex])
             if (help) {
@@ -117,7 +131,12 @@ let notify, allMessage = '';
                     }
 
                     console.debug(`尝试用 ${tool.id} 账号助力 ${help.id} 账号，用于互助的账号剩余 ${tools.length}`)
-                    await helpThisUser(help, tool)
+                   try{
+                       await helpThisUser(help, tool)
+                   }catch (error) {
+                       // 额外捕获异常
+                       console.error(`尝试用 ${tool.id} 账号助力 ${help.id} 出现错误，错误为${error}，捕获该异常，跳过此账号继续执行助力~`)
+                   }
                     if (!tool.assisted) {
                         // 如果没有助力成功，则放入互助列表头部
                         tools.unshift(tool)
@@ -130,7 +149,7 @@ let notify, allMessage = '';
                     remainingTryCount -= 1
 
                     // 等待一会，避免频繁请求
-                    await $.wait(30000)
+                    await $.wait(45000)
                 }
             } else {
                 // 获取失败，跳过
@@ -182,19 +201,23 @@ function shuffle(array) {
 
 async function getHelpInfoForCk(cookieIndex, cookie) {
     console.log(`开始请求第 ${cookieIndex} 个账号的信息`)
-
+    logs = await getLog()
+    if(proxyUrl){
+        if (nums % 8 == 0) {
+            await getProxy();
+            global.GLOBAL_AGENT.HTTP_PROXY = "http://" + proxy;
+        }
+        nums++;
+    }
+    // let random = logs.substring(10,18),log = logs.substring(27,logs.length-1)
+    let random = decodeURIComponent(logs.match(/"random":"(\d+)"/)[1]),log = decodeURIComponent(logs.match(/"log":"(.*)"/)[1])
     let data;
-
     // 开启红包
     data = await with_retry("开启红包活动", async () => {
-        var num = "";
-        for (var g = 0; g < 6; g++) {
-            num += Math.floor(Math.random() * 10);
-        }
         return await requestApi('h5launch', cookie, {
             "followShop": 0,
-            "random": num,
-            "log": "42588613~8,~0iuxyee",
+            "random": random,
+            "log": log,
             "sceneid": "JLHBhPageh5"
         });
     })
@@ -290,7 +313,7 @@ async function appendRewardInfoToNotify(cookieIndex, cookie) {
             await openRedPacket(cookie)
 
             // 等待一会，避免请求过快
-            await $.wait(3000)
+            await $.wait(6000)
         }
 
         console.info(`领取完毕，重新查询最新锦鲤红包信息`)
@@ -373,14 +396,13 @@ async function with_retry(ctx = "", callback_func, max_retry_times = 3, retry_in
 }
 
 async function openRedPacket(cookie) {
-    var num = "";
-    for (var g = 0; g < 6; g++) {
-        num += Math.floor(Math.random() * 10);
-    }
+    logs = await getLog()
+    //let random = decodeURIComponent(logs.match(/"random":"(\d+)"/)[1]),log = decodeURIComponent(logs.match(/"log":"(.*)"/)[1])
+    let random = logs.substring(10,18),log = logs.substring(27,logs.length-1)
     // https://api.m.jd.com/api?appid=jinlihongbao&functionId=h5receiveRedpacketAll&loginType=2&client=jinlihongbao&t=1638189287348&clientVersion=10.2.4&osVersion=-1
     let resp = await requestApi('h5receiveRedpacketAll', cookie, {
-        "random": num,
-        "log": "42588613~8,~0iuxyee",
+        "random": random,
+        "log": log,
         "sceneid": "JLHBhPageh5"
     });
     if (resp?.data?.biz_code == 0) {
@@ -391,19 +413,9 @@ async function openRedPacket(cookie) {
 }
 
 async function helpThisUser(help, tool) {
-    // 计算一个用于请求的随机参数
-    var num = "";
-    for (var i = 0; i < 6; i++) {
-        num += Math.floor(Math.random() * 10);
-    }
-    body={"redPacketId": help.redPacketId,"followShop": 0,"random": scriptsLogArr[log_i].substring(10,18),"log": scriptsLogArr[log_i].substring(27,scriptsLogArr[log_i].length-1),"sceneid":"JLHBhPageh5"}
-    log_j ++
-    if(log_j >= 10){
-        log_j = 0
-        log_i ++
-    }
-    if(log_i == scriptsLogArr.length)
-        log_i = 0
+    logs = await getLog()
+    let random = logs.substring(10,18),log = logs.substring(27,logs.length-1)
+    body={"redPacketId": help.redPacketId,"followShop": 0,"random": random,"log": log,"sceneid":"JLHBhPageh5"}
     // 实际发起请求
     await requestApi('jinli_h5assist', tool.cookie, body).then(function (data) {
         let desc = data?.data?.result?.statusDesc
@@ -476,7 +488,6 @@ async function requireConfig() {
             cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
         }
         console.log(`共${cookiesArr.length}个京东账号\n`)
-        console.log(`共${scriptsLogArr.length}个助力logn`)
         resolve()
     })
 }
@@ -508,9 +519,41 @@ function getJinliLogs(url) {
                 resolve();
             }
         })
-        await $.wait(10000)
+        await $.wait(20000)
         resolve();
     })
+}
+async function getLog() {
+    var num = Math.floor(Math.random() * (scriptsLogArr.length - 0 + 1) + 0);
+    logs = scriptsLogArr[num]
+    return logs
+}
+// 获取代理
+function getProxy() {
+    return new Promise(async (resolve) => {
+        $.get(
+            {
+                url: proxyUrl,
+                timeout: {
+                    request: 5000,
+                },
+            },
+            (err, data) => {
+                if (data) {
+                    try {
+                        let reg =
+                            /((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}:[1-9]\d*/g;
+                        let p = reg.exec(data.body);
+                        proxy = p[0];
+                        global.GLOBAL_AGENT.HTTP_PROXY = "http://" + proxy;
+                    } catch (err) {
+                    } finally {
+                        resolve();
+                    }
+                }
+            }
+        );
+    });
 }
 function randomString(e) {
     e = e || 32;
