@@ -1,6 +1,6 @@
 /*
  早鸟派对,活动口令：！ZBaaJ0wACt！/
- cron 10 11 10-20 4 * https://raw.githubusercontent.com/333333/jd/main/scripts/jd_april.js
+ cron 10 11 10-20 4 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_april.js
  蚊子腿,豆子有限,估计很快没
  不开卡，不助力，脚本只做任务，玩小游戏，抽奖
 * */

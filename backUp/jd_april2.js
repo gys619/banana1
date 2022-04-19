@@ -1,6 +1,6 @@
 /*
  早鸟派对,活动:https://lzdz1-isv.isvjcloud.com/dingzhi/april/springUnion3/activity/1918310?activityId=dz3fb7e0f64f21afa7ff66d3daf15b
- cron 10 16 10-30 4 * https://raw.githubusercontent.com/333333/jd/main/scripts/jd_april2.js
+ cron 10 16 10-30 4 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_april2.js
  蚊子腿,豆子有限,估计很快没
  不开卡，不助力，脚本只做任务，玩小游戏，抽奖
 * */
