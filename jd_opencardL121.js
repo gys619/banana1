@@ -1,5 +1,5 @@
 /*
-4.18~5.5 甄选大牌 品质嗨购
+4.19~4.26 大牌联合 春夏约惠
 新增开卡脚本，一次性脚本
 
 
@@ -7,20 +7,20 @@
 第一个CK失效会退出脚本
 
 
-入口：[ 4.18~5.5 甄选大牌 品质嗨购]
+入口：[ 4.19~4.26 大牌联合 春夏约惠]
 
 请求太频繁会被黑ip
 过10分钟再执行
 
-cron:50 2,18 1-5,18-30 4,5 *
+cron:33 11 19-26 4 *
 ============Quantumultx===============
 [task_local]
-#4.18~5.5 甄选大牌 品质嗨购
-50 2,18 1-5,18-30 4,5 * jd_opencardL119.js, tag=4.18~5.5 甄选大牌 品质嗨购, enabled=true
+#4.19~4.26 大牌联合 春夏约惠
+33 11 19-26 4 * jd_opencardL121.js, tag=4.19~4.26 大牌联合 春夏约惠, enabled=true
 
 */
 
-const $ = new Env('4.18~5.5 甄选大牌 品质嗨购')
+const $ = new Env('4.19~4.26 大牌联合 春夏约惠')
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 CryptoScripts()
@@ -52,10 +52,10 @@ let activityCookie =''
     });
     return;
   }
-  $.activityId = "dzlhkk081f1bc4bacd11ec99b60200"
-  $.shareUuid = "508f99fb7c114dc58132074f397199ff"
+  $.activityId = "dzlhkkc99b60200kk081f1bc4bacd1"
+  $.shareUuid = "f4342c9457db4cf39c4c32525109409a"
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
-  let shareUuidArr = ["508f99fb7c114dc58132074f397199ff","d18c095e2b9048ec97e4e667da84c4a4","620aeb94cd3146368fc0d6bf4f3cff92"]
+  let shareUuidArr = ["f4342c9457db4cf39c4c32525109409a","d2bd558707d248af8d8ed0cd2027691f","f4ef6b0d0a1343e48c00f3a1dc1b41c1"]
   let s = Math.floor((Math.random()*3))
   let n = 0
   n = Math.floor((Math.random()*shareUuidArr.length))
@@ -750,12 +750,13 @@ async function joinShop() {
     let activityId = ``
     if ($.shopactivityId) activityId = `,"activityId":${$.shopactivityId}`
     let body = `{"venderId":"${$.joinVenderId}","shopId":"${$.joinVenderId}","bindByVerifyCodeFlag":1,"registerExtend":{},"writeChildFlag":0${activityId},"channel":406}`
-    let h5st = 'undefined'
-    try {
-      h5st = await h5stSign(body, "bindWithVender") || 'undefined'
-    } catch (e) {
-      h5st = 'undefined'
-    }
+    let h5st = '20220412164634306%3Bf5299392a200d6d9ffced997e5790dcc%3B169f1%3Btk02wc0f91c8a18nvWVMGrQO1iFlpQre2Sh2mGtNro1l0UpZqGLRbHiyqfaUQaPy64WT7uz7E%2FgujGAB50kyO7hwByWK%3B77c8a05e6a66faeed00e4e280ad8c40fab60723b5b561230380eb407e19354f7%3B3.0%3B1649753194306'    
+	//let h5st = 'undefined'
+    //try {
+    //  h5st = await h5stSign(body, "bindWithVender") || 'undefined'
+    //} catch (e) {
+    //  h5st = 'undefined'
+    //}
     const options = {
       url: `https://api.m.jd.com/client.action?appid=jd_shop_member&functionId=bindWithVender&body=${body}&clientVersion=9.2.0&client=H5&uuid=88888&h5st=${h5st}`,
       headers: {
@@ -801,12 +802,13 @@ async function joinShop() {
 async function getshopactivityId() {
   return new Promise(async resolve => {
     let body = `{"venderId":"${$.joinVenderId}","channel":406,"payUpShop":true}`
-    let h5st = 'undefined'
-    try {
-      h5st = await h5stSign(body, "getShopOpenCardInfo") || 'undefined'
-    } catch (e) {
-      h5st = 'undefined'
-    }
+    let h5st = '20220412164634306%3Bf5299392a200d6d9ffced997e5790dcc%3B169f1%3Btk02wc0f91c8a18nvWVMGrQO1iFlpQre2Sh2mGtNro1l0UpZqGLRbHiyqfaUQaPy64WT7uz7E%2FgujGAB50kyO7hwByWK%3B77c8a05e6a66faeed00e4e280ad8c40fab60723b5b561230380eb407e19354f7%3B3.0%3B1649753194306'
+    //let h5st = 'undefined'
+    //try {
+    //  h5st = await h5stSign(body, "getShopOpenCardInfo") || 'undefined'
+    //} catch (e) {
+    //  h5st = 'undefined'
+    //}
     const options = {
       url: `https://api.m.jd.com/client.action?appid=jd_shop_member&functionId=getShopOpenCardInfo&body=${body}&clientVersion=9.2.0&client=H5&uuid=88888&h5st=${h5st}`,
       headers: {
