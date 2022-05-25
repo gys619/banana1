@@ -7,7 +7,7 @@ cron:22 6,18 * * *
 ============Quantumultx===============
 [task_local]
 #京东答题领金豆
-22 6,18 * 11,12 * https://raw.githubusercontent.com/444444/JDJB/main/jd_jddt.js, tag=京东答题领金豆, enabled=true
+22 6,18 * 11,12 * https://raw.githubusercontent.com/11111115/JDHelp/main/jd_jddt.js, tag=京东答题领金豆, enabled=true
  */
 
 const $ = new Env('京东答题领金豆');
@@ -17,73 +17,73 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 if ($.isNode()) {
-    Object.keys(jdCookieNode).forEach((item) => {
-        cookiesArr.push(jdCookieNode[item])
-    })
-    if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
-    if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0)
+  Object.keys(jdCookieNode).forEach((item) => {
+    cookiesArr.push(jdCookieNode[item])
+  })
+  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
+  if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0)
 } else {
-    cookiesArr = [
-        $.getdata("CookieJD"),
-        $.getdata("CookieJD2"),
-        ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
+  cookiesArr = [
+    $.getdata("CookieJD"),
+    $.getdata("CookieJD2"),
+    ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
 const JD_API_HOST = 'https://hserver.moxigame.cn';
 
 !(async () => {
-    if (!cookiesArr[0]) {
-        $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
-        return;
-    }
+  if (!cookiesArr[0]) {
+    $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
+    return;
+  }
 
-    console.log('活动入口：京东APP ==> 我的 ==> 签到领豆 ==> 兑权益 ==> 京豆答题\n' +
-        '活动入口地址：https://prodev.m.jd.com/mall/active/2tqdREcm3YLC8pbNPdvofdAwd8te/index.html?tttparams= \n' +
-        '活动时间：2021-10-21至2021-12-31\n' +
-        '暂时不知道最多能答几次题先只答一次完成任务，答题答案随机选择'
-    );
+  console.log('活动入口：京东APP ==> 我的 ==> 签到领豆 ==> 兑权益 ==> 京豆答题\n' +
+      '活动入口地址：https://prodev.m.jd.com/mall/active/2tqdREcm3YLC8pbNPdvofdAwd8te/index.html?tttparams= \n' +
+      '活动时间：2021-05-24至2021-06-20\n' +
+      '暂时不知道最多能答几次题先只答一次完成任务，答题答案随机选择'
+      );
 
-    for (let i = 0; i < cookiesArr.length; i++) {
-        if (cookiesArr[i]) {
-            cookie = cookiesArr[i];
-            $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-            $.index = i + 1;
-            $.isLogin = true;
-            $.beans = 0
-            $.nickName = '';
-            message = '';
-            await TotalBean();
-            console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-            await $.wait(500)
-            await gettoken(`user/token`,`&client=m&url=pengyougou.m.jd.com`);
-            $.token = $.tokenList.data
-            await $.wait(500)
-            await gettoken(`encrypt/pin`);
-            $.lkToken = $.tokenList.data.lkToken;
-            $.lkEPin = $.tokenList.data.lkEPin;
-            console.log(`Token:${$.token}\nlkToken:${$.lkToken}\nlkEPin:${$.lkEPin}\n`)
-            if (!$.isLogin) {
-                $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/`, {"open-url": "https://bean.m.jd.com/"});
+  for (let i = 0; i < cookiesArr.length; i++) {
+    if (cookiesArr[i]) {
+      cookie = cookiesArr[i];
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+      $.index = i + 1;
+      $.isLogin = true;
+      $.beans = 0
+      $.nickName = '';
+      message = '';
+      await TotalBean();
+      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+      await $.wait(500)
+      await gettoken(`user/token`,`&client=m&url=pengyougou.m.jd.com`);
+      $.token = $.tokenList.data
+      await $.wait(500)
+      await gettoken(`encrypt/pin`);
+      $.lkToken = $.tokenList.data.lkToken;
+      $.lkEPin = $.tokenList.data.lkEPin;
+      console.log(`Token:${$.token}\nlkToken:${$.lkToken}\nlkEPin:${$.lkEPin}\n`)
+      if (!$.isLogin) {
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/`, {"open-url": "https://bean.m.jd.com/"});
 
-                if ($.isNode()) {
-                    await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-                } else {
-                    $.setdata('', `CookieJD${i ? i + 1 : ""}`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
-                }
-                continue
-            }else{
-                await operation();
-            }
+        if ($.isNode()) {
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+        } else {
+          $.setdata('', `CookieJD${i ? i + 1 : ""}`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
         }
+        continue
+      }else{
+        await operation();
+      }
     }
+  }
 })()
     .catch((e) => {
-        $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
     })
     .finally(() => {
-        $.done();
+      $.done();
     })
 async function operation() {
-    try {
+  try {
         //登录
         await logIn(`{"activeId":"A_8943039_R_6_D_20211015","lkToken":"${$.lkToken}","token":"${$.token}","returnurl":"https://prodev.m.jd.com/mall/active/2tqdREcm3YLC8pbNPdvofdAwd8te/index.html?tttparams=","sid":"","un_area":"","tttparams":"","lkEPin":"${$.lkEPin}"}`)
         await $.wait(500);
@@ -132,14 +132,14 @@ async function operation() {
                 await doCardTask(`{"taskType":27,"value":1,"activeId":"A_8943039_R_6_D_20211015","lkToken":"${$.lkToken}","token":"${$.taskToken}","returnurl":"https://prodev.m.jd.com/mall/active/2tqdREcm3YLC8pbNPdvofdAwd8te/index.html?tttparams=","sid":"","un_area":"","tttparams":"","id":"${$.id}","activeid":"A_8943039_R_6_D_20211015","authcode":"${$.authcode}"}`)
                 await $.wait(sleep * 1000)
             };
-//             if ([10].includes($.allTaskList[i].res.eType) && $.allTaskList[i].state.value === 0){
-//                 $.taskName = $.allTaskList[i].res.sName;
-//                 let sleep = 1;
-//                 console.log(`去做${$.taskName}\t等待${sleep}秒`)
-//                 await $.wait(sleep * 1000);
-//                 await doLottery(`{"id":"${$.id}","activeid":"A_8943039_R_6_D_20211015","activeId":"A_8943039_R_6_D_20211015","authcode":"${$.authcode}","token":"${$.taskToken}"}`)
-//                 await $.wait(sleep * 1000);
-//             };
+            if ([10].includes($.allTaskList[i].res.eType) && $.allTaskList[i].state.value === 0){
+                $.taskName = $.allTaskList[i].res.sName;
+                let sleep = 1;
+                console.log(`去做${$.taskName}\t等待${sleep}秒`)
+                await $.wait(sleep * 1000);
+                await doLottery(`{"id":"${$.id}","activeid":"A_8943039_R_6_D_20211015","activeId":"A_8943039_R_6_D_20211015","authcode":"${$.authcode}","token":"${$.taskToken}"}`)
+                await $.wait(sleep * 1000);
+            };
             if (["匹配挑战"].includes($.allTaskList[i].res.sName) && $.allTaskList[i].state.value === 0){
                 $.taskName = $.allTaskList[i].res.sName;
                 console.log(`去做${$.taskName}\t等待答题完成`)
@@ -224,429 +224,429 @@ async function operation() {
 
 //登录
 function logIn(body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl("jddb/active/role/login", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} logIn API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        $.info = data.info
-                        $.gameId = data.info.userId
-                        $.id = data.id;
-                        $.taskToken = data.token;
-                        $.authcode = data.authcode;
-                        console.log(`GameId:${$.gameId}`)
-                    }else{
-                        console.log(`logIn失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl("jddb/active/role/login", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} logIn API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                $.info = data.info
+                $.gameId = data.info.userId
+                $.id = data.id;
+                $.taskToken = data.token;
+                $.authcode = data.authcode;
+                console.log(`GameId:${$.gameId}`)
+            }else{
+                console.log(`logIn失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 };
 
 //获取任务列表
 function getTaskList(body) {
-    return new Promise(resolve => {
-        $.get(taskGetUrl("/jddb//active/jingdong/gametasks", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} getTaskList API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        $.allTaskList = data.tasks;
-                        //console.log(JSON.stringify($.allTaskList))
-                    }else{
-                        console.log(`获取任务列表失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.get(taskGetUrl("/jddb//active/jingdong/gametasks", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} getTaskList API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                $.allTaskList = data.tasks;
+                //console.log(JSON.stringify($.allTaskList))
+            }else{
+                console.log(`获取任务列表失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //做任务
 function doTaskList(body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl("jddb//active/jingdong/execute", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} doTaskList API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        console.log(`成功`)
-                    }else{
-                        console.log(`做任务失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl("jddb//active/jingdong/execute", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} doTaskList API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                console.log(`成功`)
+            }else{
+                console.log(`做任务失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //浏览卡包
 function doCardTask(body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl("jddb//role/base/uploadtask", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} doCardTask API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        console.log(`成功`)
-                    }else{
-                        console.log(`做任务失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl("jddb//role/base/uploadtask", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} doCardTask API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                console.log(`成功`)
+            }else{
+                console.log(`做任务失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //抽奖
 function doLottery(body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl("jddb//active/saas/jingdong/roll", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} doLottery API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        console.log(`成功获得${data.item[0].count}金币`)
-                    }else{
-                        console.log(`做任务失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl("jddb//active/saas/jingdong/roll", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} doLottery API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                console.log(`成功获得${data.item[0].count}金币`)
+            }else{
+                console.log(`做任务失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //领取任务奖励！
 function receiveTaskRewards(body) {
-    return new Promise(resolve => {
-        $.get(taskGetUrl("jddb//active/jingdong/finishtask", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} receiveTaskRewards API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        console.log(`领取${data.res.sName}`)
-                    }else{
-                        console.log(`领取任务奖励失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.get(taskGetUrl("jddb//active/jingdong/finishtask", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} receiveTaskRewards API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                console.log(`领取${data.res.sName}`)
+            }else{
+                console.log(`领取任务奖励失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //兑换主页
 function redeemHomePage(body) {
-    return new Promise(resolve => {
-        $.get(taskGetUrl("/jddb//active/role/marketgoods", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} redeemHomePage API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        $.exchangeList = data.list;
-                        $.coin = Number(data.money);
-                        console.log(`现有金币${$.coin}`)
-                    }else{
-                        console.log(`获取兑换主页失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.get(taskGetUrl("/jddb//active/role/marketgoods", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} redeemHomePage API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                $.exchangeList = data.list;
+                $.coin = Number(data.money);
+                console.log(`现有金币${$.coin}`)
+            }else{
+                console.log(`获取兑换主页失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //兑换
 function exchange(body) {
-    return new Promise(resolve => {
-        $.get(taskGetUrl("/jddb//active/role/marketbuy", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} exchange API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        console.log(`兑换成功`)
-                    }else{
-                        console.log(`兑换失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.get(taskGetUrl("/jddb//active/role/marketbuy", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} exchange API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                console.log(`兑换成功`)
+            }else{
+                console.log(`兑换失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 };
 
 //答题登录
 function playlogIn(body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl("jdanswer/player/login", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} logIn API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        $.playToken = data.data.token;
-                        console.log(`答题登录成功`)
-                    }else{
-                        console.log(`playlogIn失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl("jdanswer/player/login", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} logIn API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                $.playToken = data.data.token;
+                console.log(`答题登录成功`)
+            }else{
+                console.log(`playlogIn失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //参加答题
 function joinAnswer(body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl("jdanswer/player/startMatching", body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} joinAnswer API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        console.log(`参加答题成功\n`)
-                    }else{
-                        console.log(`参加答题失败：${JSON.stringify(data)}`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl("jdanswer/player/startMatching", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} joinAnswer API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                console.log(`参加答题成功\n`)
+            }else{
+                console.log(`参加答题失败：${JSON.stringify(data)}`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 //答题
 function doAnswer(choose,body) {
-    return new Promise(resolve => {
-        $.post(taskPostUrl(`jdanswer/player/${choose}`, body), async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} doAnswer API请求失败，请检查网路重试`)
-                } else {
-                    data = JSON.parse(data)
-                    //console.log(JSON.stringify(data))
-                    if (data.code === 0){
-                        $.jjson = data
-                        //console.log(`${JSON.stringify(data)}\n`)
-                    }else{
-                        console.log(`答题失败：${JSON.stringify(data)}\n`)
-                    }
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
+  return new Promise(resolve => {
+    $.post(taskPostUrl(`jdanswer/player/${choose}`, body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} doAnswer API请求失败，请检查网路重试`)
+        } else {
+            data = JSON.parse(data)
+            //console.log(JSON.stringify(data))
+            if (data.code === 0){
+                $.jjson = data
+                //console.log(`${JSON.stringify(data)}\n`)
+            }else{
+                console.log(`答题失败：${JSON.stringify(data)}\n`)
             }
-        })
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 function taskPostUrl(function_id, bod = {}, ) {
     return {
-        url: `${JD_API_HOST}/${function_id}`,
-        body: `${bod}`,
-        headers: {
-            "Accept": "*/*",
-            "X-Requested-With":"com.jingdong.app.mall",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "zh-cn",
-            "Connection": "keep-alive",
-            "Origin":"https://game-cdn.moxigame.cn",
-            "Content-Type": "application/json",
-            "Host": "hserver.moxigame.cn",
-            "Referer": `https://game-cdn.moxigame.cn/wuhangame/JD_Anaswer_v1_release/index.html?activeId=A_8943039_R_6_D_20211015`,
-            "Cookie": cookie,
-            "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-        }
+    url: `${JD_API_HOST}/${function_id}`,
+    body: `${bod}`,
+    headers: {
+      "Accept": "*/*",
+      "X-Requested-With":"com.jingdong.app.mall",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-cn",
+      "Connection": "keep-alive",
+      "Origin":"https://game-cdn.moxigame.cn",
+      "Content-Type": "application/json",
+      "Host": "hserver.moxigame.cn",
+      "Referer": `https://game-cdn.moxigame.cn/wuhangame/JD_Anaswer_v1_release/index.html?activeId=A_8943039_R_6_D_20211015`,
+      "Cookie": cookie,
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
     }
+  }
 }
 
 function taskGetUrl(function_id, bod = {}, ) {
     return {
-        url: `${JD_API_HOST}/${function_id}?${bod}`,
-        headers: {
-            "Accept": "*/*",
-            "X-Requested-With":"com.jingdong.app.mall",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "zh-cn",
-            "Connection": "keep-alive",
-            "Origin":"https://game-cdn.moxigame.cn",
-            "Content-Type": "application/json",
-            "Host": "hserver.moxigame.cn",
-            "Referer": `https://game-cdn.moxigame.cn/wuhangame/JD_Anaswer_v1_release/index.html?activeId=A_8943039_R_6_D_20211015`,
-            "Cookie": cookie,
-            "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-        }
+    url: `${JD_API_HOST}/${function_id}?${bod}`,
+    headers: {
+      "Accept": "*/*",
+      "X-Requested-With":"com.jingdong.app.mall",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-cn",
+      "Connection": "keep-alive",
+      "Origin":"https://game-cdn.moxigame.cn",
+      "Content-Type": "application/json",
+      "Host": "hserver.moxigame.cn",
+      "Referer": `https://game-cdn.moxigame.cn/wuhangame/JD_Anaswer_v1_release/index.html?activeId=A_8943039_R_6_D_20211015`,
+      "Cookie": cookie,
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
     }
+  }
 }
 
 function gettoken(function_id, body = "") {
-    return new Promise(async resolve => {
-        const opt = {
-            url: `https://jdjoy.jd.com/saas/framework/${function_id}?appId=dafbe42d5bff9d82298e5230eb8c3f79${body}`,
-            headers: {
-                authority: "jdjoy.jd.com",
-                Accept: "*/*",
-                Connection: "keep-alive",
-                origin: "https://prodev.m.jd.com",
-                Cookie: cookie,
-                "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-                "Accept-Language": "zh-cn",
-                "Referer": "https://prodev.m.jd.com/mall/active/2tqdREcm3YLC8pbNPdvofdAwd8te/index.html?tttparams=&sid=&un_area=",
-                "Accept-Encoding": "gzip, deflate, br"
+  return new Promise(async resolve => {
+    const opt = {
+      url: `https://jdjoy.jd.com/saas/framework/${function_id}?appId=dafbe42d5bff9d82298e5230eb8c3f79${body}`,
+      headers: {
+        authority: "jdjoy.jd.com",
+        Accept: "*/*",
+        Connection: "keep-alive",
+        origin: "https://prodev.m.jd.com",
+        Cookie: cookie,
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+        "Accept-Language": "zh-cn",
+        "Referer": "https://prodev.m.jd.com/mall/active/2tqdREcm3YLC8pbNPdvofdAwd8te/index.html?tttparams=&sid=&un_area=",
+        "Accept-Encoding": "gzip, deflate, br"
+      }
+    }
+    $.post(opt, (err, resp, data) => {
+      try {
+        if (err) {
+          $.logErr(err)
+        } else {
+            data = JSON.parse(data);
+            if (data.errorCode === null) {
+                $.tokenList = data
+                //console.log(JSON.stringify(data))
+            } else {
+                console.log(`失败：${JSON.stringify(data)}`);
             }
         }
-        $.post(opt, (err, resp, data) => {
-            try {
-                if (err) {
-                    $.logErr(err)
-                } else {
-                    data = JSON.parse(data);
-                    if (data.errorCode === null) {
-                        $.tokenList = data
-                        //console.log(JSON.stringify(data))
-                    } else {
-                        console.log(`失败：${JSON.stringify(data)}`);
-                    }
-                }
-            } catch (e) {
-                $.logErr(e)
-            } finally {
-                resolve();
-            }
-        })
+      } catch (e) {
+        $.logErr(e)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 function TotalBean() {
-    return new Promise(async resolve => {
-        const opt = {
-            url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
-            headers: {
-                Host: "wq.jd.com",
-                Accept: "*/*",
-                Connection: "keep-alive",
-                Cookie: cookie,
-                "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-                "Accept-Language": "zh-cn",
-                "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-                "Accept-Encoding": "gzip, deflate, br"
+  return new Promise(async resolve => {
+    const opt = {
+      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
+      headers: {
+        Host: "wq.jd.com",
+        Accept: "*/*",
+        Connection: "keep-alive",
+        Cookie: cookie,
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+        "Accept-Language": "zh-cn",
+        "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
+        "Accept-Encoding": "gzip, deflate, br"
+      }
+    }
+    $.get(opt, (err, resp, data) => {
+      try {
+        if (err) {
+          $.logErr(err)
+        } else {
+          if (data) {
+            data = JSON.parse(data);
+            if (data['retcode'] === 1001) {
+              $.isLogin = false; //cookie过期
+              return;
             }
+            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
+              $.nickName = data.data.userInfo.baseInfo.nickname;
+            }
+          } else {
+            console.log('京东服务器返回空数据');
+          }
         }
-        $.get(opt, (err, resp, data) => {
-            try {
-                if (err) {
-                    $.logErr(err)
-                } else {
-                    if (data) {
-                        data = JSON.parse(data);
-                        if (data['retcode'] === 1001) {
-                            $.isLogin = false; //cookie过期
-                            return;
-                        }
-                        if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
-                            $.nickName = data.data.userInfo.baseInfo.nickname;
-                        }
-                    } else {
-                        console.log('京东服务器返回空数据');
-                    }
-                }
-            } catch (e) {
-                $.logErr(e)
-            } finally {
-                resolve();
-            }
-        })
+      } catch (e) {
+        $.logErr(e)
+      } finally {
+        resolve();
+      }
     })
+  })
 }
 
 function safeGet(data) {
-    try {
-        if (typeof JSON.parse(data) == "object") {
-            return true;
-        }
-    } catch (e) {
-        console.log(e);
-        console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
-        return false;
+  try {
+    if (typeof JSON.parse(data) == "object") {
+      return true;
     }
+  } catch (e) {
+    console.log(e);
+    console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
+    return false;
+  }
 }
 
 // prettier-ignore
