@@ -1,6 +1,7 @@
 /*
 抄了部份
 90322060106
+大牌惠聚 年中献礼
 https://lzdz-isv.isvjcloud.com/dingzhi/bd/common/activity?activityId=xxx
 7 7 7 7 7 jd_opencard_06.js
 */

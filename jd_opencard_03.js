@@ -1,6 +1,7 @@
 /*
 抄了部份
 90322060103
+618 陪伴让爱升级
 https://lzdz-isv.isvjcloud.com/dingzhi/bd/common/activity?activityId=xxx
 7 7 7 7 7 jd_opencard_03.js
 */

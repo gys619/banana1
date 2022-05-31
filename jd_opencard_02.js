@@ -1,6 +1,7 @@
 /*
 抄了部份
 90322060102
+618大牌有礼 暖心陪伴
 https://lzdz-isv.isvjcloud.com/dingzhi/bd/common/activity?activityId=xxx
 7 7 7 7 7 jd_opencard_02.js
 */

@@ -1,6 +1,7 @@
 /*
 抄了部份
 90322060105
+盛宠618 大牌齐聚倾囊相送
 https://lzdz-isv.isvjcloud.com/dingzhi/bd/common/activity?activityId=xxx
 7 7 7 7 7 jd_opencard_05.js
 */

@@ -1,6 +1,7 @@
 /*
 抄了部份
 90322060104
+618限定 和你一起为爱而购
 https://lzdz-isv.isvjcloud.com/dingzhi/bd/common/activity?activityId=xxx
 7 7 7 7 7 jd_opencard_04.js
 */
