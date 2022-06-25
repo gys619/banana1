@@ -48,7 +48,7 @@ if ($.isNode()) {
     // activityIdList = await getActivityIdList('game.json')
     for (let a in activityIdList) {
         activityId = activityIdList[a];
-        console.log("开起第 " + a + " 个活动，活动id：" + activityId)
+        //console.log("开起第 " + (a + 1) + " 个活动，活动id：" + activityId)
         for (let i = 0; i < cookiesArr.length; i++) {
             if (cookiesArr[i]) {
                 cookie = cookiesArr[i]
@@ -198,7 +198,7 @@ function task(function_id, body, isCommon = 0) {
                                                         console.log(`🗑️ 垃圾专享价`);
                                                         break;
                                                     case 9:
-                                                        console.log(`🗑️ 店铺积分 🎟️`);
+                                                        console.log(`🗑️ ` + data.data.drawInfo.name + ' 🎟️');
                                                         break;
                                                     case 13:
                                                         console.log(`🎉 恭喜获得` + data.data.drawInfo.name + ' 🎁');
