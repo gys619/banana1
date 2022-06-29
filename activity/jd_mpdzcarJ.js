@@ -3,8 +3,8 @@
 任务，助力，游戏
 
 作者：小埋
-频道：https://t.me/11111130nb
-拉库：task repo https://github.com/11111130/duck.git master
+频道：https://t.me/okyydsnb
+拉库：task repo https://github.com/okyyds/duck.git master
 
 特别说明：搬运脚本已得到作者许可，此仓库脚本为非公开的内部脚本，不得外泄！
 
@@ -12,8 +12,8 @@ cron: 16 16,17,18 * * * jd_mpdz.js
 
 */
 const $ = new Env("头文字j");
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
 const CryptoJS = require("crypto-js")
 
