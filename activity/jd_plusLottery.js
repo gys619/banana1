@@ -1,20 +1,7 @@
 /*
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
-[task_local]
-#逛PLUS抽京豆
-18 1 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_plusLottery.js, tag=逛PLUS抽京豆, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+50 8 * * * jd_plusReward.js
 
-================Loon==============
-[Script]
-cron "18 1 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_plusLottery.js,tag=逛PLUS抽京豆
-
-===============Surge=================
-逛PLUS抽京豆 = type=cron,cronexp="18 1 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_plusLottery.js
-
-============小火箭=========
-逛PLUS抽京豆 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_plusLottery.js, cronexpr="18 1 * * *", timeout=3600, enable=true
+作者：小小Aaron-lv
 */
 const $ = new Env('逛PLUS抽京豆');
 const notify = $.isNode() ? require('./sendNotify') : '';

@@ -6,17 +6,17 @@
 =================================Quantumultx=========================
 [task_local]
 #攒金币 赢大礼
-22 0,8 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_GoldcoinToGift.js, tag=攒金币 赢大礼, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+22 1,18 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_GoldcoinToGift.js, tag=攒金币 赢大礼, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =================================Loon===================================
 [Script]
-cron "22 0,8 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_GoldcoinToGift.js,tag=攒金币 赢大礼
+cron "22 1,18 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_GoldcoinToGift.js,tag=攒金币 赢大礼
 
 ===================================Surge================================
-攒金币 赢大礼 = type=cron,cronexp="22 0,8 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_GoldcoinToGift.js
+攒金币 赢大礼 = type=cron,cronexp="22 1,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_GoldcoinToGift.js
 
 ====================================小火箭=============================
-攒金币 赢大礼 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_GoldcoinToGift.js, cronexpr="22 0,8 * * *", timeout=3600, enable=true
+攒金币 赢大礼 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_GoldcoinToGift.js, cronexpr="22 1,18 * * *", timeout=3600, enable=true
  */
 const $ = new Env('攒金币 赢大礼');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -63,12 +63,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       await GoldcoinToGift()
     }
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/GoldcoinToGift.json')
-  if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/GoldcoinToGift.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/GoldcoinToGift.json')
-  }
+  let res = await getAuthorShareCode('')
   $.shareId = [...new Set([...$.shareId, ...(res || [])])]
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];

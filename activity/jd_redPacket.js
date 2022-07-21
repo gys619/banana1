@@ -8,15 +8,15 @@ Last Modified time: 2021-05-19 16:27:18
 ================QuantumultX==================
 [task_local]
 #京东全民开红包
-1 1,2,23 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+1 1,18 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
 ===================Loon==============
 [Script]
-cron "1 1,2,23 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_redPacket.js, tag=京东全民开红包
+cron "1 1,18 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js, tag=京东全民开红包
 ===============Surge===============
 [Script]
-京东全民开红包 = type=cron,cronexp="1 1,2,23 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_redPacket.js
+京东全民开红包 = type=cron,cronexp="1 1,18 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js
 ====================================小火箭=============================
-京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_redPacket.js, cronexpr="1 1,2,23 * * *", timeout=3600, enable=true
+京东全民开红包 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_redPacket.js, cronexpr="1 1,18 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东全民开红包');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -41,12 +41,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_red.json')
-  if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_red.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_red.json')
-  }
+  let res = await getAuthorShareCode('')
   $.authorMyShareIds = [...(res || [])];
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
@@ -69,42 +64,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       $.discount = 0;
       await redPacket();
       await showMsg();
-    }
-  }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    cookie = cookiesArr[i];
-    $.index = i + 1;
-    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-    $.canHelp = true;
-    $.redPacketId = [...new Set($.redPacketId)];
-    if (!isLoginInfo[$.UserName]) continue
-    if (cookiesArr && cookiesArr.length >= 2) {
-      console.log(`\n\n自己账号内部互助`);
-      for (let j = 0; j < $.redPacketId.length && $.canHelp; j++) {
-        console.log(`账号 ${$.index} ${$.UserName} 开始给 ${$.redPacketId[j]} 进行助力`)
-        $.max = false;
-        await jinli_h5assist($.redPacketId[j]);
-        await $.wait(2000)
-        if ($.max) {
-          $.redPacketId.splice(j, 1)
-          j--
-          continue
-        }
-      }
-    }
-    if ($.canHelp && ($.authorMyShareIds && $.authorMyShareIds.length)) {
-      console.log(`\n\n有剩余助力机会则给作者进行助力`);
-      for (let j = 0; j < $.authorMyShareIds.length && $.canHelp; j++) {
-        console.log(`\n账号 ${$.index} ${$.UserName} 开始给作者 ${$.authorMyShareIds[j]} 进行助力`)
-        $.max = false;
-        await jinli_h5assist($.authorMyShareIds[j]);
-        await $.wait(2000)
-        if ($.max) {
-          $.authorMyShareIds.splice(j, 1)
-          j--
-          continue
-        }
-      }
     }
   }
 })()
@@ -262,7 +221,7 @@ async function red() {
     if ($.waitOpenTimes > 0) {
       for (let i = 0; i < $.waitOpenTimes; i++) {
         await h5receiveRedpacketAll();
-        await $.wait(500);
+        await $.wait(2000);
       }
     }
   } else if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data.biz_code === 20002) {
@@ -319,7 +278,7 @@ async function active(taskType) {
     if (getTaskDetailForColorRes.data && getTaskDetailForColorRes.data.result) {
       const { advertDetails } = getTaskDetailForColorRes.data.result;
       for (let item of advertDetails) {
-        await $.wait(1000);
+        await $.wait(2000);
         if (item.id && item.status === 0) {
           await taskReportForColor(taskType, item.id);
         }
@@ -404,7 +363,7 @@ function receiveTaskRedpacket(taskType) {
 }
 //助力API
 function jinli_h5assist(redPacketId) {
-  //一个人一天只能助力两次，助力码redPacketId 每天都变
+  //一个人一天只能助力一次，助力码redPacketId 每天都变
   const body = {"clientInfo":{},redPacketId,"followShop":0,"promUserState":""};
   const options = taskUrl(arguments.callee.name.toString(), body)
   return new Promise((resolve) => {
