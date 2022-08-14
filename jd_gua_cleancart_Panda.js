@@ -35,7 +35,7 @@ pin3@&@不清空👉该pin不清空
 防止没指定的账号购物车全清空
 
 */
-let jdSignUrl = 'https://api.jds.codes/jd/sign'
+let jdSignUrl = 'https://api.zhezhe.cf/jd/sign'
 let jdPandaToken = ''
 let cleancartRun = 'false'
 let cleancartProducts = ''
@@ -63,7 +63,10 @@ cleancartRun = $.isNode() ? (process.env.gua_cleancart_Run ? process.env.gua_cle
 
 cleancartProducts = $.isNode() ? (process.env.gua_cleancart_products ? process.env.gua_cleancart_products : `${cleancartProducts}`) : ($.getdata('gua_cleancart_products') ? $.getdata('gua_cleancart_products') : `${cleancartProducts}`);
 
-
+if (!jdPandaToken) {
+    console.log('请填写Panda获取的Token,变量是PandaToken');
+	return;
+}
 let productsArr = []
 let cleancartProductsAll = []
 for (let i of cleancartProducts && cleancartProducts.split('|-|')) {
@@ -83,10 +86,6 @@ for (let i in productsArr) {
     $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
       "open-url": "https://bean.m.jd.com/"
     });
-    return;
-  }
-  if (!jdPandaToken) {
-      console.log('请填写Panda获取的Token,变量是PandaToken');
     return;
   }
   if(cleancartRun !== 'true'){
