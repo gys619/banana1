@@ -1,3 +1,8 @@
+/**
+cron=22 8,23 * * * jd_work_price.js
+new Env('京东保价');
+ */
+
 let common = require("./function/common");
 let jsdom = require("jsdom");
 let $ = new common.env('京东保价');
