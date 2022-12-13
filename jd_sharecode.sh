@@ -2,7 +2,7 @@
 #15 3,23 * * * jd_sharecode.sh 
 #new Env('获取互助码');
 ## Build 20220325-001-test
-grep '6dylan6_1118' /ql/data/config/task_before.sh >/dev/null 2>&1 || grep '6dylan6_1118' /ql/config/task_before.sh > /dev/null 2>&1
+grep '6dylan6_1207' /ql/data/config/task_before.sh >/dev/null 2>&1 || grep '6dylan6_1207' /ql/config/task_before.sh > /dev/null 2>&1
 if [[ $? != 0 ]];then
  cp /ql/repo/6dylan6_jdpro/docker/task_before.sh /ql/config/ >/dev/null 2>&1 || cp /ql/data/repo/6dylan6_jdpro/docker/task_before.sh /ql/data/config/
 fi
@@ -225,12 +225,17 @@ def_sub(){
 gen_pt_pin_array() {
   local envs=$(eval echo "\$JD_COOKIE")
   local array=($(echo $envs | sed 's/&/ /g'))
-  local tmp1 tmp2 i pt_pin_temp
+  local tmp1 tmp2 i pt_pin_temp pin_arr_tmp j keywords
+  keywords="pt_pin="
+  j=0
   for i in "${!array[@]}"; do
-    pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
-    [[ $pt_pin_temp == *\\x* ]] && pt_pin[i]=$(printf $pt_pin_temp) || pt_pin[i]=$pt_pin_temp
+    if [[ "${array[i]}" =~ $keywords ]]; then
+        pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
+        [[ $pt_pin_temp == *\\x* ]] && pt_pin[j]=$(printf $pt_pin_temp) || pt_pin[j]=$pt_pin_temp
+        j=$((j + 1))
+    fi
   done
-  }
+}
 
 ## 导出互助码的通用程序，$1：去掉后缀的脚本名称，$2：config.sh中的后缀，$3：活动中文名称
 export_codes_sub() {
