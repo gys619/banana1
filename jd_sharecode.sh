@@ -14,16 +14,20 @@ fi
 dir_root=/ql
 dir_config=$dir_root/config
 dir_scripts=$dir_root/scripts
+dir_repo=$dir_root/repo
+dir_deps=$dir_root/deps
 dir_log=$dir_root/log
 dir_code=$dir_log/6dylan6_jdpro_jd_sharecode
 
 [[ $QL_DIR == /ql ]] && dir_root=$QL_DIR
 [[ -d $dir_root/data ]] && dir_data=$dir_root/data
-[[ -d $dir_root/config ]] && dir_config=$dir_data/config
+[[ -d $dir_data/config ]] && dir_config=$dir_data/config
 [[ -d $dir_data/scripts ]] && dir_scripts=$dir_data/scripts
+[[ -d $dir_data/repo ]] && dir_repo=$dir_data/repo
+[[ -d $dir_data/deps ]] && dir_deps=$dir_data/deps
 [[ -d $dir_data/log ]] && dir_log=$dir_data/log
 [[ -d `echo /ql/data/log/6dylan6_jdpro_jd_sharecode*|awk '{print $1}'` ]]  && dir_code=`ls -dt /ql/data/log/6dylan6_jdpro_jd_sharecode*|awk '{print $1}'|head -1`
-
+cp $dir_repo/6dylan6_jdpro/sendNotify.js $dir_deps/ > /dev/null 2>&1
 ## 预设的仓库及默认调用仓库设置
 ## 将"repo=$repo1"改成repo=$repo2"或其他，以默认调用其他仓库脚本日志
 ## 也可自行搜索本脚本内的"name_js=("和"name_js_only",将"repo"改成"repo2"或其他，用以自由组合调用仓库的脚本日志
@@ -224,7 +228,7 @@ def_sub(){
 ## 生成pt_pin清单
 gen_pt_pin_array() {
   local envs=$(eval echo "\$JD_COOKIE")
-  local array=($(echo $envs | sed 's/&/ /g'))
+  local array=($(echo ${envs// /} | sed 's/&/ /g'))
   local tmp1 tmp2 i pt_pin_temp pin_arr_tmp j keywords
   keywords="pt_pin="
   j=0
@@ -250,7 +254,7 @@ export_codes_sub() {
     local BreakHelpNumVerify=$(echo $BreakHelpNum | sed 's/ //g' | perl -pe "{s|-||; s|~||; s|_||}" | sed 's/^\d\+$//g')
     local i j k m n t pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num tmp_helptype HelpTemp random_num_list
     local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/&/ /g'))
+    local array=($(echo ${envs// /} | sed 's/&/ /g'))
     local user_sum=${#array[*]}
     if cd $dir_log &>/dev/null && [[ $(ls ./*$task_name*/*.log 2> /dev/null | wc -l) -gt 0 ]]; then
         ## 寻找所有互助码以及对应的pt_pin
@@ -500,7 +504,7 @@ export_all_codes() {
 #更新配置文件中互助码的函数
 help_codes(){
 local envs=$(eval echo "\$JD_COOKIE")
-local array=($(echo $envs | sed 's/&/ /g'))
+local array=($(echo ${envs// /} | sed 's/&/ /g'))
 local user_sum=${#array[*]}
 local config_name=$1
 local chinese_name=$2
@@ -546,7 +550,7 @@ sed -i "1c ## 上次导入时间：$(date +%Y年%m月%d日\ %X)" $ShareCode_log
 #更新配置文件中互助规则的函数
 help_rules(){
 local envs=$(eval echo "\$JD_COOKIE")
-local array=($(echo $envs | sed 's/&/ /g'))
+local array=($(echo ${envs// /} | sed 's/&/ /g'))
 local user_sum=${#array[*]}
 local config_name=$1
 local chinese_name=$2
@@ -595,7 +599,7 @@ export_codes_sub_only(){
     local chinese_name=$3
     local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
     local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/&/ /g'))
+    local array=($(echo ${envs// /} | sed 's/&/ /g'))
     local user_sum=${#array[*]}
     if cd $dir_log &>/dev/null && [[ $(ls ./*$task_name*/*.log 2> /dev/null | wc -l) -gt 0 ]]; then
         ## 寻找所有互助码以及对应的pt_pin
@@ -688,7 +692,7 @@ check_jd_cookie(){
 dump_user_info(){
 echo -e "\n## 账号用户名及 COOKIES 整理如下："
 local envs=$(eval echo "\$JD_COOKIE")
-local array=($(echo $envs | sed 's/&/ /g'))
+local array=($(echo ${envs// /} | sed 's/&/ /g'))
     for ((i = 0; i < ${#pt_pin[*]}; i++)); do
         remarks[i]="$(def_json JD_COOKIE remarks "pin=${pin[i]};" | head -1)"
         if [[ ${remarks[i]} == *@@* ]]; then
